@@ -13,13 +13,28 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Engine">
+      <UniqueIdentifier>{ee23cb50-7c9f-495b-bb14-2b6c1cc968ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Engine">
+      <UniqueIdentifier>{01dbbbdf-694a-4aa0-9d93-19c911a0ca4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game">
+      <UniqueIdentifier>{ca0cf07e-d334-4f8d-a015-9588fc851918}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Engine.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="UpdateManager.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics.cpp">
+      <Filter>Source Files\Engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -29,7 +44,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="UpdateManager.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Process.h">
+      <Filter>Header Files\Engine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

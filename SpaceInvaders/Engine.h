@@ -11,16 +11,14 @@ public:
 	static void StartEngineLoop();
 
 	static bool IsGameRunning();
+	static SDL_Window* GetWindow();
 
 private:
 	Engine();
 
 	static bool SetupSDL();
 
-	static SDL_Window *pWindow;
-	static SDL_Renderer *pRenderer;
-	static SDL_Surface *pBitmapSurface;
-	static SDL_Texture *pBitmapTexture;
+	static SDL_Window *spWindow;
 
 	static bool bIsRunning;
 };

@@ -5,8 +5,9 @@
 
 struct SSprite
 {
-	SDL_Rect SpriteRect;
-	SDL_Rect TextureSrcRect;
+	SDL_Rect SpriteSrcRect;
+	SDL_Rect SpriteDestRect;
+	SDL_Texture *pBitmapTexture;
 };
 
 class SpriteComponent : Component

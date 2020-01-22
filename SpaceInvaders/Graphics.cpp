@@ -1,6 +1,7 @@
 #include "Graphics.h"
 
 SDL_Surface *Graphics::spBitmapSurface = nullptr;
+//this is temp and should be stored in the sprite
 SDL_Texture *Graphics::spBitmapTexture = nullptr;
 SDL_Renderer *Graphics::spRenderer = nullptr;
 std::list<SpriteComponent *> *Graphics::spDrawList = nullptr;
@@ -9,10 +10,12 @@ bool Graphics::InitGraphics()
 {
 	spRenderer = SDL_CreateRenderer(Engine::GetWindow(), -1, SDL_RENDERER_ACCELERATED);
 
-	if (spRenderer == NULL)
+	if (spRenderer == nullptr)
 	{
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to initialize Renderer. Error: %s", SDL_GetError());
 	}
+
+	spDrawList = new std::list<SpriteComponent*>();
 
 	//this is test code
 	const char* resource = "Resources/Player.PNG";
@@ -20,18 +23,26 @@ bool Graphics::InitGraphics()
 	{
 		return false;
 	}
+	/////
 	return true;
 }
 
 void Graphics::CleanGraphics()
 {
+	ClearDrawList();
+	
+	if (spDrawList != nullptr)
+	{
+		delete spDrawList;
+	}
+
 	//Clean up Graphics and clear any memory allocated for surfaces and textures
-	if (spBitmapTexture != NULL)
+	if (spBitmapTexture != nullptr)
 	{
 		SDL_DestroyTexture(spBitmapTexture);
 	}
 
-	if (spRenderer != NULL)
+	if (spRenderer != nullptr)
 	{
 		SDL_DestroyRenderer(spRenderer);
 	}
@@ -40,7 +51,19 @@ void Graphics::CleanGraphics()
 void Graphics::Render()
 {
 	SDL_RenderClear(spRenderer);
-	SDL_RenderCopy(spRenderer, spBitmapTexture, NULL, NULL);
+
+	//SDL RENDER Copy is what places the sprite on the screen
+	SDL_RenderCopy(spRenderer, spBitmapTexture, NULL, NULL); //temp test
+	/////
+	for (SpriteComponent *component : *spDrawList)
+	{
+		if (component != nullptr)
+		{
+			SDL_RenderCopy(spRenderer, component->m_Sprite->pBitmapTexture, 
+				&component->m_Sprite->SpriteSrcRect, &component->m_Sprite->SpriteDestRect);
+		}
+	}
+
 	SDL_RenderPresent(spRenderer);
 }
 
@@ -53,8 +76,25 @@ bool Graphics::LoadResource(const char* resource)
 		return false;
 	}
 
-	spBitmapTexture = SDL_CreateTextureFromSurface(spRenderer, spBitmapSurface);
-	SDL_FreeSurface(spBitmapSurface);
-
 	return true;
+}
+
+bool Graphics::BlitSurfaceToTexture()
+{
+	spBitmapTexture = SDL_CreateTextureFromSurface(spRenderer, spBitmapSurface);
+	if (!spBitmapTexture)
+	{
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to Blit SDL Surface to Texture during Draw Step. Error: %s", SDL_GetError());
+		return false;
+	}
+	SDL_FreeSurface(spBitmapSurface);
+	return true;
+}
+
+void Graphics::ClearDrawList()
+{
+	if (spDrawList != nullptr)
+	{
+		spDrawList->clear();
+	}
 }

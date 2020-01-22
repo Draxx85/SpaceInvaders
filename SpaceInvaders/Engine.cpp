@@ -18,6 +18,10 @@ int Engine::InitEngine()
 	}
 
 	UpdateManager::Init();
+	if (!Graphics::InitGraphics())
+	{
+		return 1;
+	}
 
 	bIsRunning = true;
 	return 0;
@@ -26,6 +30,7 @@ int Engine::InitEngine()
 //Clean up the engine and make sure that all memory is cleanly released
 void Engine::CleanEngine()
 {	
+	UpdateManager::Clean();
 	Graphics::CleanGraphics();
 	
 	if (spWindow != NULL)
@@ -37,7 +42,7 @@ void Engine::CleanEngine()
 
 bool Engine::SetupSDL()
 {
-	if (SDL_Init(SDL_INIT_EVERYTHING) != NULL)
+	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 	{
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to initialize SDL with Error: %s", SDL_GetError());
 		return false;
@@ -71,6 +76,7 @@ void Engine::StartEngineLoop()
 				break;
 			}
 		}
+		Graphics::Render();
 	}
 }
 

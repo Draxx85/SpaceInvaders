@@ -7,7 +7,7 @@ int main(int argc, char* argv[])
 	Engine::InitEngine();
 	
 	Engine::StartEngineLoop();
-	
+
 	Engine::CleanEngine();
 
 	return 0;

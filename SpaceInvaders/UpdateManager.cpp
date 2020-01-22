@@ -35,7 +35,7 @@ bool UpdateManager::RegisterUpdate(Process *const process)
 {
 	if (spProcessList != NULL && !HasDuplicateProcess(process, spProcessList))
 	{
-		spProcessList->push_front(process);
+		spProcessList->push_back(process);
 		return true;
 	}
 	return false;
@@ -55,7 +55,7 @@ bool UpdateManager::RegisterTimedUpdate(Process *process)
 {
 	if (spTimedProcessList != NULL && !HasDuplicateProcess(process, spTimedProcessList))
 	{
-		spTimedProcessList->push_front(process);
+		spTimedProcessList->push_back(process);
 		return true;
 	}
 	return false;
@@ -85,6 +85,7 @@ void UpdateManager::ClearAllUpdates()
 
 void UpdateManager::Clean()
 {
+	ClearAllUpdates();
 	delete(UpdateManager::spProcessList);
 	delete(UpdateManager::spTimedProcessList);
 }

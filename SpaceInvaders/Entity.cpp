@@ -1,6 +1,12 @@
 #include "Entity.h"
 
-STransform Entity::GetTransform()
+Entity::Entity()
+	:m_Transform()
+{
+
+}
+
+struct STransform *Entity::GetTransform()
 {
 	return m_Transform;
 }

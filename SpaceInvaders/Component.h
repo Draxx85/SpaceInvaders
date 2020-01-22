@@ -1,15 +1,11 @@
 #pragma once
-
 #include "Process.h"
 
-class Entity : Process
+class Component : Process
 {
 public:
-	Entity();
-	struct STransform *GetTransform();
+	Component();
+
 	virtual void Update(float deltaTime) override;
 	virtual void TimedUpdate(float deltaTime) override;
-
-private:
-	struct STransform *m_Transform;
 };

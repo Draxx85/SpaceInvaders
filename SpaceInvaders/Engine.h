@@ -13,6 +13,8 @@ public:
 	static bool IsGameRunning();
 	static SDL_Window* GetWindow();
 
+	static float sCurrentFramePerSecond;
+
 private:
 	Engine();
 
@@ -21,4 +23,9 @@ private:
 	static SDL_Window *spWindow;
 
 	static bool bIsRunning;
+
+	//Frame Counter
+	static double sElapsedTime;
+	static int sFrameCount;
+	static double sStartTime;
 };

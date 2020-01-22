@@ -5,6 +5,9 @@
 SDL_Window *Engine::spWindow = nullptr;
 
 bool Engine::bIsRunning = false;
+double Engine::sElapsedTime = 0.0f;
+int Engine::sFrameCount = 0;
+double sStartTime = 0.0f;
 
 //Initialize all the main components of the engine
 int Engine::InitEngine() 
@@ -64,9 +67,18 @@ void Engine::StartEngineLoop()
 {
 	float time = 0.0f;
 
-	while (Engine::IsGameRunning()) 
+	while (Engine::IsGameRunning())
 	{
+		//Handle Input
 		UpdateManager::Update(time);
+		//if (Timed Update is ready) 
+		//{
+			//UpdateManager::TimedUpdate() 
+		//}
+
+		//AnimationUpdate() maybe....
+
+		//This is temp code!
 		SDL_Event e;
 		if (SDL_PollEvent(&e)) 
 		{
@@ -76,7 +88,10 @@ void Engine::StartEngineLoop()
 				break;
 			}
 		}
+		////
+		//LateUpdate() Maybe
 		Graphics::Render();
+		//Graphics::RenderUI();
 	}
 }
 

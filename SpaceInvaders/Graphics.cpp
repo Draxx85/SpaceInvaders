@@ -1,9 +1,9 @@
 #include "Graphics.h"
 
-
 SDL_Surface *Graphics::spBitmapSurface = nullptr;
 SDL_Texture *Graphics::spBitmapTexture = nullptr;
 SDL_Renderer *Graphics::spRenderer = nullptr;
+std::list<SpriteComponent *> *Graphics::spDrawList = nullptr;
 
 bool Graphics::InitGraphics()
 {
@@ -14,6 +14,7 @@ bool Graphics::InitGraphics()
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to initialize Renderer. Error: %s", SDL_GetError());
 	}
 
+	//this is test code
 	const char* resource = "Resources/Player.PNG";
 	if (!LoadResource(resource))
 	{

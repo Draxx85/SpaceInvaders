@@ -125,20 +125,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Component.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="UpdateManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Player.png" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Component.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Process.h" />
+    <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="UpdateManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

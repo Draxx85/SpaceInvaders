@@ -133,8 +133,10 @@
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="State.cpp" />
+    <ClCompile Include="StateMachine.cpp" />
     <ClCompile Include="UpdateManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -146,10 +148,12 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Graphics.h" />
+    <ClInclude Include="Sprite.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Process.h" />
     <ClInclude Include="SpriteComponent.h" />
+    <ClInclude Include="StateMachine.h" />
     <ClInclude Include="UpdateManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -18,10 +18,11 @@ public:
 	~State();
 
 	//need some stuff for prerequisits before moving states
+	void GoToNext(State* state, bool(*NextStateConditionFunc));
 
-	void GoToNext(State* state);
 	void TryGoToParent();
 	bool(*NextStateConditionFunc)();
+
 private:
 	std::vector<State*> *m_NextStateList;
 	State *m_pParentState;

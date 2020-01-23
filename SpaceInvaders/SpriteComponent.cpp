@@ -1,7 +1,7 @@
 #include "SpriteComponent.h"
 
 SpriteComponent::SpriteComponent()
-	:m_Sprite(new SSprite())
+	:m_Sprite(new Sprite())
 {
 	
 }
@@ -13,7 +13,7 @@ SpriteComponent::~SpriteComponent()
 
 void SpriteComponent::Update(float deltaTime)
 {
-	
+	UpdateSprite(deltaTime);
 }
 
 void SpriteComponent::TimedUpdate(float deltaTime)
@@ -24,5 +24,10 @@ void SpriteComponent::TimedUpdate(float deltaTime)
 void SpriteComponent::UpdateSprite(float deltaTime)
 {
 	m_TimeSinceAnimUpdate += deltaTime;
-	//if (m_TimeSinceAnimUpdate >= ) We need to see if enough time has passed to update animation frame
+
+	//We need to see if enough time has passed to update animation frame
+	if (m_TimeSinceAnimUpdate >= (1 / m_kAnimFrameRate)) 
+	{
+		m_Sprite++;
+	}
 }

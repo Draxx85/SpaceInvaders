@@ -55,7 +55,13 @@
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
     <ClCompile Include="State.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="StateMachine.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Source Files\Engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -92,6 +98,12 @@
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
     <ClInclude Include="State.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="StateMachine.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
   </ItemGroup>

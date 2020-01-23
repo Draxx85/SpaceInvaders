@@ -4,6 +4,7 @@ void GameManager::Init()
 {
 	////////////////TEST CODE//////////////////////////
 	Entity *ent = new Entity();
+
 	//m_Components = new std::vector<Component*>();
 	//	Entity* obj = new Entity();
 
@@ -14,6 +15,7 @@ void GameManager::Init()
 	{
 		SDL_Log("This should of worked maybe");
 	}
+	///////////////////////////////////////////////////
 }
 
 void GameManager::StartGame()

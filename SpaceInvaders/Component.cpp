@@ -5,6 +5,10 @@ Component::Component()
 
 }
 
+Component::~Component()
+{
+}
+
 void Component::Update(float deltaTime)
 {
 }

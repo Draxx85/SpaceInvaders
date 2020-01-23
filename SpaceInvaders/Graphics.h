@@ -7,19 +7,6 @@
 #include "Engine.h"
 #include "SpriteComponent.h"
 
-struct SVector2D
-{
-	float x;
-	float y;
-};
-
-struct STransform
-{
-	SVector2D *Position;
-	SVector2D *Scale;
-	float angle;
-};
-
 class Graphics
 {
 public:

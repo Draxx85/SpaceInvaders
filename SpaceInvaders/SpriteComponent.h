@@ -9,19 +9,13 @@ struct SSprite
 	SDL_Rect SpriteDestRect;
 	SDL_Texture *pBitmapTexture;
 	int zOrder = 0;
-	/*
-	~SSprite()
-	{
-		SDL_DestroyTexture(pBitmapTexture);
-	}\
-	*/
 };
 
-class SpriteComponent : Component
+class SpriteComponent : public Component
 {
 public:
 	SpriteComponent();
-	~SpriteComponent();
+	~SpriteComponent() override;
 	SSprite *m_Sprite;
 	
 	virtual void Update(float deltaTime) override;

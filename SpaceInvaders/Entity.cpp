@@ -1,7 +1,7 @@
 #include "Entity.h"
 
 Entity::Entity()
-	:m_Transform(), m_Components(new std::vector<Component*>())
+	:m_Transform(new STransform), m_Components(new std::vector<Component*>())
 {
 
 }
@@ -27,17 +27,4 @@ void Entity::AddComponent(Component *Component)
 	{
 		m_Components->push_back(Component);
 	}
-}
-
-template<class T>
-T& Entity::TryGetComponent(Entity &entity)
-{
-	for (int i = 0; i < entity.m_Components->size; ++i)
-	{
-		if (dynamic_cast<T*>(entity.m_Components[i]))
-		{
-			return &m_Components[i];
-		}
-	}
-	return NULL;
 }

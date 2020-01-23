@@ -2,15 +2,25 @@
 
 StateMachine *GameManager::m_MainStateMachine = nullptr;
 StateMachine *GameManager::m_GameStateMachine = nullptr;
+MainMenu *GameManager::sMainMenu = nullptr;
 
 void GameManager::Init()
 {
 	m_MainStateMachine = BuildMainStateMachine();
+	sMainMenu = new MainMenu();
 }
 
 void GameManager::StartGame()
 {
 
+}
+
+void GameManager::CleanGame()
+{
+	if (sMainMenu != nullptr)
+	{
+		delete sMainMenu;
+	}
 }
 
 //This is a horrible long State Machine builder. This should be done via data...

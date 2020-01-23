@@ -8,6 +8,7 @@ public:
 	static const int skSpriteHeight = 128;
 
 	Sprite();
+	Sprite(int maxFrames);
 	~Sprite();
 
 	Sprite &operator++();
@@ -21,7 +22,7 @@ public:
 	SDL_Texture *pBitmapTexture;
 	
 	int zOrder = 0;
-	int m_MaxFrames;
+	int m_MaxFrames = 1;
 	int m_CurrentFrame = 0;
 
 private:

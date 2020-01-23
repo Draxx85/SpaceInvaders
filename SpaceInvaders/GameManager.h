@@ -5,6 +5,7 @@
 #include "SpriteComponent.h"
 #include "StateMachine.h"
 #include "State.h"
+#include "MainMenu.h"
 
 enum EGameState
 {
@@ -20,11 +21,14 @@ class GameManager
 public:
 	static void Init();
 	static void StartGame();
+	static void CleanGame();
 
 	static StateMachine *BuildMainStateMachine();
 
 	static StateMachine *m_MainStateMachine;
 	static StateMachine *m_GameStateMachine;
+
+	static MainMenu *sMainMenu;
 private:
 	GameManager();
 };

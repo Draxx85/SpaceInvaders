@@ -7,6 +7,12 @@ Sprite::Sprite()
 
 }
 
+Sprite::Sprite(int maxFrames)
+	:pBitmapTexture(nullptr), m_MaxFrames(maxFrames)
+{
+	//not animated if there is only one frame;
+}
+
 Sprite::~Sprite()
 {
 }

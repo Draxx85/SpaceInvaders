@@ -7,6 +7,8 @@
 #include "Engine.h"
 #include "SpriteComponent.h"
 
+class SpriteComponent;
+
 class Graphics
 {
 public:
@@ -20,12 +22,18 @@ public:
 
 	//Render and Asset Loading functions
 	static void Render();
-	static bool LoadResource(const char* resource);
+	static SDL_Texture *LoadResource(const char* resource);
+
+	static void RegisterSpriteToDraw(SpriteComponent *spriteComp);
+
+	static void RemoveSpriteFromDrawList(SpriteComponent * const spriteComp);
+
+	static void SortByZOrder();
+
+	static void SetSrcRectFromTexture(SDL_Texture *const texture, SDL_Rect & rect);
 
 private:
 	Graphics();
-
-	static bool BlitSurfaceToTexture();
 
 	//Private clean up functions to clear out memory
 	static void ClearDrawList();

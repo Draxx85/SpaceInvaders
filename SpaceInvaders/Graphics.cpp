@@ -64,7 +64,7 @@ void Graphics::Render()
 	SDL_RenderPresent(spRenderer);
 }
 
-bool Graphics::LoadResource(const char* resource)
+SDL_Texture *Graphics::LoadResource(const char* resource)
 {
 	spBitmapSurface = IMG_Load(resource);
 	if (!spBitmapSurface)
@@ -74,21 +74,15 @@ bool Graphics::LoadResource(const char* resource)
 	}
 
 	//this is probably slow. I should probably put a bunch of sprites on here before blitting
-	BlitSurfaceToTexture();
-
-	return true;
-}
-
-bool Graphics::BlitSurfaceToTexture()
-{
-	spBitmapTexture = SDL_CreateTextureFromSurface(spRenderer, spBitmapSurface);
-	if (!spBitmapTexture)
+	SDL_Texture *texture = SDL_CreateTextureFromSurface(spRenderer, spBitmapSurface);
+	if (!texture)
 	{
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to Blit SDL Surface to Texture during Draw Step. Error: %s", SDL_GetError());
-		return false;
+		return texture;
 	}
 	SDL_FreeSurface(spBitmapSurface);
-	return true;
+
+	return texture;
 }
 
 void Graphics::ClearDrawList()
@@ -96,5 +90,35 @@ void Graphics::ClearDrawList()
 	if (spDrawList != nullptr)
 	{
 		spDrawList->clear();
+	}
+}
+
+void Graphics::RegisterSpriteToDraw(SpriteComponent *const spriteComp)
+{
+	spDrawList->push_back(spriteComp);
+	spDrawList->unique(); //clear any dupes
+}
+
+void Graphics::RemoveSpriteFromDrawList(SpriteComponent *const spriteComp)
+{
+	spDrawList->remove(spriteComp);
+}
+
+void Graphics::SortByZOrder()
+{
+	spDrawList->sort([](const SpriteComponent *one, const SpriteComponent *two)
+	{
+		return (one->m_Sprite->zOrder >= two->m_Sprite->zOrder);
+	});
+}
+
+void Graphics::SetSrcRectFromTexture(SDL_Texture *const texture, SDL_Rect &rect)
+{
+	int w, h;
+	if (!SDL_QueryTexture(texture, NULL, NULL, &w, &h))
+	{
+		rect.x = rect.y = 0;
+		rect.w = w;
+		rect.h = h;
 	}
 }

@@ -141,7 +141,9 @@
     <ClCompile Include="UpdateManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Resources\logo.png" />
     <Image Include="Resources\Player.png" />
+    <Image Include="Resources\SI_SpriteSheet.png" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h" />

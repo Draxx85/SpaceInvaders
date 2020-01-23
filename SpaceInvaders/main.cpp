@@ -10,6 +10,7 @@ int main(int argc, char* argv[])
 
 	Engine::StartEngineLoop();
 
+	GameManager::CleanGame();
 	Engine::CleanEngine();
 
 	return 0;

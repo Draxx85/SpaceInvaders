@@ -32,7 +32,7 @@ public:
 	void AddComponent(Component *Component);
 
 	template<typename T>
-	static bool TryGetComponent(Entity &entity, T* obj);
+	static bool TryGetComponent(Entity &entity, T *&obj);
 
 private:
 	STransform *m_Transform;
@@ -40,7 +40,7 @@ private:
 };
 
 template<typename T>
-bool Entity::TryGetComponent(Entity &entity, T* obj)
+bool Entity::TryGetComponent(Entity &entity, T *&obj)
 {
 	T* pt = nullptr;
 	for (std::vector<Component*>::iterator iter = entity.m_Components->begin();

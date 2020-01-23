@@ -71,6 +71,12 @@
     <Image Include="Resources\Player.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Resources\SI_SpriteSheet.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\logo.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">

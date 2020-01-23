@@ -1,6 +1,12 @@
 #include "GameManager.h"
 
-void GameManager::StartGame()
+
+void Game::GameManager::Init()
+{
+
+}
+
+void Game::GameManager::StartGame()
 {
 
 }

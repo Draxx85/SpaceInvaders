@@ -8,6 +8,13 @@ struct SSprite
 	SDL_Rect SpriteSrcRect;
 	SDL_Rect SpriteDestRect;
 	SDL_Texture *pBitmapTexture;
+	int zOrder = 0;
+	/*
+	~SSprite()
+	{
+		SDL_DestroyTexture(pBitmapTexture);
+	}\
+	*/
 };
 
 class SpriteComponent : Component
@@ -23,5 +30,5 @@ public:
 private:
 	float const m_AnimFrameRate = 24.0f;
 	float m_TimeSinceAnimUpdate = 0.0f;
-	void UpdateSpriteSrc();
+	void UpdateSprite(float deltaTime);
 };

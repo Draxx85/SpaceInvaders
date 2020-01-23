@@ -3,6 +3,9 @@
 #include "SDL.h"
 #include "SDL_timer.h"
 #include "SDL_Image.h"
+#include "Graphics.h"
+#include "UpdateManager.h"
+
 
 class Engine {
 public:
@@ -21,11 +24,14 @@ private:
 	static bool SetupSDL();
 
 	static SDL_Window *spWindow;
+	static void HandleEvents(SDL_Event &e);
+
+	static void UpdateDeltaTime();
 
 	static bool bIsRunning;
 
 	//Frame Counter
-	static double sElapsedTime;
-	static int sFrameCount;
-	static double sStartTime;
+	static float sFrameRate;
+	static Uint32 sStartTime;
+	static float sDeltaTime;
 };

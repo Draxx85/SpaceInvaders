@@ -23,7 +23,7 @@ bool Graphics::InitGraphics()
 	{
 		return false;
 	}
-	/////
+	////////////////////////////
 	return true;
 }
 
@@ -52,9 +52,6 @@ void Graphics::Render()
 {
 	SDL_RenderClear(spRenderer);
 
-	//SDL RENDER Copy is what places the sprite on the screen
-	SDL_RenderCopy(spRenderer, spBitmapTexture, NULL, NULL); //temp test
-	/////
 	for (SpriteComponent *component : *spDrawList)
 	{
 		if (component != nullptr)
@@ -75,6 +72,9 @@ bool Graphics::LoadResource(const char* resource)
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load Image resource: %s. Error: %s", resource, SDL_GetError());
 		return false;
 	}
+
+	//this is probably slow. I should probably put a bunch of sprites on here before blitting
+	BlitSurfaceToTexture();
 
 	return true;
 }

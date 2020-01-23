@@ -1,10 +1,13 @@
 #pragma once
 
-
-class GameManager
+namespace Game
 {
-public:
-	void StartGame();
-private:
-	GameManager();
-};
+	class GameManager
+	{
+	public:
+		static void Init();
+		static void StartGame();
+	private:
+		GameManager();
+	};
+}

@@ -1,13 +1,17 @@
 #include "Engine.h"
-#include "Graphics.h"
-#include "UpdateManager.h"
+
+//temp
+#include <sstream>
+
+#define _DISPLAY_FPS_ 1
 
 SDL_Window *Engine::spWindow = nullptr;
 
 bool Engine::bIsRunning = false;
-double Engine::sElapsedTime = 0.0f;
-int Engine::sFrameCount = 0;
-double sStartTime = 0.0f;
+
+float Engine::sFrameRate = 0;
+Uint32 Engine::sStartTime = 0;
+float Engine::sDeltaTime = 0;
 
 //Initialize all the main components of the engine
 int Engine::InitEngine() 
@@ -65,33 +69,50 @@ bool Engine::SetupSDL()
 //This is the main loop for the game. All object updates will occur here.
 void Engine::StartEngineLoop()
 {
-	float time = 0.0f;
-
+	sDeltaTime = 0.0f;
+	SDL_Event sdl_event;
+	sStartTime = SDL_GetTicks();
 	while (Engine::IsGameRunning())
 	{
-		//Handle Input
-		UpdateManager::Update(time);
+		HandleEvents(sdl_event);
+		UpdateManager::Update(sDeltaTime);
+		
 		//if (Timed Update is ready) 
 		//{
 			//UpdateManager::TimedUpdate() 
 		//}
 
-		//AnimationUpdate() maybe....
+		Graphics::Render();
+		//UpdateUI
+		//Graphics::RenderUI();
 
-		//This is temp code!
-		SDL_Event e;
-		if (SDL_PollEvent(&e)) 
+		UpdateDeltaTime();
+	}
+}
+
+void Engine::HandleEvents(SDL_Event &e)
+{
+	while (SDL_PollEvent(&e))
+	{
+		switch (e.type)
 		{
-			if (e.type == SDL_QUIT) 
+			case SDL_QUIT:
+			case SDL_APP_TERMINATING:
 			{
 				bIsRunning = false;
-				break;
+				return;
 			}
+			case SDL_KEYDOWN:
+			case SDL_KEYUP:
+			case SDL_MOUSEBUTTONDOWN:
+			case SDL_MOUSEBUTTONUP:
+			{
+				SDL_Log("Key has been pressed or released");
+				//HandleInput(SDL_EVENT &e)
+			}
+			default:
+				break;
 		}
-		////
-		//LateUpdate() Maybe
-		Graphics::Render();
-		//Graphics::RenderUI();
 	}
 }
 
@@ -107,4 +128,22 @@ SDL_Window* Engine::GetWindow()
 		return spWindow;
 	}
 	return NULL;
+}
+
+inline void Engine::UpdateDeltaTime()
+{
+	sDeltaTime = (float)(SDL_GetTicks() - sStartTime)/1000;	    
+	
+	if (sDeltaTime != 0)
+	{
+		sFrameRate = 1 / sDeltaTime;
+	}
+	sStartTime = SDL_GetTicks();
+
+#if _DISPLAY_FPS_ //Display fps Counter on window frame
+	std::stringstream fps;
+	fps << "Space Invaders || FPS: " << sFrameRate << " DeltaTime: " << sDeltaTime;
+	SDL_SetWindowTitle(spWindow, fps.str().c_str()); //gross
+#endif 
+
 }

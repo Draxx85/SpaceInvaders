@@ -110,7 +110,10 @@ void State::UpdateState(float deltaTime)
 	{
 		StateUpdateFunc(deltaTime);
 	}
-	TryGoToNext(this, NextStateConditionFunc);
+	for (State* state : *m_NextStateList)
+	{
+		TryGoToNext(state, NextStateConditionFunc);
+	}
 }
 
 bool State::ReadyForNextState()

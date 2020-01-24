@@ -21,6 +21,8 @@ public:
 	SDL_Rect SpriteDestRect;
 	SDL_Texture *pBitmapTexture;
 	
+	void FreeTexture();
+
 	int zOrder = 0;
 	int m_MaxFrames = 1;
 	int m_CurrentFrame = 0;

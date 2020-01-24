@@ -15,6 +15,7 @@ Sprite::Sprite(int maxFrames)
 
 Sprite::~Sprite()
 {
+	FreeTexture();
 }
 
 //Increments the frame of the sprite for animations
@@ -46,6 +47,15 @@ Sprite Sprite::operator--(int)
 	m_CurrentFrame = (m_CurrentFrame > 0) ? --m_CurrentFrame : 0; //Don't want to support rewind wrap arounds
 	PreviousFrame();
 	return *this;
+}
+
+void Sprite::FreeTexture()
+{
+	if (pBitmapTexture != nullptr)
+	{
+		SDL_DestroyTexture(pBitmapTexture);
+		pBitmapTexture = nullptr;
+	}
 }
 
 void Sprite::NextFrame()

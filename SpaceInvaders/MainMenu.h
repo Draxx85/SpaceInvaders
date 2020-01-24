@@ -2,6 +2,7 @@
 #include "Entity.h"
 #include "SpriteComponent.h"
 #include "Button.h"
+#include "TextComponent.h"
 
 class MainMenu
 {

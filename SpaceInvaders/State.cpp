@@ -63,13 +63,16 @@ bool State::HasStateLooped(State* state)
 	if (state != nullptr && !state->m_IsRootNode)
 	{
 		State* parent = m_pParentState;
-		while (parent != nullptr || !parent->m_IsRootNode)
+		if (parent != nullptr)
 		{
-			if (parent == state)
+			while (!parent->m_IsRootNode)
 			{
-				return true;
+				if (parent == state)
+				{
+					return true;
+				}
+				parent = m_pParentState;
 			}
-			parent = m_pParentState;
 		}
 	}
 	return false;

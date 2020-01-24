@@ -8,13 +8,11 @@ SpriteComponent::SpriteComponent()
 SpriteComponent::SpriteComponent(Entity &parent)
 	:m_Sprite(new Sprite())
 {
-	Component::Component(parent);
 }
 
 SpriteComponent::SpriteComponent(Entity &parent, SDL_Texture *texture)
 	: m_Sprite(new Sprite())
 {
-	Component::Component(parent);
 	m_Sprite->pBitmapTexture = texture;
 	Graphics::SetSrcRectFromTexture(m_Sprite->pBitmapTexture, m_Sprite->SpriteSrcRect);
 	SyncParentToComponent();

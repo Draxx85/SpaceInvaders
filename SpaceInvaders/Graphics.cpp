@@ -5,17 +5,30 @@ SDL_Surface *Graphics::spBitmapSurface = nullptr;
 SDL_Texture *Graphics::spBitmapTexture = nullptr;
 SDL_Renderer *Graphics::spRenderer = nullptr;
 std::list<SpriteComponent *> *Graphics::spDrawList = nullptr;
+TTF_Font *Graphics::m_Font = nullptr;
 
 bool Graphics::InitGraphics()
 {
+	
 	spRenderer = SDL_CreateRenderer(Engine::GetWindow(), -1, SDL_RENDERER_ACCELERATED);
-
+	
 	if (spRenderer == nullptr)
 	{
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to initialize Renderer. Error: %s", SDL_GetError());
 	}
 
 	spDrawList = new std::list<SpriteComponent*>();
+	
+	if (TTF_Init() == -1)
+	{
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Could not initialize SDL_ttf! Error: %s\n", TTF_GetError());
+	}
+
+	m_Font = TTF_OpenFont("Resources/Pixeled.ttf", 32);
+	if (m_Font == nullptr)
+	{
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
+	}
 
 	//this is test code
 	const char* resource = "Resources/Player.PNG";
@@ -41,6 +54,10 @@ void Graphics::CleanGraphics()
 	{
 		SDL_DestroyTexture(spBitmapTexture);
 	}
+
+	//Clean Up font
+	TTF_CloseFont(m_Font);
+	m_Font = nullptr;
 
 	if (spRenderer != nullptr)
 	{
@@ -83,6 +100,31 @@ SDL_Texture *Graphics::LoadResource(const char* resource)
 	SDL_FreeSurface(spBitmapSurface);
 
 	return texture;
+}
+
+SDL_Texture *Graphics::LoadText(const char * text, SDL_Color color)
+{
+	SDL_Texture *pTexture = nullptr;
+	SDL_Surface* pSurface = TTF_RenderText_Solid(m_Font, text, color);
+	if (pSurface == NULL)
+	{
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Could not render text to surface using SDL_ttf. Error: %s", TTF_GetError());
+	}
+	else
+	{
+		//Create texture from surface pixels
+		pTexture = SDL_CreateTextureFromSurface(spRenderer, pSurface);
+		if (pTexture == NULL)
+		{
+			SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Unable to create texture from text! Error: %s", SDL_GetError());
+		}
+
+		//Get rid of old surface
+		SDL_FreeSurface(pSurface);
+	}
+
+	//Return success
+	return pTexture;
 }
 
 void Graphics::ClearDrawList()

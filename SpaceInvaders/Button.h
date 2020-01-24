@@ -9,7 +9,7 @@ enum EButtonStates
 	Highlighted = 2,
 };
 
-class Button : Entity
+class Button : public Entity
 {
 public:
 	Button();

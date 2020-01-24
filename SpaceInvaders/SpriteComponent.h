@@ -14,7 +14,8 @@ public:
 	SpriteComponent(Entity &parent);
 	SpriteComponent(Entity &parent, SDL_Texture *texture);
 	SpriteComponent(SDL_Texture *texture);
-	~SpriteComponent() override;
+
+	virtual ~SpriteComponent() override;
 	void SyncParentToComponent();
 	Sprite *m_Sprite;
 

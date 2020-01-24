@@ -81,7 +81,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalOptions>D:\Dev\SDL2-2.0.10\VisualC\Win32\Debug\SDL2.lib D:\Dev\SDL2-2.0.10\VisualC\Win32\Debug\SDL2main.lib D:\Dev\SDL2-2.0.10\VisualC\Win32\Debug\SDL2_image.lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>D:\Dev\SDL2-2.0.10\VisualC\Win32\Debug\SDL2.lib D:\Dev\SDL2-2.0.10\VisualC\Win32\Debug\SDL2main.lib D:\Dev\SDL2-2.0.10\VisualC\Win32\Debug\SDL2_image.lib D:\Dev\SDL2-2.0.10\VisualC\Win32\Debug\SDL2_ttf.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -139,6 +139,7 @@
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="StateMachine.cpp" />
+    <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="UpdateManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -160,7 +161,11 @@
     <ClInclude Include="Process.h" />
     <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="StateMachine.h" />
+    <ClInclude Include="TextComponent.h" />
     <ClInclude Include="UpdateManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Resources\Pixeled.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

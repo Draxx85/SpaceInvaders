@@ -4,6 +4,7 @@
 #include <string>
 #include "SDL.h"
 #include "SDL_image.h"
+#include "SDL_ttf.h"
 #include "Engine.h"
 #include "SpriteComponent.h"
 
@@ -23,6 +24,7 @@ public:
 	//Render and Asset Loading functions
 	static void Render();
 	static SDL_Texture *LoadResource(const char* resource);
+	static SDL_Texture *LoadText(const char* text, SDL_Color color);
 
 	static void RegisterSpriteToDraw(SpriteComponent *spriteComp);
 
@@ -43,4 +45,5 @@ private:
 	static SDL_Texture *spBitmapTexture;
 	static SDL_Renderer *spRenderer;
 	static std::list<SpriteComponent*> *spDrawList;
+	static TTF_Font *m_Font;
 };

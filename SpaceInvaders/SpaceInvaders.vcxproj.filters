@@ -69,6 +69,9 @@
     <ClCompile Include="Button.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="TextComponent.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Player.png">
@@ -124,5 +127,13 @@
     <ClInclude Include="Button.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
+    <ClInclude Include="TextComponent.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Resources\Pixeled.ttf">
+      <Filter>Resource Files</Filter>
+    </Font>
   </ItemGroup>
 </Project>

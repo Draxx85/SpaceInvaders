@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <set>
 #include "Process.h"
 #include "SDL.h"
 #include "StateMachine.h"
@@ -31,14 +32,12 @@ public:
 	void TryGoToNext(State *state, bool(*NextStateConditionFunc)());
 
 	State* GetParent();
-
-	void ActivateState();
 	
 	//function pointers
 	bool(*NextStateConditionFunc)();
 	void(*StateUpdateFunc)(float deltaTime);
-	void(*OnEnterState)();
-	void(*OnLeaveState)();
+	void(*OnEnterState)(float deltaTime);
+	void(*OnExitState)(float deltaTime);
 
 	
 	void UpdateState(float deltaTime);
@@ -49,9 +48,9 @@ public:
 
 private:
 	bool HasStateLooped(State *state);
-	void OnEnter();
 	void OnLeave();
-	std::vector<State*> *m_NextStateList;
+	std::vector<State*> *m_NextStateList; //This needs updating
+	//std::set<State*, bool(*)()> m_NextStateListSet -> this would make more sense to have this instead of a vector
 	State *m_pParentState;
 	State *m_NextState;
 };

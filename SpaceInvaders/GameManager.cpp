@@ -33,6 +33,7 @@ StateMachine *GameManager::BuildMainStateMachine()
 	State* state = stateMachine->CreateState((int)GState_Init, GameState_Init);
 	state = state->AddChildState(stateMachine->CreateState((int)GState_Intro, GameState_Intro));
 	state = state->AddChildState(stateMachine->CreateState((int)GState_Intro, GameState_Menu));
+	state->NextStateConditionFunc = []() { return false; };
 	state = state->AddChildState(stateMachine->CreateState((int)GState_Intro, GameState_Game));
 	state = state->AddChildState(stateMachine->CreateState((int)GState_Intro, GameState_Exit));
 
@@ -52,8 +53,10 @@ void GameState_Init(float Update)
 				break;
 			case OnStayPhase:
 				SDL_Log("GameState_Init: I am updateing myself");
+				break;
 			case OnExitPhase:
 				SDL_Log("GameState_Init: Im ending this state");
+				break;
 		}
 	}
 }
@@ -71,8 +74,10 @@ void GameState_Intro(float Update)
 				break;
 			case OnStayPhase:
 				SDL_Log("GameState_IntroI am updateing myself");
+				break;
 			case OnExitPhase:
 				SDL_Log("GameState_IntroIm ending this state");
+				break;
 		}
 	}
 }
@@ -91,8 +96,10 @@ void GameState_Menu(float Update)
 				break;
 			case OnStayPhase:
 				SDL_Log("GameState_MenuI am updateing myself");
+				break;
 			case OnExitPhase:
 				SDL_Log("GameState_MenuIm ending this state");
+				break;
 		}
 	}
 }

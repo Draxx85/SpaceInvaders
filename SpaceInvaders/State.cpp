@@ -75,19 +75,6 @@ bool State::HasStateLooped(State* state)
 	return false;
 }
 
-void State::OnEnter()
-{
-	if (OnEnterState != nullptr)
-	{
-		OnEnterState();
-	}
-}
-
-void State::ActivateState()
-{
-	OnEnter();
-}
-
 void State::DeactivateState()
 {
 	OnLeave();
@@ -95,10 +82,6 @@ void State::DeactivateState()
 
 void State::OnLeave()
 {
-	if (OnLeaveState != nullptr)
-	{
-		OnLeaveState();
-	}
 	SDL_assert(m_NextState != nullptr);
 	m_MasterStateMachine->m_ActiveState = m_NextState;
 	m_NextState = nullptr;

@@ -24,9 +24,9 @@ void StateMachine::Update(float deltaTime)
 		{
 			case InactivePhase:
 				m_ActiveState->m_CurrentPhase = OnEnterPhase;
-				m_ActiveState->ActivateState();
 				break;
 			case OnEnterPhase:
+				m_ActiveState->OnEnterState(deltaTime);
 				m_ActiveState->m_CurrentPhase = OnStayPhase;
 				break;
 			case OnStayPhase:
@@ -37,6 +37,7 @@ void StateMachine::Update(float deltaTime)
 				}
 				break;
 			case OnExitPhase:
+				m_ActiveState->OnExitState(deltaTime);
 				m_ActiveState->DeactivateState();
 				m_ActiveState->m_CurrentPhase = InactivePhase;
 				break;
@@ -67,5 +68,7 @@ State *StateMachine::CreateState(int stateId, void(*update)(float deltaTime))
 		m_Root = state;
 	}
 	state->StateUpdateFunc = update;
+	state->OnEnterState = update;
+	state->OnExitState = update;
 	return state;
 }

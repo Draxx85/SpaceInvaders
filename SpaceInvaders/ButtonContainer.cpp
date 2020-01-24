@@ -25,7 +25,14 @@ ButtonContainer::~ButtonContainer()
 
 void ButtonContainer::AddButtonToList(Button *button)
 {
+	STransform *transform =  button->GetTransform();
+	if (transform != nullptr)
+	{
+		m_ButtondWidth = transform->DestRect->w;
+		m_BuittonHeight = transform->DestRect->h;
+	}
 	m_ButtonList->push_back(button);
+	RefreshDimensions(m_ButtonList->size());
 }
 
 void ButtonContainer::ClearButtonList()
@@ -85,18 +92,50 @@ ButtonContainer ButtonContainer::operator--(int)
 	return *this;
 }
 
-void ButtonContainer::SetButtonSpacing(int horizontal, int vertical)
+void ButtonContainer::ResetButtonPositioning()
 {
-	for (Uint32 i = 0; i < m_ButtonList->size(); ++i)
+	int size = m_ButtonList->size();
+	for (int i = 0; i < size; ++i)
 	{
 		Button* button = (*m_ButtonList)[i];
 		if (button != nullptr)
 		{
-			int x = (m_Container.x*i) + (horizontal*i);
-			int y = (m_Container.y*i) + (vertical*i);
+			int x = (m_Container.x); //Not going to implement horizontal alignment
+			int y = (m_Container.y) + (m_BuittonHeight * i ) + (m_VerticalSpacing*i);
 			button->SetPosition(SVector2D(x, y));
 		}
 	}
+	RefreshDimensions(size);
+}
+
+void ButtonContainer::SetButtonSpacing(int horizontal, int vertical)
+{
+	int size = m_ButtonList->size();
+
 	m_HorizontalSpacing = horizontal;
 	m_VerticalSpacing = vertical;
+	
+	RefreshDimensions(size);
+}
+
+void ButtonContainer::SetPosition(int x, int y)
+{
+	m_Container.x = x;
+	m_Container.y = y;
+	ResetButtonPositioning();
+}
+
+int ButtonContainer::GetContainerWidth()
+{
+	return m_Container.w;
+}
+int ButtonContainer::GetContainerHeight()
+{
+	return m_Container.h;
+}
+
+inline void ButtonContainer::RefreshDimensions(int size)
+{
+	m_Container.h = (m_VerticalSpacing * size) + (m_BuittonHeight * size);
+	m_Container.w = (m_HorizontalSpacing * size) + (m_ButtondWidth * size);
 }

@@ -17,6 +17,9 @@ public:
 	static const int skSpriteSheetWidth = 128;
 	static const int skSpriteSheetHeight = 128;
 
+	static int sWindowWidth;
+	static int sWindowHeight;
+
 	//Initialization and clean up functions
 	static bool InitGraphics();
 	static void CleanGraphics();
@@ -42,7 +45,6 @@ private:
 
 	//Static Render Variable declarations
 	static SDL_Surface *spBitmapSurface;
-	static SDL_Texture *spBitmapTexture;
 	static SDL_Renderer *spRenderer;
 	static std::list<SpriteComponent*> *spDrawList;
 	static TTF_Font *m_Font;

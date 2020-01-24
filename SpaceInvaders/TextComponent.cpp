@@ -3,35 +3,25 @@
 TextComponent::TextComponent()
 	:DisplayText("")
 {
-	m_FontColor.a = 255;
-	m_FontColor.r = 255;
-	m_FontColor.g = 255;
-	m_FontColor.b = 255;
+	ResetColor();
 }
 
 TextComponent::TextComponent(Entity &parent) : SpriteComponent(parent)
 {
-	m_FontColor.a = 255;
-	m_FontColor.r = 255;
-	m_FontColor.g = 255;
-	m_FontColor.b = 255;
+	ResetColor();
 	UpdateText();
-
 }
 
 TextComponent::TextComponent(Entity &parent, const char *str) : SpriteComponent(parent)
 {
-	m_FontColor.a = 255;
-	m_FontColor.r = 255;
-	m_FontColor.g = 255;
-	m_FontColor.b = 255;
+	ResetColor();
 	SetText(str);
 }
+
 
 TextComponent::~TextComponent()
 {
 	SpriteComponent::~SpriteComponent();
-
 }
 
 void TextComponent::SetText(std::string text)
@@ -59,4 +49,14 @@ void TextComponent::UpdateText()
 	m_Sprite->pBitmapTexture = Graphics::LoadText(DisplayText.c_str(), m_FontColor);
 	Graphics::SetSrcRectFromTexture(m_Sprite->pBitmapTexture, m_Sprite->SpriteSrcRect);
 	SyncParentToComponent();
+	//Match the destination rect to the src as default;
+	SetDestRect(&m_Sprite->SpriteSrcRect);
+}
+
+void TextComponent::ResetColor()
+{
+	m_FontColor.a = 255;
+	m_FontColor.r = 255;
+	m_FontColor.g = 255;
+	m_FontColor.b = 255;
 }

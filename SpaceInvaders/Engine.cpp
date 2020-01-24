@@ -59,8 +59,8 @@ bool Engine::SetupSDL()
 	spWindow = SDL_CreateWindow("Space Invaders",				// window title
 		SDL_WINDOWPOS_UNDEFINED,								// initial x position
 		SDL_WINDOWPOS_UNDEFINED,								// initial y position
-		1920,													// width, in pixels
-		1080,													// height, in pixels
+		Graphics::sWindowWidth,									// width, in pixels
+		Graphics::sWindowHeight,								// height, in pixels
 		0														// flags
 	);
 

@@ -16,6 +16,8 @@ SpriteComponent::SpriteComponent(Entity &parent, SDL_Texture *texture)
 	m_Sprite->pBitmapTexture = texture;
 	Graphics::SetSrcRectFromTexture(m_Sprite->pBitmapTexture, m_Sprite->SpriteSrcRect);
 	SyncParentToComponent();
+	//Match the destination rect to the src as default;
+	SetDestRect(&m_Sprite->SpriteSrcRect);
 }
 
 
@@ -24,6 +26,8 @@ SpriteComponent::SpriteComponent(SDL_Texture * texture)
 {
 	m_Sprite->pBitmapTexture = texture;
 	Graphics::SetSrcRectFromTexture(m_Sprite->pBitmapTexture, m_Sprite->SpriteSrcRect);
+	//Match the destination rect to the src as default;
+	SetDestRect(&m_Sprite->SpriteSrcRect);
 }
 
 SpriteComponent::~SpriteComponent()

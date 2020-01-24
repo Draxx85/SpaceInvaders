@@ -1,11 +1,12 @@
 #include "Graphics.h"
 
 SDL_Surface *Graphics::spBitmapSurface = nullptr;
-//this is temp and should be stored in the sprite
-SDL_Texture *Graphics::spBitmapTexture = nullptr;
 SDL_Renderer *Graphics::spRenderer = nullptr;
 std::list<SpriteComponent *> *Graphics::spDrawList = nullptr;
 TTF_Font *Graphics::m_Font = nullptr;
+
+int Graphics::sWindowWidth = 1920;
+int Graphics::sWindowHeight = 1080;
 
 bool Graphics::InitGraphics()
 {
@@ -30,13 +31,6 @@ bool Graphics::InitGraphics()
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
 	}
 
-	//this is test code
-	const char* resource = "Resources/Player.PNG";
-	if (!LoadResource(resource))
-	{
-		return false;
-	}
-	////////////////////////////
 	return true;
 }
 
@@ -47,12 +41,6 @@ void Graphics::CleanGraphics()
 	if (spDrawList != nullptr)
 	{
 		delete spDrawList;
-	}
-
-	//Clean up Graphics and clear any memory allocated for surfaces and textures
-	if (spBitmapTexture != nullptr)
-	{
-		SDL_DestroyTexture(spBitmapTexture);
 	}
 
 	//Clean Up font

@@ -26,6 +26,7 @@ State::~State()
 	}
 	//I should not delete the parent. This should be deleted by its parent.
 	m_pParentState = nullptr; 
+	m_MasterStateMachine = nullptr;
 }
 
 void State::GoToNext(State *state, bool(*NextStateConditionFunc))
@@ -39,9 +40,9 @@ void State::GoToNext(State *state, bool(*NextStateConditionFunc))
 }
 
 //Do I need this??
-State* State::TryGoToParent()
+State* State::GetParent()
 {
-	return nullptr;
+	return m_pParentState;
 }
 
 bool State::HasStateLooped(State* state)

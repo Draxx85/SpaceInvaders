@@ -7,7 +7,6 @@ MainMenu *GameManager::sMainMenu = nullptr;
 void GameManager::Init()
 {
 	m_MainStateMachine = BuildMainStateMachine();
-	sMainMenu = new MainMenu();
 }
 
 void GameManager::StartGame()
@@ -80,7 +79,21 @@ void GameState_Intro(float Update)
 //GameState:Menu
 void GameState_Menu(float Update)
 {
-
+	State *state = GameManager::m_MainStateMachine->m_ActiveState;
+	if (state != nullptr)
+	{
+		switch (state->m_CurrentPhase)
+		{
+			case OnEnterPhase:
+				GameManager::sMainMenu = new MainMenu();
+				SDL_Log("I am in the state Entry Phase");
+				break;
+			case OnStayPhase:
+				SDL_Log("I am updateing myself");
+			case OnLeavePhase:
+				SDL_Log("Im ending this state");
+		}
+	}
 }
 
 ////GameState:Game

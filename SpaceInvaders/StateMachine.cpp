@@ -12,6 +12,8 @@ StateMachine::~StateMachine()
 		//Recursivly delete states
 		delete m_Root;
 	}
+	m_Root = nullptr;
+	m_ActiveState = nullptr;
 }
 
 void StateMachine::StartMachine()

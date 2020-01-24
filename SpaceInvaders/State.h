@@ -29,7 +29,7 @@ public:
 	//need some stuff for prerequisits before moving states
 	void GoToNext(State *state, bool(*NextStateConditionFunc));
 
-	State* TryGoToParent();
+	State* GetParent();
 	
 	//function pointers
 	bool(*NextStateConditionFunc)();

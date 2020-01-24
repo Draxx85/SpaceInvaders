@@ -90,10 +90,21 @@ SDL_Texture *Graphics::LoadResource(const char* resource)
 	return texture;
 }
 
-SDL_Texture *Graphics::LoadText(const char * text, SDL_Color color)
+SDL_Texture *Graphics::LoadTextSolid(const char * text, SDL_Color color)
+{
+	
+	return LoadText(TTF_RenderText_Solid(m_Font, text, color));
+	
+}
+
+SDL_Texture *Graphics::LoadTextShaded(const char *text, SDL_Color color, SDL_Color shadedColor)
+{
+	return LoadText(TTF_RenderText_Shaded(m_Font, text, color, shadedColor));
+}
+
+SDL_Texture *Graphics::LoadText(SDL_Surface* pSurface)
 {
 	SDL_Texture *pTexture = nullptr;
-	SDL_Surface* pSurface = TTF_RenderText_Solid(m_Font, text, color);
 	if (pSurface == NULL)
 	{
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Could not render text to surface using SDL_ttf. Error: %s", TTF_GetError());

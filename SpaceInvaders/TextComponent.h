@@ -16,9 +16,13 @@ public:
 	void SetFontColor(SDL_Color color);
 	void SetTextAndFontColor(std::string text, SDL_Color color);
 	void ResetColor();
+	void SetColor(int a, int r, int g, int b);
+	void SetShadeColor(int a, int r, int g, int b);
+	void UpdateText(bool shaded = false);
 
 private:
 	std::string DisplayText;
 	SDL_Color m_FontColor;
-	void UpdateText();
+	SDL_Color m_ShadeColor;
+	
 };

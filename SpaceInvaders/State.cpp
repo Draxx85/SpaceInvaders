@@ -29,17 +29,17 @@ State::~State()
 	m_MasterStateMachine = nullptr;
 }
 
-void State::TryGoToNext(State *state, bool(*NextStateConditionFunc)())
+void State::TryGoToNext(State *state, CheckStateFunc isStateReady)
 {
 	if (state != nullptr)
 	{
 		bool AllowEntryToNextState = false;
-		if (NextStateConditionFunc == nullptr)
+		if (isStateReady == nullptr)
 		{
 			AllowEntryToNextState = true;
 		}
 		//if our function pointer == nullptr then we should allow to proceed to the next state
-		else if ((*State::NextStateConditionFunc)())
+		else if (isStateReady())
 		{
 			AllowEntryToNextState = true;
 		}
@@ -57,6 +57,7 @@ State* State::GetParent()
 {
 	return m_pParentState;
 }
+
 
 bool State::HasStateLooped(State* state)
 {
@@ -98,7 +99,7 @@ void State::UpdateState(float deltaTime)
 	}
 	for (State* state : *m_NextStateList)
 	{
-		TryGoToNext(state, NextStateConditionFunc);
+		TryGoToNext(state, IsNextStateReady);
 	}
 }
 

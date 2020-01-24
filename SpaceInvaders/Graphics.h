@@ -27,7 +27,11 @@ public:
 	//Render and Asset Loading functions
 	static void Render();
 	static SDL_Texture *LoadResource(const char* resource);
-	static SDL_Texture *LoadText(const char* text, SDL_Color color);
+	static SDL_Texture *LoadText(SDL_Surface* pSurface);
+
+	static SDL_Texture *LoadTextSolid(const char *text, SDL_Color color);
+
+	static SDL_Texture *LoadTextShaded(const char *text, SDL_Color color, SDL_Color shadedColor);
 
 	static void RegisterSpriteToDraw(SpriteComponent *spriteComp);
 

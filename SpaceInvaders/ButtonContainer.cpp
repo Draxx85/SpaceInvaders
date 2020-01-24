@@ -139,3 +139,12 @@ inline void ButtonContainer::RefreshDimensions(int size)
 	m_Container.h = (m_VerticalSpacing * size) + (m_BuittonHeight * size);
 	m_Container.w = (m_HorizontalSpacing * size) + (m_ButtondWidth * size);
 }
+
+void ButtonContainer::ResetSelection()
+{
+	if (m_ButtonList != nullptr)
+	{
+		m_Selected = m_ButtonList->begin();
+		//(*m_Selected)->s
+	}
+}

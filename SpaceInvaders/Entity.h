@@ -82,7 +82,7 @@ public:
 	
 	std::vector<Component*> *m_Components;
 
-	void AddComponent(Component *Component);
+	virtual void AddComponent(Component *component);
 	void SetPosition(SVector2D pos);
 
 	template<typename T>

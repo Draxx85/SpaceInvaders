@@ -33,7 +33,7 @@ StateMachine *GameManager::BuildMainStateMachine()
 	State* state = stateMachine->CreateState((int)GState_Init, GameState_Init);
 	state = state->AddChildState(stateMachine->CreateState((int)GState_Intro, GameState_Intro));
 	state = state->AddChildState(stateMachine->CreateState((int)GState_Intro, GameState_Menu));
-	state->NextStateConditionFunc = []() { return false; };
+	state->IsNextStateReady = []() { return false; };
 	state = state->AddChildState(stateMachine->CreateState((int)GState_Intro, GameState_Game));
 	state = state->AddChildState(stateMachine->CreateState((int)GState_Intro, GameState_Exit));
 

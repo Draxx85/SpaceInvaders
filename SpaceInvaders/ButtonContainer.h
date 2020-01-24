@@ -35,4 +35,6 @@ private:
 
 	int m_ButtondWidth = 0;
 	int m_BuittonHeight = 0;
+
+	void ResetSelection();
 };

@@ -5,6 +5,7 @@
 #include "SDL.h"
 #include "StateMachine.h"
 #include "UpdateManager.h"
+#include <functional>
 
 enum EStatePhase
 {
@@ -15,6 +16,8 @@ enum EStatePhase
 };
 
 class StateMachine;
+
+typedef std::function<bool()> CheckStateFunc;
 
 class State
 {
@@ -29,12 +32,13 @@ public:
 	int m_StateId = 0;
 
 	//need some stuff for prerequisits before moving states
-	void TryGoToNext(State *state, bool(*NextStateConditionFunc)());
+	void TryGoToNext(State *state, CheckStateFunc isStateReady);
 
 	State* GetParent();
 	
 	//function pointers
-	bool(*NextStateConditionFunc)();
+//	bool(*NextStateConditionFunc)();
+	CheckStateFunc IsNextStateReady;
 	void(*StateUpdateFunc)(float deltaTime);
 	void(*OnEnterState)(float deltaTime);
 	void(*OnExitState)(float deltaTime);

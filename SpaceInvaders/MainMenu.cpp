@@ -1,13 +1,24 @@
 #include "MainMenu.h"
 
 MainMenu::MainMenu()
-	:m_GameTitle(new Entity())
+	:m_GameTitle(new Entity()), m_StartGame(nullptr),
+	m_Leaderboards(nullptr), m_Exit(nullptr)
 {
 	InitLogo();
+	InitStartGame();
 }
 
 MainMenu::~MainMenu()
 {
+	delete m_GameTitle;
+	delete m_StartGame;
+	delete m_Leaderboards;
+	delete m_Exit;
+
+	m_GameTitle		= nullptr;
+	m_StartGame		= nullptr;
+	m_Leaderboards	= nullptr;
+	m_Exit			= nullptr;
 }
 
 void MainMenu::InitLogo()
@@ -23,6 +34,7 @@ void MainMenu::InitLogo()
 
 void MainMenu::InitStartGame()
 {
+
 }
 
 void MainMenu::InitLeaderboard()

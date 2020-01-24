@@ -18,6 +18,7 @@ public:
 	StateMachine *m_ButtonState;
 	
 	void(*Activate)(float deltaTime);
+	bool(*CheckHighlightState)();
 	bool IsHighlighted();
 	bool m_IsHighlighted = false;
 };

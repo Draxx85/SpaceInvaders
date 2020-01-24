@@ -3,7 +3,7 @@
 
 class State;
 
-class StateMachine
+class StateMachine : Process
 {
 public:
 	State* m_Root;
@@ -12,6 +12,9 @@ public:
 
 	StateMachine();
 	~StateMachine();
+
+	virtual void Update(float deltaTime);
+	virtual void TimedUpdate(float deltaTime);
 
 	void StartMachine();
 	

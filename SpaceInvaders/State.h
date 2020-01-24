@@ -3,18 +3,19 @@
 #include "Process.h"
 #include "SDL.h"
 #include "StateMachine.h"
+#include "UpdateManager.h"
 
 enum EStatePhase
 {
 	InactivePhase,
 	OnEnterPhase,
 	OnStayPhase,
-	OnLeavePhase,
+	OnExitPhase,
 };
 
 class StateMachine;
 
-class State : Process
+class State
 {
 public:
 	State(StateMachine *owner, bool isRoot = false);
@@ -27,9 +28,11 @@ public:
 	int m_StateId = 0;
 
 	//need some stuff for prerequisits before moving states
-	void GoToNext(State *state, bool(*NextStateConditionFunc));
+	void TryGoToNext(State *state, bool(*NextStateConditionFunc)());
 
 	State* GetParent();
+
+	void ActivateState();
 	
 	//function pointers
 	bool(*NextStateConditionFunc)();
@@ -37,12 +40,12 @@ public:
 	void(*OnEnterState)();
 	void(*OnLeaveState)();
 
-	//overrides
-	virtual void Update(float deltaTime);
-	virtual void TimedUpdate(float deltaTime);
+	
+	void UpdateState(float deltaTime);
+	bool ReadyForNextState();
 
 	State *AddChildState(State *state);
-
+	void DeactivateState();
 
 private:
 	bool HasStateLooped(State *state);
@@ -50,4 +53,5 @@ private:
 	void OnLeave();
 	std::vector<State*> *m_NextStateList;
 	State *m_pParentState;
+	State *m_NextState;
 };

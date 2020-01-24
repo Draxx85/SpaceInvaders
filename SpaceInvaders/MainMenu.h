@@ -10,9 +10,9 @@ public:
 	~MainMenu();
 
 	Entity *m_GameTitle;
-	Button *StartGame;
-	Button *Leaderboards;
-	Button *Exit;
+	Button *m_StartGame;
+	Button *m_Leaderboards;
+	Button *m_Exit;
 
 private:
 	void InitLogo();

@@ -16,9 +16,44 @@ StateMachine::~StateMachine()
 	m_ActiveState = nullptr;
 }
 
+void StateMachine::Update(float deltaTime)
+{
+	if (m_ActiveState != nullptr)
+	{
+		switch (m_ActiveState->m_CurrentPhase)
+		{
+			case InactivePhase:
+				m_ActiveState->m_CurrentPhase = OnEnterPhase;
+				m_ActiveState->ActivateState();
+				break;
+			case OnEnterPhase:
+				m_ActiveState->m_CurrentPhase = OnStayPhase;
+				break;
+			case OnStayPhase:
+				m_ActiveState->UpdateState(deltaTime);
+				if (m_ActiveState->ReadyForNextState())
+				{
+					m_ActiveState->m_CurrentPhase = OnExitPhase;
+				}
+				break;
+			case OnExitPhase:
+				m_ActiveState->DeactivateState();
+				m_ActiveState->m_CurrentPhase = InactivePhase;
+				break;
+			default: //Let the stay state determine when its time to change
+				break;
+		}
+	}
+}
+
+void StateMachine::TimedUpdate(float deltaTime)
+{
+}
+
 void StateMachine::StartMachine()
 {
 	m_ActiveState = m_Root;
+	UpdateManager::RegisterUpdate(this);
 }
 
 State *StateMachine::CreateState(int stateId, void(*update)(float deltaTime))

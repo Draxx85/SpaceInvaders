@@ -5,7 +5,7 @@ Button::Button()
 	m_ButtonState = new StateMachine();
 	State *state = m_ButtonState->CreateState((int)Disabled, NULL);
 	state = state->AddChildState(m_ButtonState->CreateState((int)Enabled, NULL));
-//	state->NextStateConditionFunc = IsHighlighted; //TODO: FIX ME
+	state->NextStateConditionFunc = this->CheckHighlightState; //TODO: FIX ME
 	state = state->AddChildState(m_ButtonState->CreateState((int)Highlighted, this->Activate));
 	state->AddChildState(state->GetParent());
 }

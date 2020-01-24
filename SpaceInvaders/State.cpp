@@ -25,17 +25,30 @@ State::~State()
 		delete m_NextStateList;
 	}
 	//I should not delete the parent. This should be deleted by its parent.
-	m_pParentState = nullptr; 
+	m_pParentState = nullptr;
 	m_MasterStateMachine = nullptr;
 }
 
-void State::GoToNext(State *state, bool(*NextStateConditionFunc))
+void State::TryGoToNext(State *state, bool(*NextStateConditionFunc)())
 {
-	//if our function pointer == nullptr then we should allow to proceed to the next state
-	if (NextStateConditionFunc == nullptr || State::NextStateConditionFunc() && state != nullptr)
+	if (state != nullptr)
 	{
-		state->m_pParentState = this;
-
+		bool AllowEntryToNextState = false;
+		if (NextStateConditionFunc == nullptr)
+		{
+			AllowEntryToNextState = true;
+		}
+		//if our function pointer == nullptr then we should allow to proceed to the next state
+		else if ((*State::NextStateConditionFunc)())
+		{
+			AllowEntryToNextState = true;
+		}
+		if (AllowEntryToNextState)
+		{
+			state->m_pParentState = this;
+			m_CurrentPhase = OnExitPhase;
+			m_NextState = state;
+		}
 	}
 }
 
@@ -57,40 +70,52 @@ bool State::HasStateLooped(State* state)
 				return true;
 			}
 			parent = m_pParentState;
-		}	
+		}
 	}
 	return false;
 }
 
 void State::OnEnter()
 {
-	m_CurrentPhase = OnEnterPhase;
 	if (OnEnterState != nullptr)
 	{
 		OnEnterState();
 	}
 }
 
+void State::ActivateState()
+{
+	OnEnter();
+}
+
+void State::DeactivateState()
+{
+	OnLeave();
+}
+
 void State::OnLeave()
 {
-	m_CurrentPhase = OnLeavePhase;
 	if (OnLeaveState != nullptr)
 	{
 		OnLeaveState();
 	}
-	m_CurrentPhase = InactivePhase;
+	SDL_assert(m_NextState != nullptr);
+	m_MasterStateMachine->m_ActiveState = m_NextState;
+	m_NextState = nullptr;
 }
 
-void State::Update(float deltaTime)
+void State::UpdateState(float deltaTime)
 {
 	if (StateUpdateFunc != nullptr)
 	{
 		StateUpdateFunc(deltaTime);
 	}
+	TryGoToNext(this, NextStateConditionFunc);
 }
 
-void State::TimedUpdate(float deltaTime)
+bool State::ReadyForNextState()
 {
+	return m_NextState != nullptr;
 }
 
 State *State::AddChildState(State* state)

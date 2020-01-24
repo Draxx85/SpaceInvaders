@@ -13,7 +13,7 @@ void UpdateManager::Update(float deltaTime)
 {
 	for (Process *process : *spProcessList)
 	{
-		if (process != NULL)
+		if (process != nullptr)
 		{
 			process->Update(0);
 		}
@@ -24,7 +24,7 @@ void UpdateManager::TimedUpdate(float deltaTime)
 {
 	for (Process *timedProcess : *spTimedProcessList)
 	{
-		if (timedProcess != NULL)
+		if (timedProcess != nullptr)
 		{
 			timedProcess->Update(0);
 		}
@@ -33,7 +33,7 @@ void UpdateManager::TimedUpdate(float deltaTime)
 
 bool UpdateManager::RegisterUpdate(Process *const process)
 {
-	if (spProcessList != NULL && !HasDuplicateProcess(process, spProcessList))
+	if (spProcessList != nullptr && !HasDuplicateProcess(process, spProcessList))
 	{
 		spProcessList->push_back(process);
 		return true;
@@ -43,7 +43,7 @@ bool UpdateManager::RegisterUpdate(Process *const process)
 
 bool UpdateManager::ClearUpdate(Process *const process)
 {
-	if (spProcessList != NULL)
+	if (spProcessList != nullptr)
 	{
 		spProcessList->remove(process);
 		return true;
@@ -53,7 +53,7 @@ bool UpdateManager::ClearUpdate(Process *const process)
 
 bool UpdateManager::RegisterTimedUpdate(Process *process)
 {
-	if (spTimedProcessList != NULL && !HasDuplicateProcess(process, spTimedProcessList))
+	if (spTimedProcessList != nullptr && !HasDuplicateProcess(process, spTimedProcessList))
 	{
 		spTimedProcessList->push_back(process);
 		return true;
@@ -63,7 +63,7 @@ bool UpdateManager::RegisterTimedUpdate(Process *process)
 
 bool UpdateManager::ClearTimedUpdate(Process *const process)
 {
-	if (spTimedProcessList != NULL)
+	if (spTimedProcessList != nullptr)
 	{
 		spTimedProcessList->remove(process);
 		return true;
@@ -73,11 +73,11 @@ bool UpdateManager::ClearTimedUpdate(Process *const process)
 
 void UpdateManager::ClearAllUpdates()
 {
-	if (spProcessList != NULL)
+	if (spProcessList != nullptr)
 	{
 		spProcessList->clear();
 	}
-	if (spTimedProcessList != NULL)
+	if (spTimedProcessList != nullptr)
 	{
 		spTimedProcessList->clear();
 	}

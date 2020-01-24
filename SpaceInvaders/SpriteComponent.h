@@ -5,12 +5,17 @@
 #include "Component.h"
 #include "Sprite.h"
 
+class Component;
+
 class SpriteComponent : public Component
 {
 public:
 	SpriteComponent();
+	SpriteComponent(Entity &parent);
+	SpriteComponent(Entity &parent, SDL_Texture *texture);
 	SpriteComponent(SDL_Texture *texture);
 	~SpriteComponent() override;
+	void SyncParentToComponent();
 	Sprite *m_Sprite;
 
 	void SetVisible(bool visible);
@@ -19,8 +24,12 @@ public:
 	virtual void Update(float deltaTime) override;
 	virtual void TimedUpdate(float deltaTime) override;
 
+	void SetParent(Entity &component) override;
+
 	void SetSrcRect(SDL_Rect *rect);
 	void SetDestRect(SDL_Rect *rect);
+
+	void UpdateSpritePos(SVector2D pos);
 
 private:
 	float const m_kAnimFrameRate = 24.0f;

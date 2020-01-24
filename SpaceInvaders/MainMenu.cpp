@@ -4,14 +4,13 @@ MainMenu::MainMenu()
 	:m_GameTitle(new Entity())
 {
 	//Test Init Code========================== CLEAN ME=========================================
-	m_GameTitle->AddComponent(new SpriteComponent(Graphics::LoadResource("Resources/logo.png")));
-	SpriteComponent *component = nullptr;
-	if (Entity::TryGetComponent<SpriteComponent>(*m_GameTitle, *&component))
-	{
-		component->SetVisible(true);
-		component->m_Sprite->m_MaxFrames = 1;
-		component->SetDestRect(&component->m_Sprite->SpriteSrcRect);
-	}
+	SpriteComponent *sprite = new SpriteComponent(Graphics::LoadResource("Resources/logo.png"));
+	m_GameTitle->AddComponent(sprite);
+	sprite->SetVisible(true);
+	sprite->m_Sprite->m_MaxFrames = 1;
+	sprite->SetDestRect(&sprite->m_Sprite->SpriteSrcRect);
+	m_GameTitle->SetPosition(SVector2D((1920 / 2) - (sprite->m_Sprite->SpriteDestRect.w / 2),0));
+	
 }
 
 MainMenu::~MainMenu()

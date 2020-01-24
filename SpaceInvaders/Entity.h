@@ -1,22 +1,75 @@
 #pragma once
 
+#include <vector>
+#include "SDL.h"
 #include "Process.h"
 #include "Component.h"
-#include <vector>
-#include "SpriteComponent.h"
 
 struct SVector2D
 {
-	float x = 0.0f;
-	float y = 0.0f;
+	int x = 0;
+	int y = 0;
+
+	SVector2D()
+		:x(0), y(0)	{}
+
+	SVector2D(int xPos, int yPos)
+		:x(xPos), y(yPos) {}
 };
 
 struct STransform
 {
+	SDL_Rect *DestRect;
 	SVector2D Position;
 	SVector2D Scale;
 	float angle = 0.0f;
+
+	void SetPosition(SVector2D pos)
+	{
+		if (DestRect != nullptr)
+		{
+			DestRect->x = pos.x;
+			DestRect->y = pos.y;
+		}
+	}
+
+	void SetScale(SVector2D scale)
+	{
+		if (DestRect != nullptr)
+		{
+			DestRect->w *= scale.x;
+			DestRect->h *= scale.y;
+		}
+	}
+
+	STransform(int x, int y, int w, int h)
+	{
+		if (DestRect == nullptr)
+		{
+			SDL_Rect rect;
+			rect.x = x;	rect.y = y;
+			rect.w = w;	rect.h = h;
+			DestRect = &rect;
+		}
+	}
+
+	STransform(SDL_Rect &rect)
+	{
+		DestRect = &rect;
+	}
+
+	~STransform()
+	{
+		delete DestRect;
+	}
+
+	void SetDestRect(SDL_Rect &ref)
+	{
+		DestRect = &ref;
+	}
 };
+
+class Component;
 
 class Entity : Process
 {
@@ -30,6 +83,7 @@ public:
 	std::vector<Component*> *m_Components;
 
 	void AddComponent(Component *Component);
+	void SetPosition(SVector2D pos);
 
 	template<typename T>
 	static bool TryGetComponent(Entity &entity, T *&obj);

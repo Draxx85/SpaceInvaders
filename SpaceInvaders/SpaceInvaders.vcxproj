@@ -134,6 +134,7 @@
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="KeyBind.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Sprite.cpp" />
@@ -157,6 +158,7 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Graphics.h" />
+    <ClInclude Include="KeyBind.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="State.h" />

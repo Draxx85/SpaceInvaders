@@ -12,8 +12,8 @@ enum EInputActions
 class InputManager
 {
 public:
-	//Making this non static so that I can support multiple inputs and players
-	InputManager();
-	void ListenForKeyPress(SDL_Event &e);
+	static void ListenForKeyPress(SDL_Event &e);
 
+private:
+	InputManager();
 };

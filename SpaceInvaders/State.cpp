@@ -29,17 +29,17 @@ State::~State()
 	m_MasterStateMachine = nullptr;
 }
 
-void State::TryGoToNext(State *state, CheckStateFunc isStateReady)
+void State::TryGoToNext(State *state)
 {
 	if (state != nullptr)
 	{
 		bool AllowEntryToNextState = false;
-		if (isStateReady == nullptr)
+		if (IsNextStateReady == nullptr)
 		{
 			AllowEntryToNextState = true;
 		}
 		//if our function pointer == nullptr then we should allow to proceed to the next state
-		else if (isStateReady())
+		else if (IsNextStateReady())
 		{
 			AllowEntryToNextState = true;
 		}
@@ -99,7 +99,7 @@ void State::UpdateState(float deltaTime)
 	}
 	for (State* state : *m_NextStateList)
 	{
-		TryGoToNext(state, IsNextStateReady);
+		TryGoToNext(state);
 	}
 }
 
@@ -114,6 +114,7 @@ State *State::AddChildState(State* state)
 	if (state != nullptr)
 	{
 		m_NextStateList->push_back(state);
+		state->m_pParentState = this;
 	}
 	return state;
 }

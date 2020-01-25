@@ -6,10 +6,10 @@ Button::Button()
 	State *state = m_ButtonState->CreateState((int)Disabled, NULL);
 	
 	state = state->AddChildState(m_ButtonState->CreateState((int)Enabled, NULL));
-	state->IsNextStateReady = std::bind(&Button::IsHighlighted, this);
+	//state->IsNextStateReady = std::bind(&Button::IsHighlighted, this);
 
 	state = state->AddChildState(m_ButtonState->CreateState((int)Highlighted, this->Activate));
-	state->IsNextStateReady = std::bind(&Button::IsHighlighted, this);
+	//state->IsNextStateReady = std::bind(&Button::IsHighlighted, this);
 	
 	state->AddChildState(state->GetParent());
 }
@@ -31,6 +31,10 @@ void Button::SetHighlighted(bool isSelected)
 	if (m_TextComponent != nullptr)
 	{
 		m_TextComponent->UpdateText(isSelected);
+	}
+	if (m_ButtonState->m_ActiveState != nullptr) //Make sure State Machine is running
+	{
+		m_ButtonState->m_ActiveState->IsNextStateReady = [] { return true; }; //Hack to make the state work properly :(
 	}
 }
 

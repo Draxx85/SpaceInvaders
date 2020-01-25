@@ -32,13 +32,13 @@ public:
 	int m_StateId = 0;
 
 	//need some stuff for prerequisits before moving states
-	void TryGoToNext(State *state, CheckStateFunc isStateReady);
+	void TryGoToNext(State *state);
 
 	State* GetParent();
 	
 	//function pointers
 //	bool(*NextStateConditionFunc)();
-	CheckStateFunc IsNextStateReady;
+	bool(*IsNextStateReady)();
 	void(*StateUpdateFunc)(float deltaTime);
 	void(*OnEnterState)(float deltaTime);
 	void(*OnExitState)(float deltaTime);

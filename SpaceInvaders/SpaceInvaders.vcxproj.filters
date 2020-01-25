@@ -75,6 +75,9 @@
     <ClCompile Include="ButtonContainer.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="KeyBind.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Player.png">
@@ -137,6 +140,9 @@
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
     <ClInclude Include="Command.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyBind.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
   </ItemGroup>

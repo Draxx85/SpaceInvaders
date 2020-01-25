@@ -109,7 +109,6 @@ void Engine::HandleEvents(SDL_Event &e)
 			case SDL_MOUSEBUTTONUP:
 			{
 				SDL_Log("Key has been pressed or released");
-				//HandleInput(SDL_EVENT &e)
 			}
 			default:
 				break;

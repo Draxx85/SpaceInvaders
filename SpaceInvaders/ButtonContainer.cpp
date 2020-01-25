@@ -32,7 +32,9 @@ void ButtonContainer::AddButtonToList(Button *button)
 		m_BuittonHeight = transform->DestRect->h;
 	}
 	m_ButtonList->push_back(button);
+	m_Selected = m_ButtonList->begin();
 	RefreshDimensions(m_ButtonList->size());
+	ResetSelection();
 }
 
 void ButtonContainer::ClearButtonList()
@@ -44,11 +46,15 @@ ButtonContainer ButtonContainer::operator++()
 {
 	if (m_Selected != m_ButtonList->end())
 	{
+		(*m_Selected)->SetHighlighted(false);
 		++m_Selected;
+		(*m_Selected)->SetHighlighted(true);
 	}
 	else //wrap around
 	{
+		(*m_Selected)->SetHighlighted(false);
 		m_Selected = m_ButtonList->begin();
+		(*m_Selected)->SetHighlighted(true);
 	}
 	return *this;
 }
@@ -57,11 +63,15 @@ ButtonContainer ButtonContainer::operator--()
 {
 	if (m_Selected != m_ButtonList->begin())
 	{
+		(*m_Selected)->SetHighlighted(false);
 		--m_Selected;
+		(*m_Selected)->SetHighlighted(true);
 	}
 	else //wrap around
 	{
+		(*m_Selected)->SetHighlighted(false);
 		m_Selected = m_ButtonList->end();
+		(*m_Selected)->SetHighlighted(true);
 	}
 	return *this;
 }
@@ -70,11 +80,15 @@ ButtonContainer ButtonContainer::operator++(int)
 {
 	if (m_Selected != m_ButtonList->end())
 	{
+		(*m_Selected)->SetHighlighted(false);
 		++m_Selected;
+		(*m_Selected)->SetHighlighted(true);
 	}
 	else //wrap around
 	{
+		(*m_Selected)->SetHighlighted(false);
 		m_Selected = m_ButtonList->begin();
+		(*m_Selected)->SetHighlighted(true);
 	}
 	return *this;
 }
@@ -83,11 +97,15 @@ ButtonContainer ButtonContainer::operator--(int)
 {
 	if (m_Selected != m_ButtonList->begin())
 	{
+		(*m_Selected)->SetHighlighted(false);
 		--m_Selected;
+		(*m_Selected)->SetHighlighted(true);
 	}
 	else //wrap around
 	{
+		(*m_Selected)->SetHighlighted(false);
 		m_Selected = m_ButtonList->end();
+		(*m_Selected)->SetHighlighted(true);
 	}
 	return *this;
 }
@@ -142,9 +160,13 @@ inline void ButtonContainer::RefreshDimensions(int size)
 
 void ButtonContainer::ResetSelection()
 {
+	if ((*m_Selected) != nullptr)
+	{
+		(*m_Selected)->SetHighlighted(false);
+	}
 	if (m_ButtonList != nullptr)
 	{
 		m_Selected = m_ButtonList->begin();
-		//(*m_Selected)->s
+		(*m_Selected)->SetHighlighted(true);
 	}
 }

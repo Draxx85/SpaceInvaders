@@ -20,7 +20,7 @@ public:
 	
 	void(*Activate)(float deltaTime);
 	bool IsHighlighted();
-	bool m_IsHighlighted = false;
+	bool m_IsHighlighted = true;
 	void SetHighlighted(bool isSelected);
 
 	void AddComponent(Component *component) override;

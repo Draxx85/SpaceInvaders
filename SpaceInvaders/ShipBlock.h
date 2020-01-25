@@ -1,7 +1,7 @@
 #pragma once
+#include "Entity.h"
 
-
-class ShipBlock :Entity
+class ShipBlock : public Entity
 {
 };
 

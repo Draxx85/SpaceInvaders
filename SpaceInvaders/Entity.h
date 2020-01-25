@@ -76,7 +76,7 @@ class Entity : Process
 {
 public:
 	Entity();
-	~Entity();
+	virtual ~Entity();
 	STransform *GetTransform();
 
 	virtual void Update(float deltaTime) override;

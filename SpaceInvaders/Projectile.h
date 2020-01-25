@@ -1,7 +1,9 @@
 #pragma once
 #include "Actor.h"
 
-class Projectile : Actor
+class Projectile : public Actor
 {
+public:
+	~Projectile();
 };
 

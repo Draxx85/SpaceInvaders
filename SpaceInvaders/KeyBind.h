@@ -2,8 +2,6 @@
 #include "Command.h"
 #include "InputManager.h"
 
-enum EInputAction;
-
 enum KeyPressState
 {
 	Inactive,
@@ -11,6 +9,8 @@ enum KeyPressState
 	KeyHeld,
 	KeyUp,
 };
+
+enum EInputAction;
 
 struct KeyBind
 {

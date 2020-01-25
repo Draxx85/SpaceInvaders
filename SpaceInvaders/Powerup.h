@@ -1,7 +1,18 @@
 #pragma once
 #include "Actor.h"
 
-class Powerup : Actor
+enum Powers
 {
+	RapidFire,
+	Shield,
+	LaserBlaster,
+	RowSmasher,
+};
+
+class Powerup : public Actor
+{
+public:
+	Powerup();
+	~Powerup();
 };
 

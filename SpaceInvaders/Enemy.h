@@ -2,8 +2,9 @@
 
 #include "Actor.h"
 
-class Enemy : Actor
+class Enemy : public Actor
 {
+public:
 	Enemy();
 	virtual ~Enemy();
 };

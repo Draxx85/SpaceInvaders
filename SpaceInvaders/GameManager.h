@@ -33,8 +33,8 @@ public:
 
 	static bool ShallWePlayAGame();
 
-	static StateMachine *m_MainStateMachine;
-	static StateMachine *m_GameStateMachine;
+	static StateMachine *sMainStateMachine;
+	static StateMachine *sGameStateMachine;
 
 	static MainMenu *sMainMenu;
 	static Game *sGame;

@@ -1,21 +1,23 @@
 #include "GameManager.h"
 
-StateMachine *GameManager::m_MainStateMachine = nullptr;
-StateMachine *GameManager::m_GameStateMachine = nullptr;
+StateMachine *GameManager::sMainStateMachine = nullptr;
+StateMachine *GameManager::sGameStateMachine = nullptr;
 MainMenu *GameManager::sMainMenu = nullptr;
 Game *GameManager::sGame;
 bool GameManager::sInGame = false;
 
 void GameManager::Init()
 {
-	
-	m_MainStateMachine = BuildMainStateMachine();
-	m_MainStateMachine->StartMachine();
+	sMainStateMachine = BuildMainStateMachine();
+	sMainStateMachine->StartMachine();
 }
 
 void GameManager::CleanGameManager()
 {
-
+	SAFE_DELETE(sMainStateMachine);
+	SAFE_DELETE(sGameStateMachine);
+	SAFE_DELETE(sMainMenu);
+	SAFE_DELETE(sGame)
 }
 
 void GameManager::StartGame()
@@ -68,7 +70,7 @@ bool GameManager::ShallWePlayAGame()
 //GameState:Init
 void GameState_Init(float Update)
 {
-	State *state = GameManager::m_MainStateMachine->m_ActiveState;
+	State *state = GameManager::sMainStateMachine->m_ActiveState;
 	if (state != nullptr)
 	{
 		switch (state->m_CurrentPhase)
@@ -89,7 +91,7 @@ void GameState_Init(float Update)
 //GameState:Intro
 void GameState_Intro(float Update)
 {
-	State *state = GameManager::m_MainStateMachine->m_ActiveState;
+	State *state = GameManager::sMainStateMachine->m_ActiveState;
 	if (state != nullptr)
 	{
 		switch (state->m_CurrentPhase)
@@ -107,7 +109,7 @@ void GameState_Intro(float Update)
 //GameState:Menu
 void GameState_Menu(float Update)
 {
-	State *state = GameManager::m_MainStateMachine->m_ActiveState;
+	State *state = GameManager::sMainStateMachine->m_ActiveState;
 	if (state != nullptr)
 	{
 		switch (state->m_CurrentPhase)
@@ -127,7 +129,7 @@ void GameState_Menu(float Update)
 ////GameState:Game
 void GameState_Game(float Update)
 {
-	State *state = GameManager::m_MainStateMachine->m_ActiveState;
+	State *state = GameManager::sMainStateMachine->m_ActiveState;
 	if (state != nullptr)
 	{
 		switch (state->m_CurrentPhase)
@@ -147,7 +149,7 @@ void GameState_Game(float Update)
 //GameState:Exit
 void GameState_Exit(float Update)
 {
-	State *state = GameManager::m_MainStateMachine->m_ActiveState;
+	State *state = GameManager::sMainStateMachine->m_ActiveState;
 	if (state != nullptr)
 	{
 		switch (state->m_CurrentPhase)

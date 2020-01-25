@@ -1,8 +1,8 @@
 #pragma once
 #include "Entity.h"
-class Actor :
-	public Entity
+class Actor : public Entity
 {
+public:
 	Actor();
 	virtual ~Actor();
 	void Move(float value);

@@ -11,11 +11,14 @@ public:
 	void AddButtonToList(Button *button);
 	void ClearButtonList();
 
-	ButtonContainer operator++();
-	ButtonContainer operator--();
+	ButtonContainer &operator++();
+	ButtonContainer &operator--();
 
-	ButtonContainer operator++(int);
-	ButtonContainer operator--(int);
+	ButtonContainer &operator++(int);
+	ButtonContainer &operator--(int);
+
+	void Increment();
+	void Decrement();
 
 	void ResetButtonPositioning();
 
@@ -25,6 +28,7 @@ public:
 	int GetContainerWidth();
 	int GetContainerHeight();
 	inline void RefreshDimensions(int size);
+	Button *GetSelectedButton();
 private:
 	SDL_Rect m_Container;
 	std::vector<Button*> *m_ButtonList;

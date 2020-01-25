@@ -49,13 +49,13 @@ void GameState_Init(float Update)
 		switch (state->m_CurrentPhase)
 		{
 			case OnEnterPhase:
-				SDL_Log("GameState_Init:I am in the state Entry Phase");
+				//SDL_Log("GameState_Init:I am in the state Entry Phase");
 				break;
 			case OnStayPhase:
-				SDL_Log("GameState_Init: I am updateing myself");
+				//SDL_Log("GameState_Init: I am updateing myself");
 				break;
 			case OnExitPhase:
-				SDL_Log("GameState_Init: Im ending this state");
+			//	SDL_Log("GameState_Init: Im ending this state");
 				break;
 		}
 	}
@@ -70,13 +70,13 @@ void GameState_Intro(float Update)
 		switch (state->m_CurrentPhase)
 		{
 			case OnEnterPhase:
-				SDL_Log("GameState_IntroI am in the state Entry Phase");
+			//	SDL_Log("GameState_IntroI am in the state Entry Phase");
 				break;
 			case OnStayPhase:
-				SDL_Log("GameState_IntroI am updateing myself");
+			//	SDL_Log("GameState_IntroI am updateing myself");
 				break;
 			case OnExitPhase:
-				SDL_Log("GameState_IntroIm ending this state");
+				//SDL_Log("GameState_IntroIm ending this state");
 				break;
 		}
 	}
@@ -92,13 +92,13 @@ void GameState_Menu(float Update)
 		{
 			case OnEnterPhase:
 				GameManager::sMainMenu = new MainMenu();
-				SDL_Log("GameState_MenuI am in the state Entry Phase");
+				//SDL_Log("GameState_MenuI am in the state Entry Phase");
 				break;
 			case OnStayPhase:
-				SDL_Log("GameState_MenuI am updateing myself");
+			//	SDL_Log("GameState_MenuI am updateing myself");
 				break;
 			case OnExitPhase:
-				SDL_Log("GameState_MenuIm ending this state");
+				//SDL_Log("GameState_MenuIm ending this state");
 				break;
 		}
 	}

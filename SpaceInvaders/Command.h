@@ -2,5 +2,6 @@
 
 class Command
 {
-	virtual void Execute() = 0;
+public:
+	virtual void Execute(void*) = 0;
 };

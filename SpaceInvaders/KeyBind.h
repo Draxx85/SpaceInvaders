@@ -1,22 +1,21 @@
 #pragma once
+#include "Command.h"
+#include "InputManager.h"
 
-enum MenuBinds
+enum EInputAction;
+
+enum KeyPressState
 {
-	Up,
-	Down,
-	Select,
+	Inactive,
+	KeyDown,
+	KeyHeld,
+	KeyUp,
 };
 
-enum GameBinds
+struct KeyBind
 {
-	Left,
-	Right,
-	Shoot,
-	Escape,
-	Special,
-};
-
-class KeyBind
-{
-	 
+public:
+	Command *m_Command;
+	EInputAction m_InputAction;
+	KeyPressState m_KeyState = Inactive;
 };

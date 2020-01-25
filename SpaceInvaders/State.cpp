@@ -18,7 +18,7 @@ State::~State()
 			//Make sure that we have a parent and double check we aren't going around in circles
 			if (*iter != nullptr && !HasStateLooped(*iter))
 			{
-				delete *iter; //I think this works the way i think it does. This should be all good in the hood.
+				delete *iter; //Recursive Delete
 			}
 		}
 		m_NextStateList->clear();

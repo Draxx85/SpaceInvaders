@@ -5,6 +5,7 @@
 #include "SDL_Image.h"
 #include "Graphics.h"
 #include "UpdateManager.h"
+#include "InputManager.h"
 
 
 class Engine {

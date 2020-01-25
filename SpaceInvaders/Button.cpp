@@ -43,3 +43,11 @@ void Button::AddComponent(Component *component)
 	Entity::AddComponent(component);
 	m_TextComponent = dynamic_cast<TextComponent*>(component);
 }
+
+void Button::UpdateTexture()
+{
+	if (m_TextComponent != nullptr)
+	{
+		m_TextComponent->UpdateText(IsHighlighted());
+	}
+}

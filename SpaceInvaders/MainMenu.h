@@ -4,8 +4,9 @@
 #include "Button.h"
 #include "TextComponent.h"
 #include "ButtonContainer.h"
+#include "InputManager.h"
 
-class MainMenu
+class MainMenu : Command
 {
 public:
 	MainMenu();
@@ -13,6 +14,8 @@ public:
 
 	Entity *m_GameTitle;
 	ButtonContainer *m_Buttons;
+
+	void Execute(void* params);
 private:
 	void InitLogo();
 	void AddButtons();

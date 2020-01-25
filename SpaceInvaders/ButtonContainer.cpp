@@ -13,12 +13,6 @@ ButtonContainer::ButtonContainer(SDL_Rect buttonSpace)
 }
 ButtonContainer::~ButtonContainer()
 {
-	m_Selected = m_ButtonList->begin();
-	while (m_Selected != m_ButtonList->end())
-	{
-		delete *m_Selected;
-		++m_Selected;
-	}
 	ClearButtonList();
 	delete m_ButtonList;
 }
@@ -42,9 +36,33 @@ void ButtonContainer::ClearButtonList()
 	m_ButtonList->clear();
 }
 
-ButtonContainer ButtonContainer::operator++()
+ButtonContainer &ButtonContainer::operator++()
 {
-	if (m_Selected != m_ButtonList->end())
+	Increment();
+	return *this;
+}
+
+ButtonContainer &ButtonContainer::operator--()
+{
+	Decrement();
+	return *this;
+}
+
+ButtonContainer &ButtonContainer::operator++(int)
+{
+	Increment();
+	return *this;
+}
+
+ButtonContainer &ButtonContainer::operator--(int)
+{
+	Decrement();
+	return *this;
+}
+
+inline void ButtonContainer::Increment()
+{
+	if (m_Selected != m_ButtonList->end()-1)
 	{
 		(*m_Selected)->SetHighlighted(false);
 		++m_Selected;
@@ -56,10 +74,10 @@ ButtonContainer ButtonContainer::operator++()
 		m_Selected = m_ButtonList->begin();
 		(*m_Selected)->SetHighlighted(true);
 	}
-	return *this;
+	ResetButtonPositioning();
 }
 
-ButtonContainer ButtonContainer::operator--()
+inline void ButtonContainer::Decrement()
 {
 	if (m_Selected != m_ButtonList->begin())
 	{
@@ -70,44 +88,10 @@ ButtonContainer ButtonContainer::operator--()
 	else //wrap around
 	{
 		(*m_Selected)->SetHighlighted(false);
-		m_Selected = m_ButtonList->end();
+		m_Selected = m_ButtonList->end() - 1;
 		(*m_Selected)->SetHighlighted(true);
 	}
-	return *this;
-}
-
-ButtonContainer ButtonContainer::operator++(int)
-{
-	if (m_Selected != m_ButtonList->end())
-	{
-		(*m_Selected)->SetHighlighted(false);
-		++m_Selected;
-		(*m_Selected)->SetHighlighted(true);
-	}
-	else //wrap around
-	{
-		(*m_Selected)->SetHighlighted(false);
-		m_Selected = m_ButtonList->begin();
-		(*m_Selected)->SetHighlighted(true);
-	}
-	return *this;
-}
-
-ButtonContainer ButtonContainer::operator--(int)
-{
-	if (m_Selected != m_ButtonList->begin())
-	{
-		(*m_Selected)->SetHighlighted(false);
-		--m_Selected;
-		(*m_Selected)->SetHighlighted(true);
-	}
-	else //wrap around
-	{
-		(*m_Selected)->SetHighlighted(false);
-		m_Selected = m_ButtonList->end();
-		(*m_Selected)->SetHighlighted(true);
-	}
-	return *this;
+	ResetButtonPositioning();
 }
 
 void ButtonContainer::ResetButtonPositioning()
@@ -156,6 +140,11 @@ inline void ButtonContainer::RefreshDimensions(int size)
 {
 	m_Container.h = (m_VerticalSpacing * size) + (m_BuittonHeight * size);
 	m_Container.w = (m_HorizontalSpacing * size) + (m_ButtondWidth * size);
+}
+
+Button *ButtonContainer::GetSelectedButton()
+{
+	return *m_Selected;
 }
 
 void ButtonContainer::ResetSelection()

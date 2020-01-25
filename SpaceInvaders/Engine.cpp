@@ -30,6 +30,8 @@ int Engine::InitEngine()
 		return 1;
 	}
 
+	InputManager::Init();
+
 	bIsRunning = true;
 
 	return 0;
@@ -107,9 +109,7 @@ void Engine::HandleEvents(SDL_Event &e)
 			case SDL_KEYUP:
 			case SDL_MOUSEBUTTONDOWN:
 			case SDL_MOUSEBUTTONUP:
-			{
-				SDL_Log("Key has been pressed or released");
-			}
+				InputManager::ListenForKeyPress(e);
 			default:
 				break;
 		}

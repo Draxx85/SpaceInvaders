@@ -24,6 +24,7 @@ public:
 	void SetHighlighted(bool isSelected);
 
 	void AddComponent(Component *component) override;
+	void UpdateTexture();
 private:
 	TextComponent *m_TextComponent;
 

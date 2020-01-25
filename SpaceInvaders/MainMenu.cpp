@@ -11,6 +11,8 @@ MainMenu::MainMenu()
 
 MainMenu::~MainMenu()
 {
+	InputManager::ClearKeyBinds();
+
 	delete m_GameTitle;
 
 	//Main menu owns the buttons so should delete them
@@ -60,7 +62,7 @@ void MainMenu::InitLogo()
 	//Set it to visible
 	sprite->SetVisible(true);
 
-	int x = (1920 / 2) - (sprite->m_Sprite->SpriteDestRect.w / 2);
+	int x = (Graphics::sWindowWidth / 2) - (sprite->m_Sprite->SpriteDestRect.w / 2);
 	m_GameTitle->SetPosition(SVector2D(x, 0));
 }
 

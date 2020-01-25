@@ -1,6 +1,5 @@
 #pragma once
 #include "Command.h"
-#include "InputManager.h"
 
 enum KeyPressState
 {
@@ -10,7 +9,17 @@ enum KeyPressState
 	KeyUp,
 };
 
-enum EInputAction;
+enum EInputAction
+{
+	Left,
+	Right,
+	Shoot,
+	MegaShot,
+	//Menu
+	Up,
+	Down,
+	Select,
+};
 
 struct KeyBind
 {

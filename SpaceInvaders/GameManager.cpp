@@ -136,7 +136,7 @@ void GameState_Game(float Update)
 		{
 			case OnEnterPhase:
 				GameManager::BuildGameStateMachine();
-
+				GameManager::sGame = new Game();
 				break;
 			case OnStayPhase:
 				break;

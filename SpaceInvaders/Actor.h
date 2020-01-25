@@ -5,8 +5,8 @@ class Actor : public Entity
 public:
 	Actor();
 	virtual ~Actor();
-	void Move(float value);
-	void Shoot();
+	void Move(const float x, const float y);
+	void Fire();
 
 	void Die();
 };

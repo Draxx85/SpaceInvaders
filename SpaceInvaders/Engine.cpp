@@ -12,6 +12,8 @@ bool Engine::bIsRunning = false;
 float Engine::sFrameRate = 0;
 Uint32 Engine::sStartTime = 0;
 float Engine::sDeltaTime = 0;
+float const Engine::TimedUpdateInterval = 0.025f;
+float Engine::TimedUpdateElapsed = 0.0f;
 
 //Initialize all the main components of the engine
 int Engine::InitEngine() 
@@ -80,10 +82,11 @@ void Engine::StartEngineLoop()
 		HandleEvents(sdl_event);
 		UpdateManager::Update(sDeltaTime);
 		
-		//if (Timed Update is ready) 
-		//{
-			//UpdateManager::TimedUpdate() 
-		//}
+		if (TimedUpdateElapsed >= TimedUpdateInterval) 
+		{
+			UpdateManager::TimedUpdate(TimedUpdateElapsed);
+			TimedUpdateElapsed = 0.0f;
+		}
 
 		Graphics::Render();
 		//UpdateUI
@@ -132,13 +135,14 @@ SDL_Window* Engine::GetWindow()
 
 inline void Engine::UpdateDeltaTime()
 {
-	sDeltaTime = (float)(SDL_GetTicks() - sStartTime)/1000;	    
+	sDeltaTime = (float)(SDL_GetTicks() - sStartTime) /1000;	    
 	
 	if (sDeltaTime != 0)
 	{
 		sFrameRate = 1 / sDeltaTime;
 	}
 	sStartTime = SDL_GetTicks();
+	TimedUpdateElapsed += sDeltaTime;
 
 #if _DISPLAY_FPS_ //Display fps Counter on window frame
 	std::stringstream fps;

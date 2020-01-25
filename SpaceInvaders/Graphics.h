@@ -10,6 +10,14 @@
 
 class SpriteComponent;
 
+//If I have time, I should ref count and share textures!
+struct STextureRef
+{
+	SDL_Texture *pTexture;
+	std::string resource;
+	int RefCount = 0;
+};
+/////////////////////////////////////////
 class Graphics
 {
 public:

@@ -4,17 +4,7 @@
 #include "KeyBind.h"
 #include <map>
 
-enum EInputAction
-{
-	Left,
-	Right,
-	Shoot,
-	MegaShot,
-	//Menu
-	Up,
-	Down,
-	Select,
-};
+
 
 class InputManager
 {

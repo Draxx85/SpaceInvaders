@@ -145,6 +145,7 @@
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="MathHelper.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Powerup.cpp" />
     <ClCompile Include="Projectile.cpp" />
@@ -160,6 +161,7 @@
   <ItemGroup>
     <Image Include="Resources\logo.png" />
     <Image Include="Resources\ShipBlock.png" />
+    <Image Include="Resources\ShipHull.png" />
     <Image Include="Resources\SpaceInvaders-Sprite.png" />
   </ItemGroup>
   <ItemGroup>
@@ -182,6 +184,7 @@
     <ClInclude Include="KeyBind.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="MathHelper.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Powerup.h" />
     <ClInclude Include="Projectile.h" />

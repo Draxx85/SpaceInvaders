@@ -5,8 +5,8 @@ SDL_Renderer *Graphics::spRenderer = nullptr;
 std::list<SpriteComponent *> *Graphics::spDrawList = nullptr;
 TTF_Font *Graphics::m_Font = nullptr;
 
-int Graphics::sWindowWidth = 1920;
-int Graphics::sWindowHeight = 1080;
+int Graphics::sWindowWidth = 1280;
+int Graphics::sWindowHeight = 960;
 
 bool Graphics::InitGraphics()
 {
@@ -66,8 +66,10 @@ void Graphics::Render()
 	SDL_RenderPresent(spRenderer);
 }
 
+//TODO: Keep References of resources with links to texture for asset sharing
 SDL_Texture *Graphics::LoadResource(const char* resource)
 {
+
 	spBitmapSurface = IMG_Load(resource);
 	if (!spBitmapSurface)
 	{

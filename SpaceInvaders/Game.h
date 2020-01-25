@@ -4,6 +4,7 @@
 #include "EnemyGrid.h"
 #include "ShipBlock.h"
 #include "Boss.h"
+#include "Graphics.h"
 
 class Game
 {
@@ -11,6 +12,8 @@ public:
 	Game();
 	~Game();
 
+	void BuildArena();
+	void AddPlayer();
 	
 private:
 	int m_Score;
@@ -24,6 +27,8 @@ private:
 	Entity *m_ScoreEntity;
 	Entity *m_StatusDisplayEntity;
 	Entity *m_PlayerStatusEntity;
+
+	Entity *m_SSLarian;
 
 };
 

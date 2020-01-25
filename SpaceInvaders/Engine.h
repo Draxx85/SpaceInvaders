@@ -36,4 +36,6 @@ private:
 	static float sFrameRate;
 	static Uint32 sStartTime;
 	static float sDeltaTime;
+	static float const TimedUpdateInterval;
+	static float TimedUpdateElapsed;
 };

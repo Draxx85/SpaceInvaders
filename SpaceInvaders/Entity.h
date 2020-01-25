@@ -8,14 +8,17 @@
 
 struct SVector2D
 {
-	int x = 0;
-	int y = 0;
+	float x = 0;
+	float y = 0;
 
 	SVector2D()
 		:x(0), y(0)	{}
 
 	SVector2D(int xPos, int yPos)
-		:x(xPos), y(yPos) {}
+		:x((float)xPos), y((float)yPos) {}
+
+	SVector2D(float xPos, float yPos)
+		:x(xPos), y(yPos){}
 };
 
 struct STransform
@@ -29,18 +32,20 @@ struct STransform
 	{
 		if (DestRect != nullptr)
 		{
-			DestRect->x = pos.x;
-			DestRect->y = pos.y;
+			DestRect->x = (int)pos.x;
+			DestRect->y = (int)pos.y;
 		}
+		Position = std::move(pos);
 	}
 
 	void SetScale(SVector2D scale)
 	{
 		if (DestRect != nullptr)
 		{
-			DestRect->w *= scale.x;
-			DestRect->h *= scale.y;
+			DestRect->w *= (int)scale.x;
+			DestRect->h *= (int)scale.y;
 		}
+		Scale = std::move(scale);
 	}
 
 	STransform(int x, int y, int w, int h)
@@ -51,6 +56,7 @@ struct STransform
 			rect.x = x;	rect.y = y;
 			rect.w = w;	rect.h = h;
 			DestRect = &rect;
+			Position = SVector2D(rect.x, rect.y);
 		}
 	}
 
@@ -61,18 +67,27 @@ struct STransform
 
 	~STransform()
 	{
-		delete DestRect;
+		if (DestRect != nullptr)
+		{
+			delete DestRect;
+		}
+		DestRect = nullptr;
 	}
 
 	void SetDestRect(SDL_Rect &ref)
 	{
 		DestRect = &ref;
+		if (DestRect)
+		{
+			Position = SVector2D(DestRect->x, DestRect->y);
+			Scale = SVector2D(1, 1);
+		}
 	}
 };
 
 class Component;
 
-class Entity : Process
+class Entity : public Process
 {
 public:
 	Entity();

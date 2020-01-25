@@ -15,7 +15,7 @@ void UpdateManager::Update(float deltaTime)
 	{
 		if (process != nullptr)
 		{
-			process->Update(0);
+			process->Update(deltaTime);
 		}
 	}
 }
@@ -26,7 +26,7 @@ void UpdateManager::TimedUpdate(float deltaTime)
 	{
 		if (timedProcess != nullptr)
 		{
-			timedProcess->Update(0);
+			timedProcess->TimedUpdate(deltaTime);
 		}
 	}
 }

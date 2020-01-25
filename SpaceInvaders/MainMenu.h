@@ -5,6 +5,7 @@
 #include "TextComponent.h"
 #include "ButtonContainer.h"
 #include "InputManager.h"
+#include "GameManager.h"
 
 class MainMenu : Command
 {
@@ -22,6 +23,7 @@ private:
 	void InitStartGame();
 	void InitLeaderboard();
 	void InitExit();
+	void RegisterKeybinds();
 
 	Button *m_StartGame;
 	Button *m_Leaderboards;

@@ -47,3 +47,7 @@ void InputManager::RegisterKeyToAction(SDL_Keycode key, KeyBind bind)
 	(*m_KeyBinds)[key] = bind;
 }
 
+void InputManager::ClearKeyBinds()
+{
+	m_KeyBinds->clear();
+}

@@ -18,11 +18,11 @@ State::~State()
 			//Make sure that we have a parent and double check we aren't going around in circles
 			if (*iter != nullptr && !HasStateLooped(*iter))
 			{
-				delete *iter; //Recursive Delete
+				SAFE_DELETE(*iter); //Recursive Delete
 			}
 		}
 		m_NextStateList->clear();
-		delete m_NextStateList;
+		SAFE_DELETE(m_NextStateList);
 	}
 	//I should not delete the parent. This should be deleted by its parent.
 	m_pParentState = nullptr;

@@ -3,23 +3,36 @@
 StateMachine *GameManager::m_MainStateMachine = nullptr;
 StateMachine *GameManager::m_GameStateMachine = nullptr;
 MainMenu *GameManager::sMainMenu = nullptr;
+Game *GameManager::sGame;
+bool GameManager::sInGame = false;
 
 void GameManager::Init()
 {
+	
 	m_MainStateMachine = BuildMainStateMachine();
 	m_MainStateMachine->StartMachine();
 }
 
-void GameManager::StartGame()
+void GameManager::CleanGameManager()
 {
 
+}
+
+void GameManager::StartGame()
+{
+	sInGame = true;
+}
+
+void GameManager::QuitGame()
+{
+	sInGame = false;
 }
 
 void GameManager::CleanGame()
 {
 	if (sMainMenu != nullptr)
 	{
-		delete sMainMenu;
+		SAFE_DELETE(sMainMenu);
 	}
 }
 
@@ -33,11 +46,23 @@ StateMachine *GameManager::BuildMainStateMachine()
 	State* state = stateMachine->CreateState((int)GState_Init, GameState_Init);
 	state = state->AddChildState(stateMachine->CreateState((int)GState_Intro, GameState_Intro));
 	state = state->AddChildState(stateMachine->CreateState((int)GState_Intro, GameState_Menu));
-	state->IsNextStateReady = []() { return false; };
+	state->IsNextStateReady = []() { return ShallWePlayAGame(); };
 	state = state->AddChildState(stateMachine->CreateState((int)GState_Intro, GameState_Game));
+	state->IsNextStateReady = []() { return false; };
 	state = state->AddChildState(stateMachine->CreateState((int)GState_Intro, GameState_Exit));
+	state->IsNextStateReady = []() { return true; };
 
 	return stateMachine;
+}
+
+StateMachine *GameManager::BuildGameStateMachine()
+{
+	return nullptr;
+}
+
+bool GameManager::ShallWePlayAGame()
+{
+	return sInGame;
 }
 
 //GameState:Init
@@ -69,14 +94,11 @@ void GameState_Intro(float Update)
 	{
 		switch (state->m_CurrentPhase)
 		{
-			case OnEnterPhase:
-			//	SDL_Log("GameState_IntroI am in the state Entry Phase");
+			case OnEnterPhase: 
 				break;
 			case OnStayPhase:
-			//	SDL_Log("GameState_IntroI am updateing myself");
 				break;
 			case OnExitPhase:
-				//SDL_Log("GameState_IntroIm ending this state");
 				break;
 		}
 	}
@@ -92,13 +114,11 @@ void GameState_Menu(float Update)
 		{
 			case OnEnterPhase:
 				GameManager::sMainMenu = new MainMenu();
-				//SDL_Log("GameState_MenuI am in the state Entry Phase");
 				break;
 			case OnStayPhase:
-			//	SDL_Log("GameState_MenuI am updateing myself");
 				break;
 			case OnExitPhase:
-				//SDL_Log("GameState_MenuIm ending this state");
+				SAFE_DELETE(GameManager::sMainMenu);
 				break;
 		}
 	}
@@ -107,11 +127,40 @@ void GameState_Menu(float Update)
 ////GameState:Game
 void GameState_Game(float Update)
 {
+	State *state = GameManager::m_MainStateMachine->m_ActiveState;
+	if (state != nullptr)
+	{
+		switch (state->m_CurrentPhase)
+		{
+			case OnEnterPhase:
+				GameManager::BuildGameStateMachine();
 
+				break;
+			case OnStayPhase:
+				break;
+			case OnExitPhase:
+				break;
+		}
+	}
 }
 
 //GameState:Exit
 void GameState_Exit(float Update)
 {
-
+	State *state = GameManager::m_MainStateMachine->m_ActiveState;
+	if (state != nullptr)
+	{
+		switch (state->m_CurrentPhase)
+		{
+			case OnEnterPhase:
+				SDL_Event sdlevent;
+				sdlevent.type = SDL_QUIT;
+				SDL_PushEvent(&sdlevent);
+				break;
+			case OnStayPhase:
+				break;
+			case OnExitPhase:
+				break;
+		}
+	}
 }

@@ -4,8 +4,11 @@
 #include "Graphics.h"
 #include "Component.h"
 #include "Sprite.h"
+#include "Entity.h"
 
+struct SVector2D;
 class Component;
+class Entity;
 
 class SpriteComponent : public Component
 {

@@ -32,7 +32,8 @@ SpriteComponent::SpriteComponent(SDL_Texture * texture)
 
 SpriteComponent::~SpriteComponent()
 {
-	delete m_Sprite;
+	Graphics::RemoveSpriteFromDrawList(this);
+	SAFE_DELETE(m_Sprite);
 }
 
 void SpriteComponent::SyncParentToComponent()

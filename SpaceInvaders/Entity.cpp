@@ -6,6 +6,22 @@ Entity::Entity()
 
 }
 
+Entity::~Entity()
+{
+	for (Component *comp : *m_Components)
+	{
+		if (comp != nullptr)
+		{
+			SAFE_DELETE(comp);
+		}
+	}
+	m_Components->clear();
+	delete m_Components;
+	m_Components = nullptr;
+	//m_Transforms points to child owned objects so we should let child components handle cleanup
+	m_Transform = nullptr;
+}
+
 struct STransform *Entity::GetTransform()
 {
 	return m_Transform;

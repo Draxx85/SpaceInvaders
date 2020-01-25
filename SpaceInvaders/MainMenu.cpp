@@ -6,21 +6,7 @@ MainMenu::MainMenu()
 {
 	InitLogo();
 	AddButtons();
-
-	KeyBind up;
-	up.m_Command = this;
-	up.m_InputAction = Up;
-	InputManager::RegisterKeyToAction(SDLK_UP, up);
-
-	KeyBind down;
-	down.m_Command = this;
-	down.m_InputAction = Down;
-	InputManager::RegisterKeyToAction(SDLK_DOWN, down);
-
-	KeyBind select;
-	down.m_Command = this;
-	down.m_InputAction = Select;
-	InputManager::RegisterKeyToAction(SDLK_RETURN, down);
+	RegisterKeybinds();
 }
 
 MainMenu::~MainMenu()
@@ -52,7 +38,6 @@ void MainMenu::Execute(void *params)
 			{
 				case Up:
 					--(*m_Buttons);
-					SDL_Log("I am working rejoice!");
 					break;
 				case Down:
 					++(*m_Buttons);
@@ -98,6 +83,7 @@ void MainMenu::InitStartGame()
 {
 	TextComponent *textComp = new TextComponent(*m_StartGame, "Start Game");
 	m_StartGame->AddComponent(textComp);
+	m_StartGame->Activate = [](float deltaTime) { GameManager::StartGame(); };
 	textComp->SetVisible(true);
 }
 
@@ -105,6 +91,7 @@ void MainMenu::InitLeaderboard()
 {
 	TextComponent *textComp = new TextComponent(*m_Leaderboards, "Leaderboards");
 	m_Leaderboards->AddComponent(textComp);
+	m_Leaderboards->Activate = [](float deltaTime) { return; };
 	textComp->SetVisible(true);
 }
 
@@ -119,4 +106,22 @@ void MainMenu::InitExit()
 		SDL_PushEvent(&sdlevent);
 	};
 	textComp->SetVisible(true);
+}
+
+void MainMenu::RegisterKeybinds()
+{
+	KeyBind up;
+	up.m_Command = this;
+	up.m_InputAction = Up;
+	InputManager::RegisterKeyToAction(SDLK_UP, up);
+
+	KeyBind down;
+	down.m_Command = this;
+	down.m_InputAction = Down;
+	InputManager::RegisterKeyToAction(SDLK_DOWN, down);
+
+	KeyBind select;
+	down.m_Command = this;
+	down.m_InputAction = Select;
+	InputManager::RegisterKeyToAction(SDLK_RETURN, down);
 }

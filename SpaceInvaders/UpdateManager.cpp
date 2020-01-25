@@ -86,8 +86,8 @@ void UpdateManager::ClearAllUpdates()
 void UpdateManager::Clean()
 {
 	ClearAllUpdates();
-	delete(UpdateManager::spProcessList);
-	delete(UpdateManager::spTimedProcessList);
+	SAFE_DELETE(UpdateManager::spProcessList);
+	SAFE_DELETE(UpdateManager::spTimedProcessList);
 }
 
 bool UpdateManager::HasDuplicateProcess(const Process *const process, std::list<Process*> *const processList)

@@ -5,6 +5,7 @@
 #include "SDL.h"
 #include "StateMachine.h"
 #include "UpdateManager.h"
+#include "Engine.h"
 #include <functional>
 
 enum EStatePhase

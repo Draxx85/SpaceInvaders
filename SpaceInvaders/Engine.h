@@ -7,6 +7,7 @@
 #include "UpdateManager.h"
 #include "InputManager.h"
 
+#define SAFE_DELETE(p)	{if (p)	{ delete (p); (p) = nullptr; } }
 
 class Engine {
 public:

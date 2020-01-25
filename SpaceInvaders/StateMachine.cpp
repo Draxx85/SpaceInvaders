@@ -7,12 +7,8 @@ StateMachine::StateMachine()
 
 StateMachine::~StateMachine()
 {
-	if (m_Root != nullptr)
-	{
-		//Recursivly delete states
-		delete m_Root;
-	}
-	m_Root = nullptr;
+	//Recursivly delete states
+	SAFE_DELETE(m_Root);
 	m_ActiveState = nullptr;
 }
 

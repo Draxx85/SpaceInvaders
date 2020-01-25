@@ -10,7 +10,7 @@ public:
 	TextComponent(Entity &parent);
 	TextComponent(Entity &parent, const char *str);
 
-	~TextComponent();
+	virtual ~TextComponent();
 
 	void SetText(std::string text);
 	void SetFontColor(SDL_Color color);

@@ -4,6 +4,7 @@
 #include "SDL.h"
 #include "Process.h"
 #include "Component.h"
+#include "Engine.h"
 
 struct SVector2D
 {
@@ -75,6 +76,7 @@ class Entity : Process
 {
 public:
 	Entity();
+	~Entity();
 	STransform *GetTransform();
 
 	virtual void Update(float deltaTime) override;

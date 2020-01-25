@@ -14,7 +14,7 @@ ButtonContainer::ButtonContainer(SDL_Rect buttonSpace)
 ButtonContainer::~ButtonContainer()
 {
 	ClearButtonList();
-	delete m_ButtonList;
+	SAFE_DELETE(m_ButtonList);
 }
 
 void ButtonContainer::AddButtonToList(Button *button)

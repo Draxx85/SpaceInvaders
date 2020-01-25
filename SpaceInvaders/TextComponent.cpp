@@ -21,7 +21,6 @@ TextComponent::TextComponent(Entity &parent, const char *str) : SpriteComponent(
 
 TextComponent::~TextComponent()
 {
-	SpriteComponent::~SpriteComponent();
 }
 
 void TextComponent::SetText(std::string text)

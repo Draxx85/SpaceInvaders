@@ -38,10 +38,7 @@ void Graphics::CleanGraphics()
 {
 	ClearDrawList();
 	
-	if (spDrawList != nullptr)
-	{
-		delete spDrawList;
-	}
+	SAFE_DELETE(spDrawList);
 
 	//Clean Up font
 	TTF_CloseFont(m_Font);

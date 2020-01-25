@@ -6,6 +6,7 @@
 #include "StateMachine.h"
 #include "State.h"
 #include "MainMenu.h"
+#include "Game.h"
 
 enum EGameState
 {
@@ -16,21 +17,30 @@ enum EGameState
 	GState_Exit = 4,
 };
 
+class MainMenu;
+
 class GameManager
 {
 public:
 	static void Init();
+	static void CleanGameManager();
 	static void StartGame();
 	static void CleanGame();
+	static void QuitGame();
 
 	static StateMachine *BuildMainStateMachine();
+	static StateMachine *BuildGameStateMachine();
+
+	static bool ShallWePlayAGame();
 
 	static StateMachine *m_MainStateMachine;
 	static StateMachine *m_GameStateMachine;
 
 	static MainMenu *sMainMenu;
+	static Game *sGame;
 private:
 	GameManager();
+	static bool sInGame;
 };
 
 void GameState_Init(float Update);

@@ -6,17 +6,15 @@ Button::Button()
 	State *state = m_ButtonState->CreateState((int)Disabled, NULL);
 	
 	state = state->AddChildState(m_ButtonState->CreateState((int)Enabled, NULL));
-	//state->IsNextStateReady = std::bind(&Button::IsHighlighted, this);
 
 	state = state->AddChildState(m_ButtonState->CreateState((int)Highlighted, this->Activate));
-	//state->IsNextStateReady = std::bind(&Button::IsHighlighted, this);
 	
 	state->AddChildState(state->GetParent());
 }
 
 Button::~Button()
 {
-	delete m_ButtonState;
+	SAFE_DELETE(m_ButtonState);
 	Activate = nullptr;
 }
 

@@ -2,11 +2,19 @@
 
 std::list<Process*> *UpdateManager::spProcessList = nullptr;
 std::list<Process*> *UpdateManager::spTimedProcessList = nullptr;
+std::vector<Process*> *UpdateManager::spSafeList = nullptr;
+std::vector<Process*> *UpdateManager::spTimedSafeList = nullptr;
+bool UpdateManager::sSafeItemToClear = false;
+bool UpdateManager::sSafeTimedItemToClear = false;
 
 void UpdateManager::Init()
 {
 	UpdateManager::spProcessList = new std::list<Process*>();
 	UpdateManager::spTimedProcessList = new std::list<Process*>();
+	UpdateManager::spSafeList = new std::vector<Process*>();
+	UpdateManager::spTimedSafeList = new std::vector<Process*>();
+	static bool m_SafeItemToClear;
+	static bool m_SafeTimedItemToClear = false;
 }
 
 void UpdateManager::Update(float deltaTime)
@@ -18,16 +26,34 @@ void UpdateManager::Update(float deltaTime)
 			process->Update(deltaTime);
 		}
 	}
+	if (sSafeItemToClear)
+	{
+		for (Process *process : *spSafeList)
+		{
+			spProcessList->remove(process);
+		}
+		spSafeList->clear();
+		sSafeItemToClear = false;
+	}
 }
 
 void UpdateManager::TimedUpdate(float deltaTime)
 {
-	for (Process *timedProcess : *spTimedProcessList)
+ 	for (Process *timedProcess : *spTimedProcessList)
 	{
 		if (timedProcess != nullptr)
 		{
 			timedProcess->TimedUpdate(deltaTime);
 		}
+	}
+	if (sSafeTimedItemToClear)
+	{
+		for (Process *process : *spTimedSafeList)
+		{
+			spTimedProcessList->remove(process);
+		}
+		spTimedSafeList->clear();
+		sSafeTimedItemToClear = false;
 	}
 }
 
@@ -71,6 +97,28 @@ bool UpdateManager::ClearTimedUpdate(Process *const process)
 	return false;
 }
 
+bool UpdateManager::SafeClearUpdate(Process *const process)
+{
+	if (spSafeList != nullptr)
+	{
+		spSafeList->push_back(process);
+		sSafeItemToClear = true;
+		return true;
+	}
+	return false;
+}
+
+bool UpdateManager::SafeClearTimedUpdate(Process *const process)
+{
+	if (spTimedSafeList != nullptr)
+	{
+		spTimedSafeList->push_back(process);
+		sSafeTimedItemToClear = true;
+		return true;
+	}
+	return false;
+}
+
 void UpdateManager::ClearAllUpdates()
 {
 	if (spProcessList != nullptr)
@@ -81,6 +129,14 @@ void UpdateManager::ClearAllUpdates()
 	{
 		spTimedProcessList->clear();
 	}
+	if (spSafeList != nullptr)
+	{
+		spSafeList->clear();
+	}
+	if (spTimedSafeList != nullptr)
+	{
+		spTimedSafeList->clear();
+	}
 }
 
 void UpdateManager::Clean()
@@ -88,6 +144,8 @@ void UpdateManager::Clean()
 	ClearAllUpdates();
 	SAFE_DELETE(UpdateManager::spProcessList);
 	SAFE_DELETE(UpdateManager::spTimedProcessList);
+	SAFE_DELETE(UpdateManager::spTimedSafeList);
+	SAFE_DELETE(UpdateManager::spTimedSafeList);
 }
 
 bool UpdateManager::HasDuplicateProcess(const Process *const process, std::list<Process*> *const processList)

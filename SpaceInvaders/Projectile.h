@@ -17,6 +17,7 @@ public:
 	SpriteComponent *m_Sprite;
 
 	void Spawn();
+	void DeSpawn();
 
 	void TimedUpdate(float DeltaTime) override;
 

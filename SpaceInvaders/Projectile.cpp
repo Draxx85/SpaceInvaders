@@ -31,7 +31,6 @@ Projectile::~Projectile()
 
 void Projectile::Spawn()
 {
-	UpdateManager::RegisterTimedUpdate(this);
 	if (m_Parent != nullptr)
 	{
 		m_SpawnLocation = m_Parent->GetPosition();
@@ -41,11 +40,26 @@ void Projectile::Spawn()
 		SetPosition(m_SpawnLocation);
 		m_Sprite->SetVisible(true);
 	}
+	UpdateManager::RegisterTimedUpdate(this);
+}
+
+void Projectile::DeSpawn()
+{
+	UpdateManager::SafeClearTimedUpdate(this);
+	if (m_Sprite != nullptr)
+	{
+		m_Sprite->SetVisible(false);
+	}
 }
 
 void Projectile::TimedUpdate(float DeltaTime)
 {
 	IncrementPosition(0, m_ProjectileSpeed*m_FiringDirection);
+	SVector2D *pos = &GetPosition();
+	if (pos->y < -Graphics::skSpriteSheetHeight || pos->y > Graphics::sWindowHeight+ Graphics::skSpriteSheetHeight)
+	{
+		DeSpawn();
+	}
 }
 
 bool Projectile::IsActive()

@@ -3,6 +3,7 @@
 #include "Process.h"
 #include "Engine.h"
 #include <list>
+#include <vector>
 
 class UpdateManager
 {
@@ -18,6 +19,9 @@ public:
 	static bool RegisterTimedUpdate(Process *process);
 	static bool ClearTimedUpdate(Process *const process);
 
+	static bool SafeClearTimedUpdate(Process *const process);
+	static bool SafeClearUpdate(Process *const process);
+
 	static void ClearAllUpdates();
 	static void Clean();
 
@@ -26,4 +30,8 @@ public:
 private:
 	static std::list<Process*> *spProcessList;
 	static std::list<Process*> *spTimedProcessList;
+	static std::vector<Process*> *spTimedSafeList;
+	static std::vector<Process*> *spSafeList;
+	static bool sSafeItemToClear;
+	static bool sSafeTimedItemToClear;
 };

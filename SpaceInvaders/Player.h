@@ -18,6 +18,7 @@ private:
 	const float kMaxSpeed = 65.f;
 	const float kTimeToMaxSpeed = 1.2f;
 	const float kSpeedTolerance = 3.f;
+
 	float m_AccelRatePerSec;
 	float m_Velocity;
 	float m_TargetSpeed;

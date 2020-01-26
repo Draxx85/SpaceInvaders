@@ -117,7 +117,7 @@ public:
 
 	virtual void AddComponent(Component *component);
 	void SetPosition(SVector2D pos);
-
+	SVector2D &GetPosition();
 	void IncrementPosition(SVector2D pos);
 
 	void IncrementPosition(float x, float y);

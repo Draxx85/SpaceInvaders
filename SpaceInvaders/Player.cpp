@@ -6,9 +6,9 @@ Player::Player()
 		new SpriteComponent(*this, Graphics::LoadResource("Resources/SpaceInvaders-Sprite.png"));
 	
 	AddComponent(playerSprite);
-	playerSprite->m_Sprite->SpriteSrcRect.h = playerSprite->m_Sprite->SpriteSrcRect.w = 128;
+	playerSprite->m_Sprite->SpriteSrcRect.h = playerSprite->m_Sprite->SpriteSrcRect.w = Graphics::skSpriteSheetWidth;
 	playerSprite->m_Sprite->SpriteSrcRect.x = playerSprite->m_Sprite->SpriteSrcRect.y = 0;
-	playerSprite->m_Sprite->SpriteDestRect.h = playerSprite->m_Sprite->SpriteDestRect.w = 128;
+	playerSprite->m_Sprite->SpriteDestRect.h = playerSprite->m_Sprite->SpriteDestRect.w = Graphics::skSpriteSheetWidth;
 
 	playerSprite->SetVisible(true);
 	BindKeys();
@@ -18,7 +18,10 @@ Player::Player()
 	UpdateManager::RegisterUpdate(this);
 	UpdateManager::RegisterTimedUpdate(this);
 	m_AccelRatePerSec = kMaxSpeed / kTimeToMaxSpeed;
-	m_TargetSpeed = 0;
+	m_TargetSpeed = 0.f;
+
+	m_MaxProjectiles = 10;
+	LoadProjectiles(-1, Blue);
 }
 
 Player::~Player()
@@ -62,7 +65,18 @@ void Player::Update(float deltaTime)
 
 void Player::Fire()
 {
-
+	for (std::vector<Projectile*>::iterator iter = m_ProjectilePool->begin();
+		iter != m_ProjectilePool->end(); ++iter)
+	{
+		if ((*iter) != nullptr)
+		{
+			if (!(*iter)->IsActive())
+			{
+				(*iter)->Spawn();
+				break;
+			}
+		}
+	}
 }
 
 void Player::TimedUpdate(float deltaTime)
@@ -80,7 +94,6 @@ void Player::TimedUpdate(float deltaTime)
 	{
 		m_Velocity -= m_AccelRatePerSec * deltaTime;
 	}
-
 	Move(m_Velocity, 0);
 }
 
@@ -102,7 +115,6 @@ void Player::Execute(void *params)
 					break;
 				case Shoot:
 					Fire();
-					SDL_Log("Shooting");
 					break;
 				default:
 					break;

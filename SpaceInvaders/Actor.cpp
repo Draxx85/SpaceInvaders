@@ -1,6 +1,7 @@
 #include "Actor.h"
 
 Actor::Actor()
+	: m_ProjectilePool(new std::vector<Projectile*>())
 {
 }
 
@@ -18,26 +19,16 @@ void Actor::Fire()
 
 }
 
-void Actor::LoadProjectiles(ProjectileColor color)
+void Actor::LoadProjectiles(int direction, EProjectileColor color)
 {
 	STransform *tr = this->GetTransform();
 	SDL_assert(tr != nullptr);
 	for (int i = 0; i < m_MaxProjectiles; ++i)
 	{
-		Projectile *p = new Projectile();
-		SpriteComponent *sprite =
-			new SpriteComponent(*this, Graphics::LoadResource("Resources/SpaceInvaders-Sprite.png"));
-
-		AddComponent(sprite);
-		CollisionComponent *collider = new CollisionComponent();
-		sprite->m_Sprite->SpriteSrcRect.h = sprite->m_Sprite->SpriteSrcRect.w = 128;
-		sprite->m_Sprite->SpriteSrcRect.x = (int)color* 128;
-		sprite->m_Sprite->SpriteSrcRect.y = 0;
-		sprite->m_Sprite->SpriteDestRect.h = sprite->m_Sprite->SpriteDestRect.w = 128;
+		Projectile *p = new Projectile(direction, color, this);
 		p->SetPosition(tr->Position);
-
+		m_ProjectilePool->push_back(p);
 	}
-	
 }
 
 void Actor::Die()

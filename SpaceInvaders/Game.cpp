@@ -5,6 +5,7 @@ Game::Game()
 {
 	BuildArena();
 	AddPlayer();
+	CreateLevel();
 }
 
 Game::~Game()
@@ -27,4 +28,10 @@ void Game::BuildArena()
 void Game::AddPlayer()
 {
 	m_Player = new Player();
+}
+
+void Game::CreateLevel()
+{
+	m_EnemyGrid = new EnemyGrid();
+	m_EnemyGrid->PopulateEnemyGrid(5);
 }

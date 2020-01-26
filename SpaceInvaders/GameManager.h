@@ -38,6 +38,8 @@ public:
 
 	static MainMenu *sMainMenu;
 	static Game *sGame;
+
+	static int m_LevelID;
 private:
 	GameManager();
 	static bool sInGame;

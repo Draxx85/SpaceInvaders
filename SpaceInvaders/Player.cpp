@@ -1,9 +1,10 @@
 #include "Player.h"
 
 Player::Player()
+	:m_KeyPressStack()
 {
 	SpriteComponent *playerSprite = 
-		new SpriteComponent(*this, Graphics::LoadResource("Resources/SpaceInvaders-Sprite.png"));
+		new SpriteComponent(*this, Graphics::LoadActorResource());
 	
 	AddComponent(playerSprite);
 	playerSprite->m_Sprite->SpriteSrcRect.h = playerSprite->m_Sprite->SpriteSrcRect.w = Graphics::skSpriteSheetWidth;
@@ -50,7 +51,6 @@ void Player::BindKeys()
 	//alternate key binds
 	InputManager::RegisterKeyToAction(SDLK_a, left);
 	InputManager::RegisterKeyToAction(SDLK_d, right);
-	InputManager::RegisterKeyToAction(SDLK_SPACE, shoot);
 }
 
 void Player::UnBindKeys()
@@ -60,7 +60,25 @@ void Player::UnBindKeys()
 
 void Player::Update(float deltaTime)
 {
-	
+ 	m_ElapsedTimeSinceShot += deltaTime;
+	if (m_IsMovingLeft)
+	{
+		m_TargetSpeed = -kMaxSpeed;
+	}
+	else if (m_IsMovingRight)
+	{
+		m_TargetSpeed = kMaxSpeed;
+	}
+	else
+	{
+		m_TargetSpeed = 0;
+	}
+
+	if (m_IsShooting && m_ElapsedTimeSinceShot > kFiringCooldown)
+	{
+		Fire();
+		m_ElapsedTimeSinceShot = 0;
+	}
 }
 
 void Player::Fire()
@@ -72,7 +90,7 @@ void Player::Fire()
 		{
 			if (!(*iter)->IsActive())
 			{
-				(*iter)->Spawn();
+				(*iter)->Spawn(0, kProjectileYOffset);
 				break;
 			}
 		}
@@ -99,13 +117,13 @@ void Player::TimedUpdate(float deltaTime)
 	{
 		if (pos->x < 0.f )
 		{
-			m_Velocity = 0.f;
-			SetPosition(0.f, pos->y);
+			m_Velocity = 0;
+			SetPosition(0, pos->y);
 		}
 		else if (pos->x > Graphics::sWindowWidth - Graphics::skSpriteSheetWidth)
 		{
 			m_Velocity = 0.f;
-			SetPosition(Graphics::sWindowWidth - Graphics::skSpriteSheetWidth, pos->y);
+			SetPosition((float)Graphics::sWindowWidth - (float)Graphics::skSpriteSheetWidth, pos->y);
 		}
 	}
 	Move(m_Velocity, 0);
@@ -122,28 +140,29 @@ void Player::Execute(void *params)
 			switch (action->m_InputAction)
 			{
 				case Left:
-					m_TargetSpeed = -kMaxSpeed;
+					m_IsMovingLeft = true;
 					break;
 				case Right:
-					m_TargetSpeed = kMaxSpeed;
+					m_IsMovingRight = true;
 					break;
 				case Shoot:
-					Fire();
+					m_IsShooting = true;
 					break;
 				default:
 					break;
 			}
 		}
-		else if (action->m_KeyState == KeyUp)
+		if (action->m_KeyState == KeyUp)
 		{
 			switch (action->m_InputAction)
 			{
 				case Left:
+					m_IsMovingLeft = false;
 				case Right:
-					m_TargetSpeed = 0;
+					m_IsMovingRight = false;
 					break;
 				case Shoot:
-					
+					m_IsShooting = false;
 					break;
 				default:
 					break;

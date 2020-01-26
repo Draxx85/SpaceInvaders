@@ -1,8 +1,9 @@
 #include "InputManager.h"
 
-std::map<SDL_Keycode, KeyBind> *InputManager::m_KeyBinds;
+std::map<SDL_Keycode, KeyBind> *InputManager::sKeyBinds;
 int InputManager::m_xAxis = 0;
 int InputManager::m_yAxis = 0;
+SDL_GameController *InputManager::sGameController = nullptr;
 
 InputManager::InputManager()
 {
@@ -10,13 +11,17 @@ InputManager::InputManager()
 
 void InputManager::Init()
 {
-	m_KeyBinds = new std::map<SDL_Keycode, KeyBind>();
+	sKeyBinds = new std::map<SDL_Keycode, KeyBind>();
+
+	int MaxJoysticks = SDL_NumJoysticks();
+
+	sGameController = SDL_GameControllerOpen(0);
 }
 
 void InputManager::ListenForKeyPress(SDL_Event &e)
 {
-	std::map<SDL_Keycode, KeyBind>::iterator key = m_KeyBinds->find(e.key.keysym.sym);
-	if (key != m_KeyBinds->end())
+	std::map<SDL_Keycode, KeyBind>::iterator key = sKeyBinds->find(e.key.keysym.sym);
+	if (key != sKeyBinds->end())
 	{
 		switch (e.type)
 		{
@@ -30,53 +35,30 @@ void InputManager::ListenForKeyPress(SDL_Event &e)
 				return;
 		}
 	}
-
-	if (e.type == SDL_JOYAXISMOTION)
-	{
-		//Motion on controller 0
-		if (e.jaxis.which == 0)
-		{
-			//X axis motion
-			if (e.jaxis.axis == 0)
-			{
-				//Left of dead zone
-				if (e.jaxis.value < -JOYSTICK_DEAD_ZONE)
-				{
-					m_xAxis = -1;
-				}
-				//Right of dead zone
-				else if (e.jaxis.value > JOYSTICK_DEAD_ZONE)
-				{
-					m_xAxis = 1;
-					SDL_Log("JOYPAD");
-				}
-				else
-				{
-					m_xAxis = 0;
-				}
-			}
-			//Y axis motion
-			else if (e.jaxis.axis == 1)
-			{
-				//Below of dead zone
-				if (e.jaxis.value < -JOYSTICK_DEAD_ZONE)
-				{
-					m_yAxis = -1;
-				}
-				//Above of dead zone
-				else if (e.jaxis.value > JOYSTICK_DEAD_ZONE)
-				{
-					m_yAxis = 1;
-				}
-				else
-				{
-					m_yAxis = 0;
-				}
-			}
-		}
-	}
 }
 
+void InputManager::CheckForControllerInput()
+{
+	if (sGameController != nullptr && SDL_GameControllerGetAttached(sGameController))
+	{
+		// NOTE: We have a controller with index ControllerIndex.
+		bool Up = SDL_GameControllerGetButton(sGameController, SDL_CONTROLLER_BUTTON_DPAD_UP);
+		bool Down = SDL_GameControllerGetButton(sGameController, SDL_CONTROLLER_BUTTON_DPAD_DOWN);
+		bool Left = SDL_GameControllerGetButton(sGameController, SDL_CONTROLLER_BUTTON_DPAD_LEFT);
+		bool Right = SDL_GameControllerGetButton(sGameController, SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
+		bool Start = SDL_GameControllerGetButton(sGameController, SDL_CONTROLLER_BUTTON_START);
+		bool Back = SDL_GameControllerGetButton(sGameController, SDL_CONTROLLER_BUTTON_BACK);
+
+		bool AButton = SDL_GameControllerGetButton(sGameController, SDL_CONTROLLER_BUTTON_A);
+
+		Sint16 StickX = SDL_GameControllerGetAxis(sGameController, SDL_CONTROLLER_AXIS_LEFTX);
+		Sint16 StickY = SDL_GameControllerGetAxis(sGameController, SDL_CONTROLLER_AXIS_LEFTY);
+	}
+	else
+	{
+		// TODO: This controller is note plugged in.
+	}
+}
 KeyPressState InputManager::CalcKeyState(Uint32 type)
 {
 	switch (type)
@@ -91,10 +73,17 @@ KeyPressState InputManager::CalcKeyState(Uint32 type)
 
 void InputManager::RegisterKeyToAction(SDL_Keycode key, KeyBind bind)
 {
-	(*m_KeyBinds)[key] = bind;
+	(*sKeyBinds)[key] = bind;
 }
 
 void InputManager::ClearKeyBinds()
 {
-	m_KeyBinds->clear();
+	sKeyBinds->clear();
+}
+
+void InputManager::CleanUp()
+{
+	SDL_GameControllerClose(0);
+	ClearKeyBinds();
+	SAFE_DELETE(sKeyBinds);
 }

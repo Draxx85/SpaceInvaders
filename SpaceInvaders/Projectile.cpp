@@ -7,7 +7,7 @@ Projectile::Projectile()
 	m_FiringDirection = 1;
 }
 
-Projectile::Projectile(int firingDirection, EProjectileColor color, Actor *parent)
+Projectile::Projectile(int firingDirection, EProjectileColor &color, Actor *parent)
 {
 	m_FiringDirection = firingDirection;
 
@@ -29,11 +29,13 @@ Projectile::~Projectile()
 	m_Parent = nullptr;
 }
 
-void Projectile::Spawn()
+void Projectile::Spawn(int xOffset, int yOffset)
 {
 	if (m_Parent != nullptr)
 	{
 		m_SpawnLocation = m_Parent->GetPosition();
+		m_SpawnLocation.x += xOffset;
+		m_SpawnLocation.y += yOffset;
 	}
 	if (m_Sprite != nullptr)
 	{
@@ -54,7 +56,7 @@ void Projectile::DeSpawn()
 
 void Projectile::TimedUpdate(float DeltaTime)
 {
-	IncrementPosition(0, m_ProjectileSpeed*m_FiringDirection);
+	IncrementPosition(0, kProjectileSpeed*m_FiringDirection);
 	SVector2D *pos = &GetPosition();
 	if (pos->y < -Graphics::skSpriteSheetHeight || pos->y > Graphics::sWindowHeight+ Graphics::skSpriteSheetHeight)
 	{

@@ -5,9 +5,10 @@ SDL_Renderer *Graphics::spRenderer = nullptr;
 std::list<SpriteComponent *> *Graphics::spDrawList = nullptr;
 TTF_Font *Graphics::m_Font = nullptr;
 
+SDL_Texture *Graphics::spActortexture = nullptr;
+
 int Graphics::sWindowWidth = 1280;
 int Graphics::sWindowHeight = 960;
-
 bool Graphics::InitGraphics()
 {
 	
@@ -31,6 +32,9 @@ bool Graphics::InitGraphics()
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
 	}
 
+	//Load this into memory and keep a pointer to it fpr actors
+	spActortexture = Graphics::LoadResource("Resources/SpaceInvaders-Sprite.png");
+
 	return true;
 }
 
@@ -43,6 +47,11 @@ void Graphics::CleanGraphics()
 	//Clean Up font
 	TTF_CloseFont(m_Font);
 	m_Font = nullptr;
+
+	if (spActortexture != nullptr)
+	{
+		SDL_DestroyTexture(spActortexture);
+	}
 
 	if (spRenderer != nullptr)
 	{
@@ -64,6 +73,11 @@ void Graphics::Render()
 	}
 
 	SDL_RenderPresent(spRenderer);
+}
+
+SDL_Texture *Graphics::LoadActorResource()
+{
+	return spActortexture;
 }
 
 //TODO: Keep References of resources with links to texture for asset sharing

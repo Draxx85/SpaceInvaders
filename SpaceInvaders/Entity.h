@@ -34,7 +34,7 @@ struct STransform
 	SVector2D Scale;
 	float angle = 0.0f;
 
-	void SetPosition(SVector2D pos)
+	void SetPosition(SVector2D &pos)
 	{
 		if (DestRect != nullptr)
 		{
@@ -44,12 +44,17 @@ struct STransform
 		Position = std::move(pos);
 	}
 
-	void SetScale(SVector2D scale)
+	void SetScale(SVector2D &scale)
 	{
 		if (DestRect != nullptr)
 		{
-			DestRect->w *= (int)scale.x;
-			DestRect->h *= (int)scale.y;
+#pragma warning( push )
+#pragma warning( disable : 4244 )
+
+			DestRect->w *= (float)scale.x;
+			DestRect->h *= (float)scale.y;
+
+#pragma warning( pop )
 		}
 		Scale = std::move(scale);
 	}
@@ -117,16 +122,18 @@ public:
 
 	virtual void AddComponent(Component *component);
 	void SetPosition(SVector2D pos);
-	void SetPosition(int x, int y);
+	void SetPosition(float x, float y);
+	void SetScale(float x, float y);
 	SVector2D &GetPosition();
-	void IncrementPosition(SVector2D pos);
+	SVector2D &GetScale();
+	void IncrementPosition(SVector2D &pos);
 
 	void IncrementPosition(float x, float y);
 
 	template<typename T>
 	static bool TryGetComponent(Entity &entity, T *&obj);
 
-private:
+protected:
 	STransform *m_Transform;
 	
 };

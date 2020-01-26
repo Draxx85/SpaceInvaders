@@ -24,6 +24,7 @@ public:
 	//dirty Sprite Sheet declarations. Should be replaced with data from a file.
 	static const int skSpriteSheetWidth = 128;
 	static const int skSpriteSheetHeight = 128;
+	static const int skSpritesPerRow = 8;
 
 	static int sWindowWidth;
 	static int sWindowHeight;
@@ -35,6 +36,7 @@ public:
 	//Render and Asset Loading functions
 	static void Render();
 	static SDL_Texture *LoadResource(const char* resource);
+	static SDL_Texture *LoadActorResource();
 	static SDL_Texture *LoadText(SDL_Surface* pSurface);
 
 	static SDL_Texture *LoadTextSolid(const char *text, SDL_Color color);
@@ -48,6 +50,8 @@ public:
 	static void SortByZOrder();
 
 	static void SetSrcRectFromTexture(SDL_Texture *const texture, SDL_Rect & rect);
+
+	static SDL_Texture *spActortexture;
 
 private:
 	Graphics();

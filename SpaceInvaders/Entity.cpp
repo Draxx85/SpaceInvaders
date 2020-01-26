@@ -51,7 +51,7 @@ void Entity::SetPosition(SVector2D pos)
 	m_Transform->SetPosition(pos);
 }
 
-void Entity::SetPosition(int x, int y)
+void Entity::SetPosition(float x, float y)
 {
 	SVector2D pos = SVector2D(x, y);
 	m_Transform->SetPosition(pos);
@@ -63,7 +63,18 @@ SVector2D &Entity::GetPosition()
 	return m_Transform->Position;
 }
 
-void Entity::IncrementPosition(SVector2D pos)
+SVector2D &Entity::GetScale()
+{
+	return m_Transform->Scale;
+}
+
+void Entity::SetScale(float x, float y)
+{
+	SVector2D scale = SVector2D(x, y);
+	m_Transform->SetScale(scale);
+}
+
+void Entity::IncrementPosition(SVector2D &pos)
 {
 	m_Transform->IncrementPos(pos.x, pos.y);
 }

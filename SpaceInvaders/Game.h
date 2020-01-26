@@ -14,7 +14,7 @@ public:
 
 	void BuildArena();
 	void AddPlayer();
-	
+	void CreateLevel();
 private:
 	int m_Score;
 

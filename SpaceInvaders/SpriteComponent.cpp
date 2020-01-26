@@ -101,7 +101,7 @@ void SpriteComponent::SetDestRect(SDL_Rect *rect)
 	}
 }
 
-void SpriteComponent::UpdateSpritePos(SVector2D pos)
+void SpriteComponent::UpdateSpritePos(SVector2D &pos)
 {
 	if (m_Sprite != nullptr)
 	{

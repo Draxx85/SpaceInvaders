@@ -1,6 +1,7 @@
 #pragma once
 #include "Actor.h"
 #include "MathHelper.h"
+#include <stack>
 class Player : public Actor, Command
 {
 public:
@@ -16,8 +17,9 @@ public:
 
 private:
 	const float kMaxSpeed = 65.f;
-	const float kTimeToMaxSpeed = 1.05f;
-	const float kSpeedTolerance = 3.f;
+	const float kTimeToMaxSpeed = 0.85f;
+	const float kSpeedTolerance = 0.25f;
+	const float kFiringCooldown = 0.5f;
 
 	float m_AccelRatePerSec;
 	float m_Velocity;
@@ -25,4 +27,12 @@ private:
 	bool m_IsMoving = true;
 	KeyPressState m_KeyState;
 	bool m_IsGoingLeft = false;
+	std::stack<bool> m_KeyPressStack;
+
+	bool m_IsMovingLeft = false;
+	bool m_IsMovingRight = false;
+	bool m_IsShooting = false;
+	float m_ElapsedTimeSinceShot = 0.0f;
+	const int kProjectileYOffset = -85;
+	
 };

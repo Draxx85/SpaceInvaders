@@ -6,7 +6,6 @@
 #define _DISPLAY_FPS_ 1
 
 SDL_Window *Engine::spWindow = nullptr;
-SDL_Joystick *Engine::sGameController = nullptr;
 
 bool Engine::bIsRunning = false;
 
@@ -40,20 +39,6 @@ int Engine::InitEngine()
 	bIsRunning = true;
 
 	sColliderChunks = new ChunkMaster();
-
-	if (SDL_NumJoysticks() < 1)
-	{
-		printf("Warning: No joysticks connected!\n");
-	}
-	else
-	{
-		//Load joystick
-		sGameController = SDL_JoystickOpen(0);
-		if (sGameController == NULL)
-		{
-			SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,"Warning: Unable to open game controller! SDL Error: %s\n", SDL_GetError());
-		}
-	}
 
 	return 0;
 }
@@ -99,6 +84,7 @@ void Engine::StartEngineLoop()
 	while (Engine::IsGameRunning())
 	{
 		HandleEvents(sdl_event);
+		InputManager::CheckForControllerInput();
 		UpdateManager::Update(sDeltaTime);
 		
 		if (TimedUpdateElapsed >= TimedUpdateInterval) 

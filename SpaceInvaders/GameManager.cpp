@@ -5,6 +5,7 @@ StateMachine *GameManager::sGameStateMachine = nullptr;
 MainMenu *GameManager::sMainMenu = nullptr;
 Game *GameManager::sGame;
 bool GameManager::sInGame = false;
+int GameManager::m_LevelID = 0;
 
 void GameManager::Init()
 {

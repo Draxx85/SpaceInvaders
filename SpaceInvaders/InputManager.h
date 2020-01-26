@@ -1,5 +1,6 @@
 #pragma once
 #include "SDL.h"
+#include "Engine.h"
 #include "Command.h"
 #include "KeyBind.h"
 #include <map>
@@ -15,10 +16,14 @@ public:
 	static KeyPressState CalcKeyState(Uint32 type);
 	static void RegisterKeyToAction(SDL_Keycode key, KeyBind bind);
 	static void ClearKeyBinds();
+	static void CleanUp();
+	static void CheckForControllerInput();
 private:
 	InputManager();
-	static std::map<SDL_Keycode, KeyBind> *m_KeyBinds;
+	static std::map<SDL_Keycode, KeyBind> *sKeyBinds;
 	static int m_xAxis;
 	static int m_yAxis;
+
+	static SDL_GameController* sGameController;
 
 };

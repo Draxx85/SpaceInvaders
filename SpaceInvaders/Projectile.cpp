@@ -20,6 +20,7 @@ Projectile::Projectile(int firingDirection, EProjectileColor &color, Actor *pare
 	sprite->m_Sprite->SpriteSrcRect.x = (int)color * 128;
 	sprite->m_Sprite->SpriteSrcRect.y = 0;
 	sprite->m_Sprite->SpriteDestRect.h = sprite->m_Sprite->SpriteDestRect.w = 128;
+	SetScale(0.75f, 0.75f);
 	m_Sprite = sprite;
 	m_Parent = parent;
 }

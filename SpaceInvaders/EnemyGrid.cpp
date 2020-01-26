@@ -6,6 +6,7 @@ EnemyGrid::EnemyGrid()
 	ClearGrid();
 	m_Transform->DestRect = new SDL_Rect();
 	SetPosition(0, 0);
+	StartLevelBehaviour();
 }
 
 void EnemyGrid::PopulateEnemyGrid(int level)
@@ -78,11 +79,9 @@ void EnemyGrid::TimedUpdate(float deltaTime)
 			{
 				continue;
 			}
-			SVector2D scale = m_pGrid[i][j]->GetScale();
-			m_pGrid[i][j]->SetPosition(vec.x + (j*(Graphics::skSpriteSheetWidth* scale.x)), vec.y + (i*(Graphics::skSpriteSheetWidth* scale.y)));
+			m_pGrid[i][j]->IncrementPosition(1, 0);
 		}
-	}
-	
+	}	
 }
 
 bool EnemyGrid::ShouldNextMoveChangeDirection()

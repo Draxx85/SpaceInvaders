@@ -11,10 +11,11 @@ Player::Player()
 	playerSprite->m_Sprite->SpriteSrcRect.x = playerSprite->m_Sprite->SpriteSrcRect.y = 0;
 	playerSprite->m_Sprite->SpriteDestRect.h = playerSprite->m_Sprite->SpriteDestRect.w = Graphics::skSpriteSheetWidth;
 
+	SetScale(0.75f, 0.75f);
 	playerSprite->SetVisible(true);
 	BindKeys();
 	SetPosition(SVector2D(Graphics::sWindowWidth / 2.f,
-		(Graphics::sWindowHeight - (Graphics::sWindowHeight / 3.5f))));
+		(Graphics::sWindowHeight - (Graphics::sWindowHeight / 5.5f))));
 
 	UpdateManager::RegisterUpdate(this);
 	UpdateManager::RegisterTimedUpdate(this);

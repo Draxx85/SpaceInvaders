@@ -18,9 +18,9 @@ void Game::BuildArena()
 	SpriteComponent *spriteComp = new SpriteComponent(Graphics::LoadResource("Resources/ShipHull.png"));
 	m_SSLarian->AddComponent(spriteComp);
 	spriteComp->SetVisible(true);
-	
-	pos.x = (float)Graphics::sWindowWidth / 2 - (spriteComp->m_Sprite->SpriteSrcRect.w / 2);
-	pos.y = (float)Graphics::sWindowHeight - (spriteComp->m_Sprite->SpriteSrcRect.h / 3);
+	m_SSLarian->SetScale(0.75f, 0.75f);
+	pos.x = (float)Graphics::sWindowWidth / 2 - (spriteComp->m_Sprite->SpriteDestRect.w / 2);
+	pos.y = (float)Graphics::sWindowHeight - (spriteComp->m_Sprite->SpriteDestRect.h / 4);
 	
 	m_SSLarian->SetPosition(pos);
 }

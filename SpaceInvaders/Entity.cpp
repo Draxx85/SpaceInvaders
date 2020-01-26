@@ -51,6 +51,13 @@ void Entity::SetPosition(SVector2D pos)
 	m_Transform->SetPosition(pos);
 }
 
+void Entity::SetPosition(int x, int y)
+{
+	SVector2D pos = SVector2D(x, y);
+	m_Transform->SetPosition(pos);
+}
+
+
 SVector2D &Entity::GetPosition()
 {
 	return m_Transform->Position;

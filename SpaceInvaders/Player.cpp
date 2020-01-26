@@ -94,6 +94,20 @@ void Player::TimedUpdate(float deltaTime)
 	{
 		m_Velocity -= m_AccelRatePerSec * deltaTime;
 	}
+	SVector2D *pos = &GetPosition();
+	if (pos != nullptr)
+	{
+		if (pos->x < 0.f )
+		{
+			m_Velocity = 0.f;
+			SetPosition(0.f, pos->y);
+		}
+		else if (pos->x > Graphics::sWindowWidth - Graphics::skSpriteSheetWidth)
+		{
+			m_Velocity = 0.f;
+			SetPosition(Graphics::sWindowWidth - Graphics::skSpriteSheetWidth, pos->y);
+		}
+	}
 	Move(m_Velocity, 0);
 }
 

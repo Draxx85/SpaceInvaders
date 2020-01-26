@@ -120,6 +120,9 @@
     <ClCompile Include="MathHelper.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="ChunkMaster.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\logo.png">
@@ -233,6 +236,9 @@
       <Filter>Header Files\Game</Filter>
     </ClInclude>
     <ClInclude Include="MathHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ChunkMaster.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

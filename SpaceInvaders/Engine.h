@@ -25,6 +25,8 @@ private:
 
 	static bool SetupSDL();
 
+	static SDL_Joystick* sGameController;
+
 	static SDL_Window *spWindow;
 	static void HandleEvents(SDL_Event &e);
 

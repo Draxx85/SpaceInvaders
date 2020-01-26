@@ -12,11 +12,13 @@ Player::Player()
 
 	playerSprite->SetVisible(true);
 	BindKeys();
-	SetPosition(SVector2D(Graphics::sWindowWidth / 2,
-		(Graphics::sWindowHeight - (Graphics::sWindowHeight / 3.5))));
+	SetPosition(SVector2D(Graphics::sWindowWidth / 2.f,
+		(Graphics::sWindowHeight - (Graphics::sWindowHeight / 3.5f))));
 
 	UpdateManager::RegisterUpdate(this);
 	UpdateManager::RegisterTimedUpdate(this);
+	m_AccelRatePerSec = kMaxSpeed / kTimeToMaxSpeed;
+	m_TargetSpeed = 0;
 }
 
 Player::~Player()
@@ -58,9 +60,28 @@ void Player::Update(float deltaTime)
 	
 }
 
+void Player::Fire()
+{
+
+}
+
 void Player::TimedUpdate(float deltaTime)
 {
-	Move(m_CurrentSpeed * deltaTime, 0);
+	if (m_TargetSpeed - kSpeedTolerance <= m_Velocity 
+		&& m_Velocity <= m_TargetSpeed + kSpeedTolerance)
+	{
+		m_Velocity = m_TargetSpeed;
+	}
+	else if (m_Velocity < m_TargetSpeed)
+	{
+		m_Velocity += m_AccelRatePerSec * deltaTime;
+	}
+	else 
+	{
+		m_Velocity -= m_AccelRatePerSec * deltaTime;
+	}
+
+	Move(m_Velocity, 0);
 }
 
 void Player::Execute(void *params)
@@ -74,10 +95,10 @@ void Player::Execute(void *params)
 			switch (action->m_InputAction)
 			{
 				case Left:
-					m_CurrentSpeed = -m_kMaxSpeed;
+					m_TargetSpeed = -kMaxSpeed;
 					break;
 				case Right:
-					m_CurrentSpeed = m_kMaxSpeed;
+					m_TargetSpeed = kMaxSpeed;
 					break;
 				case Shoot:
 					Fire();
@@ -93,7 +114,7 @@ void Player::Execute(void *params)
 			{
 				case Left:
 				case Right:
-					m_CurrentSpeed = 0;
+					m_TargetSpeed = 0;
 					break;
 				case Shoot:
 					

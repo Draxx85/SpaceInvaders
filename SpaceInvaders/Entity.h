@@ -19,6 +19,12 @@ struct SVector2D
 
 	SVector2D(float xPos, float yPos)
 		:x(xPos), y(yPos){}
+
+	void AddToPos(const float newX, const float newY)
+	{
+		x += newX;
+		y += newY;
+	}
 };
 
 struct STransform
@@ -83,6 +89,16 @@ struct STransform
 			Scale = SVector2D(1, 1);
 		}
 	}
+
+	void IncrementPos(float x, float y)
+	{
+		Position.AddToPos(x, y);
+		if (DestRect != nullptr)
+		{
+			DestRect->x = (int)Position.x;
+			DestRect->y = (int)Position.y;
+		}
+	}
 };
 
 class Component;
@@ -101,6 +117,10 @@ public:
 
 	virtual void AddComponent(Component *component);
 	void SetPosition(SVector2D pos);
+
+	void IncrementPosition(SVector2D pos);
+
+	void IncrementPosition(float x, float y);
 
 	template<typename T>
 	static bool TryGetComponent(Entity &entity, T *&obj);

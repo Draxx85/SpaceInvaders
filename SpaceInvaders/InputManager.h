@@ -5,6 +5,7 @@
 #include <map>
 
 
+const int JOYSTICK_DEAD_ZONE = 8000;
 
 class InputManager
 {
@@ -17,5 +18,7 @@ public:
 private:
 	InputManager();
 	static std::map<SDL_Keycode, KeyBind> *m_KeyBinds;
+	static int m_xAxis;
+	static int m_yAxis;
 
 };

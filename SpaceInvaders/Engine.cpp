@@ -6,6 +6,7 @@
 #define _DISPLAY_FPS_ 1
 
 SDL_Window *Engine::spWindow = nullptr;
+SDL_Joystick *Engine::sGameController = nullptr;
 
 bool Engine::bIsRunning = false;
 
@@ -35,6 +36,20 @@ int Engine::InitEngine()
 	InputManager::Init();
 
 	bIsRunning = true;
+
+	if (SDL_NumJoysticks() < 1)
+	{
+		printf("Warning: No joysticks connected!\n");
+	}
+	else
+	{
+		//Load joystick
+		sGameController = SDL_JoystickOpen(0);
+		if (sGameController == NULL)
+		{
+			SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,"Warning: Unable to open game controller! SDL Error: %s\n", SDL_GetError());
+		}
+	}
 
 	return 0;
 }
@@ -112,6 +127,8 @@ void Engine::HandleEvents(SDL_Event &e)
 			case SDL_KEYUP:
 			case SDL_MOUSEBUTTONDOWN:
 			case SDL_MOUSEBUTTONUP:
+			case SDL_JOYBUTTONDOWN:
+			case SDL_JOYBUTTONUP:
 				InputManager::ListenForKeyPress(e);
 			default:
 				break;

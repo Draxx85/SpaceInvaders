@@ -1,6 +1,6 @@
 #pragma once
 #include "Actor.h"
-
+#include "MathHelper.h"
 class Player : public Actor, Command
 {
 public:
@@ -9,14 +9,18 @@ public:
 
 	void BindKeys();
 	void UnBindKeys();
-
+	void Fire() override;
 	void Update(float deltaTime) override;
 	void TimedUpdate(float deltaTime) override;
 	void Execute(void* params);
 
 private:
-	float const m_kMaxSpeed = 1000;
-	float m_CurrentSpeed;
+	const float kMaxSpeed = 65.f;
+	const float kTimeToMaxSpeed = 1.2f;
+	const float kSpeedTolerance = 3.f;
+	float m_AccelRatePerSec;
+	float m_Velocity;
+	float m_TargetSpeed;
 	bool m_IsMoving = true;
 	KeyPressState m_KeyState;
 	bool m_IsGoingLeft = false;

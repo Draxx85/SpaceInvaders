@@ -1,9 +1,11 @@
 #pragma once
-#include "Actor.h"
+#include "Entity.h"
+class Actor;
 
-class Projectile : public Actor
+class Projectile : public Entity
 {
 public:
+	Projectile();
 	~Projectile();
 };
 

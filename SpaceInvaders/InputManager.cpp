@@ -1,6 +1,8 @@
 #include "InputManager.h"
 
 std::map<SDL_Keycode, KeyBind> *InputManager::m_KeyBinds;
+int InputManager::m_xAxis = 0;
+int InputManager::m_yAxis = 0;
 
 InputManager::InputManager()
 {
@@ -26,6 +28,51 @@ void InputManager::ListenForKeyPress(SDL_Event &e)
 			default:
 				//ignore and return;
 				return;
+		}
+	}
+
+	if (e.type == SDL_JOYAXISMOTION)
+	{
+		//Motion on controller 0
+		if (e.jaxis.which == 0)
+		{
+			//X axis motion
+			if (e.jaxis.axis == 0)
+			{
+				//Left of dead zone
+				if (e.jaxis.value < -JOYSTICK_DEAD_ZONE)
+				{
+					m_xAxis = -1;
+				}
+				//Right of dead zone
+				else if (e.jaxis.value > JOYSTICK_DEAD_ZONE)
+				{
+					m_xAxis = 1;
+					SDL_Log("JOYPAD");
+				}
+				else
+				{
+					m_xAxis = 0;
+				}
+			}
+			//Y axis motion
+			else if (e.jaxis.axis == 1)
+			{
+				//Below of dead zone
+				if (e.jaxis.value < -JOYSTICK_DEAD_ZONE)
+				{
+					m_yAxis = -1;
+				}
+				//Above of dead zone
+				else if (e.jaxis.value > JOYSTICK_DEAD_ZONE)
+				{
+					m_yAxis = 1;
+				}
+				else
+				{
+					m_yAxis = 0;
+				}
+			}
 		}
 	}
 }

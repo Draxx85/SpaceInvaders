@@ -3,10 +3,10 @@
 enum EEnemyTypes
 {
 	BlankEnemyType,
-	GreenType = 4,
-	RedType = 6,
-	BlueType = 8,
-	BossType = 10, 
+	GreenType = 5,
+	RedType = 7,
+	BlueType = 9,
+	BossType = 11, 
 };
 
 class Level

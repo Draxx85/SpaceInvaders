@@ -34,10 +34,10 @@ public:
 	void SetDestRect(SDL_Rect *rect);
 
 	void UpdateSpritePos(SVector2D &pos);
-
+	void SetSpriteMaxFrame(int maxFrames);
 private:
-	float const m_kAnimFrameRate = 24.0f;
-	float m_TimeSinceAnimUpdate = 0.0f;
+	float const m_kAnimFrameRate = 12.0f;
+	float m_TimeSinceAnimUpdate = 1.0f;
 	void UpdateSprite(float deltaTime);
 	bool m_IsVisible = false;
 };

@@ -79,12 +79,22 @@ void EnemyGrid::TimedUpdate(float deltaTime)
 			{
 				continue;
 			}
-			m_pGrid[i][j]->IncrementPosition(1, 0);
+			m_pGrid[i][j]->IncrementPosition(1*(m_Movingleft ? -1 : 1), 0);
+			CheckNextMoveDirection(m_pGrid[i][j]);
 		}
 	}	
 }
 
-bool EnemyGrid::ShouldNextMoveChangeDirection()
+void EnemyGrid::CheckNextMoveDirection(Enemy *enemy)
 {
-	return false;
+	SVector2D pos = enemy->GetPosition();
+	int width = enemy->GetTransform()->DestRect->w; //gross, make this safer later! TODO:
+	if (pos.x < 0)
+	{
+		m_Movingleft = false;
+	}
+	else if (pos.x >(Graphics::sWindowWidth - width))
+	{
+		m_Movingleft = true;
+	}
 }

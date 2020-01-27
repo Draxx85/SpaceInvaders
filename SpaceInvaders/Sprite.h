@@ -12,10 +12,10 @@ public:
 	~Sprite();
 
 	Sprite &operator++();
-	Sprite operator++(int);
+	Sprite &operator++(int);
 
 	Sprite &operator--();
-	Sprite operator--(int);
+	Sprite &operator--(int);
 
 	SDL_Rect SpriteSrcRect;
 	SDL_Rect SpriteDestRect;

@@ -21,31 +21,43 @@ Sprite::~Sprite()
 //Increments the frame of the sprite for animations
 Sprite &Sprite::operator++()
 {
-	m_CurrentFrame = (m_CurrentFrame < m_MaxFrames) ? ++m_CurrentFrame : 0;
-	NextFrame();
+	if (m_MaxFrames > 1)
+	{
+		m_CurrentFrame = (m_CurrentFrame < (m_MaxFrames - 1)) ? ++m_CurrentFrame : 0;
+		NextFrame();
+	}
 	return *this;
 }
 
-Sprite Sprite::operator++(int)
+Sprite &Sprite::operator++(int)
 {
-	//There is no need for this to behave differently to the postfix increment operator
-	m_CurrentFrame = (m_CurrentFrame < m_MaxFrames) ? ++m_CurrentFrame : 0;
-	NextFrame();
+	if (m_MaxFrames > 1)
+	{
+		//There is no need for this to behave differently to the postfix increment operator
+		m_CurrentFrame = (m_CurrentFrame < (m_MaxFrames-1)) ? ++m_CurrentFrame : 0;
+		NextFrame();
+	}
 	return *this;
 }
 
 Sprite &Sprite::operator--()
 {
-	m_CurrentFrame = (m_CurrentFrame > 0) ? --m_CurrentFrame : 0; //Don't want to support rewind wrap arounds
-	PreviousFrame();
+	if (m_MaxFrames > 1)
+	{
+		m_CurrentFrame = (m_CurrentFrame > 0) ? --m_CurrentFrame : 0; //Don't want to support rewind wrap arounds
+		PreviousFrame();
+	}
 	return *this;
 }
 
-Sprite Sprite::operator--(int)
+Sprite &Sprite::operator--(int)
 {
-	//There is no need for this to behave differently to the postfix decrement operator
-	m_CurrentFrame = (m_CurrentFrame > 0) ? --m_CurrentFrame : 0; //Don't want to support rewind wrap arounds
-	PreviousFrame();
+	if (m_MaxFrames > 1)
+	{
+		//There is no need for this to behave differently to the postfix decrement operator
+		m_CurrentFrame = (m_CurrentFrame > 0) ? --m_CurrentFrame : 0; //Don't want to support rewind wrap arounds
+		PreviousFrame();
+	}
 	return *this;
 }
 
@@ -60,7 +72,14 @@ void Sprite::FreeTexture()
 
 void Sprite::NextFrame()
 {
-	
+	if (m_CurrentFrame >= (m_MaxFrames-1) && m_MaxFrames > 1)
+	{
+		SpriteSrcRect.x -= (m_MaxFrames-1) * skSpriteWidth;
+	}
+	else if (m_CurrentFrame <= (m_MaxFrames-1) && m_MaxFrames > 1)
+	{
+		SpriteSrcRect.x += skSpriteWidth;
+	}
 }
 
 void Sprite::PreviousFrame()

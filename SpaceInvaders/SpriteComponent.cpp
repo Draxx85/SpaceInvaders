@@ -33,6 +33,7 @@ SpriteComponent::SpriteComponent(SDL_Texture * texture)
 SpriteComponent::~SpriteComponent()
 {
 	Graphics::RemoveSpriteFromDrawList(this);
+	UpdateManager::ClearTimedUpdate(this);
 	SAFE_DELETE(m_Sprite);
 }
 
@@ -61,11 +62,19 @@ void SpriteComponent::SetVisible(const bool visible)
 		m_IsVisible = visible;
 		if (visible)
 		{
+			if (m_Sprite->m_MaxFrames > 1)
+			{
+				UpdateManager::RegisterTimedUpdate(this);
+			}
 			Graphics::RegisterSpriteToDraw(this);
 		}
 		else
 		{
 			Graphics::RemoveSpriteFromDrawList(this);
+			if (m_Sprite->m_MaxFrames > 1)
+			{
+				UpdateManager::ClearTimedUpdate(this);
+			}
 		}
 	}
 }
@@ -77,12 +86,12 @@ const bool SpriteComponent::IsVisible()
 
 void SpriteComponent::Update(float deltaTime)
 {
-	UpdateSprite(deltaTime);
+	
 }
 
 void SpriteComponent::TimedUpdate(float deltaTime)
 {
-
+	UpdateSprite(deltaTime);
 }
 
 void SpriteComponent::SetSrcRect(SDL_Rect *rect)
@@ -114,8 +123,14 @@ void SpriteComponent::UpdateSprite(float deltaTime)
 	m_TimeSinceAnimUpdate += deltaTime;
 
 	//We need to see if enough time has passed to update animation frame
-	if (m_TimeSinceAnimUpdate >= (1 / m_kAnimFrameRate)) 
+	if (m_TimeSinceAnimUpdate >= (1 / m_kAnimFrameRate))
 	{
-		m_Sprite++;
+		++(*m_Sprite);
+		m_TimeSinceAnimUpdate = 0;
 	}
+}
+
+void SpriteComponent::SetSpriteMaxFrame(int maxFrames)
+{
+	m_Sprite->m_MaxFrames = maxFrames;
 }

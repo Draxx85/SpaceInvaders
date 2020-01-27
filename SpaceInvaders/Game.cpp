@@ -33,5 +33,5 @@ void Game::AddPlayer()
 void Game::CreateLevel()
 {
 	m_EnemyGrid = new EnemyGrid();
-	m_EnemyGrid->PopulateEnemyGrid(5);
+	m_EnemyGrid->PopulateEnemyGrid(1);
 }

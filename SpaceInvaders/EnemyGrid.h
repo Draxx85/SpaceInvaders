@@ -16,6 +16,6 @@ private:
 	Enemy *m_pGrid[Level::skMaxEnemyGridHeight][Level::skMaxEnemyGridWidth];
 	Level *m_pLevel;
 	bool m_Movingleft = false;
-	bool ShouldNextMoveChangeDirection();
+	void CheckNextMoveDirection(Enemy *enemy);
 };
 

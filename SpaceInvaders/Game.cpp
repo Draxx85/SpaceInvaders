@@ -6,6 +6,8 @@ Game::Game()
 	BuildArena();
 	AddPlayer();
 	CreateLevel();
+	AudioManager::LoadMusicResource("Resources/game.ogg");
+	AudioManager::PlayMusic();
 }
 
 Game::~Game()

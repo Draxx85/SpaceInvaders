@@ -7,11 +7,14 @@ MainMenu::MainMenu()
 	InitLogo();
 	AddButtons();
 	RegisterKeybinds();
+	AudioManager::LoadMusicResource("Resources/menu.ogg");
+	AudioManager::PlayMusic();
 }
 
 MainMenu::~MainMenu()
 {
 	InputManager::ClearKeyBinds();
+	AudioManager::ClearMusic();
 
 	delete m_GameTitle;
 

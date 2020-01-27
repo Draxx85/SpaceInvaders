@@ -81,7 +81,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalOptions>D:\Dev\SDL2-2.0.10\VisualC\Win32\Debug\SDL2.lib D:\Dev\SDL2-2.0.10\VisualC\Win32\Debug\SDL2main.lib D:\Dev\SDL2-2.0.10\VisualC\Win32\Debug\SDL2_image.lib D:\Dev\SDL2-2.0.10\VisualC\Win32\Debug\SDL2_ttf.lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>D:\Dev\SDL2-2.0.10\VisualC\Win32\Debug\SDL2.lib D:\Dev\SDL2-2.0.10\VisualC\Win32\Debug\SDL2main.lib D:\Dev\SDL2-2.0.10\VisualC\Win32\Debug\SDL2_image.lib D:\Dev\SDL2-2.0.10\VisualC\Win32\Debug\SDL2_ttf.lib D:\Dev\SDL2-2.0.10\VisualC\Win32\Debug\SDL2_mixer.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -203,6 +203,10 @@
   </ItemGroup>
   <ItemGroup>
     <Font Include="Resources\Pixeled.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\game.ogg" />
+    <None Include="Resources\menu.ogg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

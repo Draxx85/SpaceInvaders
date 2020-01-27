@@ -159,6 +159,7 @@ void Player::Execute(void *params)
 			{
 				case Left:
 					m_IsMovingLeft = false;
+					break;
 				case Right:
 					m_IsMovingRight = false;
 					break;

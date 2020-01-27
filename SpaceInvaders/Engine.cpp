@@ -35,6 +35,7 @@ int Engine::InitEngine()
 	}
 
 	InputManager::Init();
+	AudioManager::Init();
 
 	bIsRunning = true;
 

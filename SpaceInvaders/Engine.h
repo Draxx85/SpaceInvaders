@@ -7,8 +7,10 @@
 #include "UpdateManager.h"
 #include "InputManager.h"
 #include "ChunkMaster.h"
+#include "AudioManager.h"
 
 #define SAFE_DELETE(p)	{if (p)	{ delete (p); (p) = nullptr; } }
+class ChunkMaster;
 
 class Engine {
 public:

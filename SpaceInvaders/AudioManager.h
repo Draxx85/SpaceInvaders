@@ -6,10 +6,9 @@
 class AudioManager
 {
 public:
-	
 	static void Init();
 	static void LoadMusicResource(std::string res);
-	static void LoadSFXResource(std::string res);
+	static Mix_Chunk *LoadSFXResource(std::string res);
 	static void PlayMusic();
 	static void Clean();
 	static void ClearMusic();

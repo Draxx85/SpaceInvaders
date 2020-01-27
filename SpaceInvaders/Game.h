@@ -29,6 +29,7 @@ private:
 	Entity *m_PlayerStatusEntity;
 
 	Entity *m_SSLarian;
+	Entity *m_Background;
 
 };
 

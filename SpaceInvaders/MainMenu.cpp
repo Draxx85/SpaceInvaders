@@ -88,14 +88,18 @@ void MainMenu::InitStartGame()
 {
 	TextComponent *textComp = new TextComponent(*m_StartGame, "Start Game");
 	m_StartGame->AddComponent(textComp);
-	m_StartGame->Activate = [](float deltaTime) { GameManager::StartGame(); };
+	m_StartGame->Activate = [](float deltaTime) { GameManager::StartGame();};
 	textComp->SetVisible(true);
+	m_StartGame->AddComponent(new SoundComponent(AudioManager::LoadSFXResource("Resources/MenuMove.wav")));
+	m_StartGame->AddComponent(new SoundComponent(AudioManager::LoadSFXResource("Resources/Select.wav")));
 }
 
 void MainMenu::InitLeaderboard()
 {
 	TextComponent *textComp = new TextComponent(*m_Leaderboards, "Leaderboards");
 	m_Leaderboards->AddComponent(textComp);
+	m_Leaderboards->AddComponent(new SoundComponent(AudioManager::LoadSFXResource("Resources/MenuMove.wav")));
+	m_Leaderboards->AddComponent(new SoundComponent(AudioManager::LoadSFXResource("Resources/Select.wav")));
 	m_Leaderboards->Activate = [](float deltaTime) { return; };
 	textComp->SetVisible(true);
 }
@@ -104,6 +108,8 @@ void MainMenu::InitExit()
 {
 	TextComponent *textComp = new TextComponent(*m_Exit, "Exit");
 	m_Exit->AddComponent(textComp);
+	m_Exit->AddComponent(new SoundComponent(AudioManager::LoadSFXResource("Resources/MenuMove.wav")));
+	m_Exit->AddComponent(new SoundComponent(AudioManager::LoadSFXResource("Resources/Select.wav")));
 	m_Exit->Activate = [](float deltaTime)
 	{
 		SDL_Event sdlevent;

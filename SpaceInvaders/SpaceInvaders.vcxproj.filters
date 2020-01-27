@@ -137,6 +137,9 @@
     <Image Include="Resources\ShipHull.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Resources\spaceimage.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -254,5 +257,13 @@
     <None Include="Resources\menu.ogg">
       <Filter>Resource Files</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Resources\MenuMove.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="Resources\Select.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
   </ItemGroup>
 </Project>

@@ -2,6 +2,7 @@
 #include "Entity.h"
 #include "StateMachine.h"
 #include "TextComponent.h"
+#include "SoundComponent.h"
 
 enum EButtonStates
 {
@@ -23,9 +24,12 @@ public:
 	bool m_IsHighlighted = true;
 	void SetHighlighted(bool isSelected);
 
+	void PlaySelected();
+
 	void AddComponent(Component *component) override;
 	void UpdateTexture();
+	
 private:
 	TextComponent *m_TextComponent;
-
+	SoundComponent *m_Highlight, *m_Select;
 };

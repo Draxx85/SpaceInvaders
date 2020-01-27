@@ -163,6 +163,7 @@
     <Image Include="Resources\logo.png" />
     <Image Include="Resources\ShipBlock.png" />
     <Image Include="Resources\ShipHull.png" />
+    <Image Include="Resources\spaceimage.png" />
     <Image Include="Resources\SpaceInvaders-Sprite.png" />
   </ItemGroup>
   <ItemGroup>
@@ -207,6 +208,10 @@
   <ItemGroup>
     <None Include="Resources\game.ogg" />
     <None Include="Resources\menu.ogg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Resources\MenuMove.wav" />
+    <Media Include="Resources\Select.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

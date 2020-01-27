@@ -9,6 +9,8 @@ void AudioManager::Init()
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "SDL_mixer could not initialize! SDL_mixer Error: %s", Mix_GetError());
 		return;
 	}
+	Mix_VolumeMusic(42);
+	Mix_Volume(-1, 32);
 }
 
 void AudioManager::LoadMusicResource(std::string res)
@@ -20,8 +22,14 @@ void AudioManager::LoadMusicResource(std::string res)
 	}
 }
 
-void AudioManager::LoadSFXResource(std::string res)
+Mix_Chunk *AudioManager::LoadSFXResource(std::string res)
 {
+	Mix_Chunk *sfx = Mix_LoadWAV(res.c_str());
+	if (sfx == nullptr)
+	{
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load high sound effect! SDL_mixer Error: %s", Mix_GetError());
+	}
+	return sfx;
 }
 
 void AudioManager::PlayMusic()

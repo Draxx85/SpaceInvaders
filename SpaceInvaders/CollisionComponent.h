@@ -9,10 +9,7 @@ public:
 
 	SDL_Rect m_BoundingBox;
 
-	void HandleCollision(CollisionComponent &collider)
-	{
-
-	}
+	void HandleCollision(CollisionComponent &collider);
 
 	bool CheckCollision(SDL_Rect &rect);
 private:

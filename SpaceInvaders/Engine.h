@@ -6,8 +6,8 @@
 #include "Graphics.h"
 #include "UpdateManager.h"
 #include "InputManager.h"
-#include "ChunkMaster.h"
 #include "AudioManager.h"
+#include "CollisionManager.h"
 
 #define SAFE_DELETE(p)	{if (p)	{ delete (p); (p) = nullptr; } }
 class ChunkMaster;
@@ -22,8 +22,6 @@ public:
 	static SDL_Window* GetWindow();
 
 	static float sCurrentFramePerSecond;
-
-	static ChunkMaster *sColliderChunks;
 
 private:
 	Engine();

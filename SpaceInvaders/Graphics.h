@@ -52,7 +52,7 @@ public:
 	static void SetSrcRectFromTexture(SDL_Texture *const texture, SDL_Rect & rect);
 
 	static SDL_Texture *spActortexture;
-
+	static SDL_Renderer *spRenderer;
 private:
 	Graphics();
 
@@ -61,7 +61,7 @@ private:
 
 	//Static Render Variable declarations
 	static SDL_Surface *spBitmapSurface;
-	static SDL_Renderer *spRenderer;
+	
 	static std::list<SpriteComponent*> *spDrawList;
 	static TTF_Font *m_Font;
 };

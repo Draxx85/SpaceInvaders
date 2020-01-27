@@ -1,7 +1,7 @@
 #pragma once
 #include "Entity.h"
 #include "Projectile.h"
-#include "CollisionComponent.h"
+//#include "CollisionComponent.h"
 
 enum EProjectileColor
 {

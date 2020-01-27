@@ -17,8 +17,6 @@ public:
 private:
 	int screenWidthChunks;
 	int screenHeightChunks;
-	std::vector<CollisionComponent*> m_Chunks[8][8];
-	std::set<CollisionComponent, CollisionComponent> m_ActiveCollisions;
-	
+	std::vector<CollisionComponent*> m_Chunks[8][8];	
 };
 

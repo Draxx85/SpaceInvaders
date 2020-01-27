@@ -132,7 +132,11 @@ void MainMenu::RegisterKeybinds()
 	InputManager::RegisterKeyToAction(SDLK_DOWN, down);
 
 	KeyBind select;
-	down.m_Command = this;
-	down.m_InputAction = Select;
-	InputManager::RegisterKeyToAction(SDLK_RETURN, down);
+	select.m_Command = this;
+	select.m_InputAction = Select;
+	InputManager::RegisterKeyToAction(SDLK_RETURN, select);
+
+	InputManager::RegisterKeyToAction(SDLK_w, up);
+	InputManager::RegisterKeyToAction(SDLK_s, down);
+	InputManager::RegisterKeyToAction(SDLK_SPACE, select);
 }

@@ -128,6 +128,8 @@ public:
 	SVector2D &GetScale();
 	void IncrementPosition(SVector2D &pos);
 
+	virtual void DoCollision(unsigned char collisionType);
+
 	void IncrementPosition(float x, float y);
 
 	template<typename T>

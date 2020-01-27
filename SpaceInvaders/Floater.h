@@ -3,5 +3,9 @@
 class Floater :
 	public Entity
 {
+	Floater();
+	~Floater();
+
+
 };
 

@@ -12,10 +12,25 @@ Enemy::Enemy(const EEnemyTypes *type)
 	sprite->m_Sprite->SpriteSrcRect.x = Graphics::skSpriteSheetWidth * (spritePos % Graphics::skSpritesPerRow);
 	sprite->m_Sprite->SpriteSrcRect.y = (floor((float)spritePos / (float)Graphics::skSpritesPerRow))*Graphics::skSpriteSheetHeight;
 	sprite->SetSpriteMaxFrame(2);
-	sprite->SetVisible(true);
 	SetScale(0.65f, 0.65f);
+	CollisionComponent *collider = new CollisionComponent(EnemyCollidables, *this);
+	AddComponent(collider);
+	collider->Register();
+	sprite->SetVisible(true);
+	
+}
+
+void Enemy::DoCollision(unsigned char collisionType)
+{
+
+}
+
+void Enemy::PlayExplosion()
+{
 }
 
 Enemy::~Enemy()
 {
 }
+
+

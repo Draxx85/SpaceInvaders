@@ -7,7 +7,7 @@ Projectile::Projectile()
 	m_FiringDirection = 1;
 }
 
-Projectile::Projectile(int firingDirection, EProjectileColor &color, Actor *parent)
+Projectile::Projectile(int firingDirection, EProjectileColor &color, Actor *owner)
 {
 	m_FiringDirection = firingDirection;
 
@@ -15,14 +15,16 @@ Projectile::Projectile(int firingDirection, EProjectileColor &color, Actor *pare
 		new SpriteComponent(*this, Graphics::LoadResource("Resources/SpaceInvaders-Sprite.png"));
 
 	AddComponent(sprite);
-	CollisionComponent *collider = new CollisionComponent();
 	sprite->m_Sprite->SpriteSrcRect.h = sprite->m_Sprite->SpriteSrcRect.w = 128;
 	sprite->m_Sprite->SpriteSrcRect.x = (int)color * 128;
 	sprite->m_Sprite->SpriteSrcRect.y = 0;
 	sprite->m_Sprite->SpriteDestRect.h = sprite->m_Sprite->SpriteDestRect.w = 128;
 	SetScale(0.75f, 0.75f);
 	m_Sprite = sprite;
-	m_Parent = parent;
+
+	CollisionComponent *collider = new CollisionComponent(PlayerProjectile | EnemyCollidables, *this);
+	AddComponent(collider);
+	m_Parent = owner;
 }
 
 Projectile::~Projectile()
@@ -42,6 +44,11 @@ void Projectile::Spawn(int xOffset, int yOffset)
 	{
 		SetPosition(m_SpawnLocation);
 		m_Sprite->SetVisible(true);
+		CollisionComponent *coll;
+		if (TryGetComponent<CollisionComponent>(*this, coll))
+		{
+			coll->Register();
+		}
 	}
 	UpdateManager::RegisterTimedUpdate(this);
 }
@@ -52,6 +59,11 @@ void Projectile::DeSpawn()
 	if (m_Sprite != nullptr)
 	{
 		m_Sprite->SetVisible(false);
+		CollisionComponent *coll;
+		if (TryGetComponent<CollisionComponent>(*this, coll))
+		{
+			coll->Unregister();
+		}
 	}
 }
 
@@ -62,6 +74,29 @@ void Projectile::TimedUpdate(float DeltaTime)
 	if (pos->y < -Graphics::skSpriteSheetHeight || pos->y > Graphics::sWindowHeight+ Graphics::skSpriteSheetHeight)
 	{
 		DeSpawn();
+	}
+}
+
+void Projectile::DoCollision(unsigned char layer)
+{
+	
+	CollisionComponent *coll;
+	if (TryGetComponent<CollisionComponent>(*this, coll))
+	{
+		if (coll->m_Layer & PlayerProjectile)
+		{
+			if (layer & (EnemyCollidables | NeutralCollidables | EnemyProjectile))
+			{
+				DeSpawn();
+			}
+		}
+		else if (coll->m_Layer & EnemyProjectile)
+		{
+			if (layer & (NeutralCollidables | PlayerCollidables | PlayerProjectile))
+			{
+				DeSpawn();
+			}
+		}
 	}
 }
 

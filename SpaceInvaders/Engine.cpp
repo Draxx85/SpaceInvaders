@@ -14,8 +14,6 @@ Uint32 Engine::sStartTime = 0;
 float Engine::sDeltaTime = 0;
 float const Engine::TimedUpdateInterval = 0.025f;
 float Engine::TimedUpdateElapsed = 0.0f;
-ChunkMaster *Engine::sColliderChunks = nullptr;
-
 
 //Initialize all the main components of the engine
 int Engine::InitEngine() 
@@ -36,10 +34,9 @@ int Engine::InitEngine()
 
 	InputManager::Init();
 	AudioManager::Init();
+	CollisionManager::Init();
 
 	bIsRunning = true;
-
-	sColliderChunks = new ChunkMaster();
 
 	return 0;
 }
@@ -49,6 +46,9 @@ void Engine::CleanEngine()
 {	
 	UpdateManager::Clean();
 	Graphics::CleanGraphics();
+	InputManager::CleanUp();
+	AudioManager::Clean();
+	CollisionManager::CleanUp();
 	
 	if (spWindow != NULL)
 	{
@@ -93,6 +93,7 @@ void Engine::StartEngineLoop()
 			UpdateManager::TimedUpdate(TimedUpdateElapsed);
 			TimedUpdateElapsed = 0.0f;
 		}
+		CollisionManager::CheckForCollisions();
 
 		Graphics::Render();
 		//UpdateUI

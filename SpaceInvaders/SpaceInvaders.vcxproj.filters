@@ -81,9 +81,6 @@
     <ClCompile Include="Player.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
-    <ClCompile Include="CollisionComponent.cpp">
-      <Filter>Source Files\Game</Filter>
-    </ClCompile>
     <ClCompile Include="Projectile.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
@@ -121,6 +118,12 @@
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
     <ClCompile Include="ChunkMaster.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionManager.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionComponent.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
   </ItemGroup>
@@ -242,6 +245,9 @@
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
     <ClInclude Include="CollisionComponent.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionManager.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
   </ItemGroup>

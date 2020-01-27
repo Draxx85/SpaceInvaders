@@ -69,6 +69,7 @@ void Graphics::Render()
 		{
 			SDL_RenderCopy(spRenderer, component->m_Sprite->pBitmapTexture, 
 				&component->m_Sprite->SpriteSrcRect, &component->m_Sprite->SpriteDestRect);
+			SDL_RenderDrawRect(Graphics::spRenderer, &component->m_Sprite->SpriteDestRect);
 		}
 	}
 

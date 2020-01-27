@@ -8,5 +8,7 @@ class Enemy : public Actor
 {
 public:
 	Enemy(const EEnemyTypes *type);
+	virtual void DoCollision(unsigned char collisionType) override;
+	void PlayExplosion();
 	virtual ~Enemy();
 };

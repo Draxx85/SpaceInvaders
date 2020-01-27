@@ -5,12 +5,13 @@
 //Keep Track of checked objects
 //clear tracked list
 
+//Quick Dirty:
+//Master of active Projectiles compare collision with active Enemies or allied objects depending on projectile type
+
 ChunkMaster::ChunkMaster()
 {
 	int screenWidthChunks = Graphics::sWindowWidth / 8;
 	int screenHeightChunks = Graphics::sWindowHeight / 8;
-
-
 }
 
 void ChunkMaster::UpdateChunks()
@@ -39,7 +40,11 @@ bool ChunkMaster::CheckChunkForCollision(int x, int y)
 
 		for (; second != m_Chunks[x][y].end(); ++second)
 		{
-			
+			if ((*first)->CheckCollision(*(*second)))
+			{
+				(*first)->HandleCollision((*second));
+
+			}
 		}
 	}
 	return false;
@@ -52,5 +57,5 @@ bool ChunkMaster::CheckNeighboringChunks(int x, int y)
 
 void ChunkMaster::Register(CollisionComponent & component)
 {
-	m_Chunks[component.m_BoundingBox.y % 8][component.m_BoundingBox.x % 8].push_back(&component);
+	m_Chunks[component.m_BoundingBox->y % 8][component.m_BoundingBox->x % 8].push_back(&component);
 }

@@ -5,12 +5,13 @@
 class Actor;
 
 enum EProjectileColor;
+class SpriteComponent;
 
 class Projectile : public Entity
 {
 public:
 	Projectile();
-	Projectile(int firingDirection, EProjectileColor &color, Actor *parent);
+	Projectile(int firingDirection, EProjectileColor &color, Actor *owner);
 	~Projectile();
 
 	Actor *m_Parent;
@@ -20,6 +21,7 @@ public:
 	void DeSpawn();
 
 	void TimedUpdate(float DeltaTime) override;
+	void DoCollision(unsigned char layer) override;
 
 	bool IsActive();
 private:

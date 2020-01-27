@@ -12,7 +12,7 @@ public:
 	virtual void Update(float deltaTime) override;
 	virtual void TimedUpdate(float deltaTime) override;
 
-	virtual void SetParent(Entity &component);
+	virtual void SetParent(Entity &parent);
 
 	Entity *m_Parent;
 };

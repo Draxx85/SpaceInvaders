@@ -79,6 +79,11 @@ void Entity::IncrementPosition(SVector2D &pos)
 	m_Transform->IncrementPos(pos.x, pos.y);
 }
 
+void Entity::DoCollision(unsigned char collisionType)
+{
+
+}
+
 void Entity::IncrementPosition(float x, float y)
 {
 	m_Transform->IncrementPos(x, y);

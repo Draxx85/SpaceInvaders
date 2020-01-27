@@ -20,7 +20,8 @@ public:
 	static const int skMaxEnemyGridHeight = 6;
 private:
 	const EEnemyTypes *m_EnemyArray;
-
+	//DO this
+	//This should be read in from a manafest file. This is horrible and should of been in a data file. I just do not have the time to do this the correct way.
 	const EEnemyTypes Level1[Level::skMaxEnemyGridHeight][Level::skMaxEnemyGridWidth] =
 	{
 		{BlankEnemyType, BlankEnemyType, BlankEnemyType, RedType, RedType, BlankEnemyType, BlankEnemyType, BlankEnemyType,BlankEnemyType,BlankEnemyType},

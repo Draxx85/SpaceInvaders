@@ -154,7 +154,7 @@ void Graphics::RegisterSpriteToDraw(SpriteComponent *const spriteComp)
 
 void Graphics::RemoveSpriteFromDrawList(SpriteComponent *const spriteComp)
 {
-	spDrawList->remove(spriteComp);
+  	spDrawList->remove(spriteComp);
 }
 
 void Graphics::SortByZOrder()

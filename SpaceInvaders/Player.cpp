@@ -80,7 +80,8 @@ void Player::Update(float deltaTime)
 	if (m_IsShooting && m_ElapsedTimeSinceShot > kFiringCooldown)
 	{
 		Fire();
-		m_ElapsedTimeSinceShot = 0;
+		
+		m_ElapsedTimeSinceShot = 0.0f;
 	}
 }
 
@@ -95,7 +96,8 @@ void Player::Fire()
 			{
 				(*iter)->Spawn(0, kProjectileYOffset);
 				m_ShootSound->Play();
-				break;
+				SDL_Log("Shooting");
+				return;
 			}
 		}
 	}

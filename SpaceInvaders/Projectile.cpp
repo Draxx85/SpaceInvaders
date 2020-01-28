@@ -59,10 +59,7 @@ void Projectile::Spawn(int xOffset, int yOffset)
 void Projectile::DeSpawn()
 {
 	UpdateManager::SafeClearTimedUpdate(this);
-	if (m_Sprite != nullptr)
-	{
-		m_Sprite->SetVisible(false);
-	}
+ 		m_Sprite->SetVisible(false);
 	CollisionComponent *coll;
 	if (TryGetComponent<CollisionComponent>(*this, coll))
 	{
@@ -91,13 +88,14 @@ void Projectile::DoCollision(unsigned char layer)
 			{
 				DeSpawn();
 			}
+			else SDL_Log("Something is funky here");
 		}
 		else if (coll->m_Layer & EnemyProjectile)
 		{
 			if (layer & (NeutralCollidables | PlayerCollidables | PlayerProjectile))
 			{
 				DeSpawn();
-			}
+			}else SDL_Log("Something is funky here");
 		}
 		
 	}

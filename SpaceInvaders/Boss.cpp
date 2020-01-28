@@ -70,7 +70,7 @@ void Boss::TimedUpdate(float deltaTime)
 		}
 		else
 		{
-			m_IsDead = true;
+			Despawn();
 		}
 	}
 }

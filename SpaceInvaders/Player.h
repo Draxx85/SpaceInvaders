@@ -23,7 +23,7 @@ private:
 	const float kMaxSpeed = 18.f;
 	const float kTimeToMaxSpeed = 0.25f;
 	const float kSpeedTolerance = 0.35f;
-	const float kFiringCooldown = 0.35f;
+	const float kFiringCooldown = 0.25f;
 
 	SoundComponent *m_ShootSound;
 

@@ -47,6 +47,10 @@ public:
 	static MainMenu *sMainMenu;
 	static Game *sGame;
 
+	static ButtonContainer *m_Buttons;
+	static Button *m_RestartGame;
+	
+	static Button *m_Exit;
 	static int m_LevelID;
 private:
 	GameManager();

@@ -3,7 +3,10 @@
 StateMachine *GameManager::sMainStateMachine = nullptr;
 StateMachine *GameManager::sGameStateMachine = nullptr;
 MainMenu *GameManager::sMainMenu = nullptr;
+ButtonContainer *GameManager::m_Buttons = nullptr;
 Game *GameManager::sGame;
+Button *GameManager::m_RestartGame;
+Button *GameManager::m_Exit;
 bool GameManager::sInGame = false;
 int GameManager::m_LevelID = 0;
 
@@ -34,14 +37,6 @@ void GameManager::QuitGame()
 void GameManager::Pause()
 {
 	UpdateManager::Pause(!UpdateManager::GetPausedState());
-	/*
-	InitStartGame();
-	//	InitLeaderboard(); // Didnt have time to add this
-	InitExit();
-
-	m_Buttons->AddButtonToList(m_StartGame);
-	//	m_Buttons->AddButtonToList(m_Leaderboards);
-	m_Buttons->AddButtonToList(m_Exit);*/
 }
 
 void GameManager::CleanGame()

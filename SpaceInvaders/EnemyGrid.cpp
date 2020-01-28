@@ -110,6 +110,7 @@ void EnemyGrid::TimedUpdate(float deltaTime)
 			}
 			m_pGrid[i][j]->IncrementPosition((m_LevelMoveMultiplier * m_Level) * (m_Movingleft ? -1 : 1), y);
 			CheckNextMoveDirection(m_pGrid[i][j]);
+
 			if (m_pGrid[i][j]->IsDead())
 			{
 				Enemy *e = m_pGrid[i][j];
@@ -124,6 +125,7 @@ void EnemyGrid::TimedUpdate(float deltaTime)
 				//m_RoundScore += e->m_ScoreValue;
 				//m_Game->UpdateScore(m_RoundScore);
 			}
+			else m_pGrid[i][j]->Fire();
 		}
 	}	
 	m_DirectionChanged = didDirChange != m_Movingleft;

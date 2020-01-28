@@ -56,7 +56,8 @@ void CollisionManager::CheckForCollisions()
 		{
 			for (iterB = sCollidables->begin(); iterB != sCollidables->end(); ++iterB)
 			{
-				if (((*iterA)->m_Layer & PlayerProjectile) && ((*iterB))->m_Layer  & PlayerProjectile)
+				if (((*iterA)->m_Layer & PlayerProjectile) && ((*iterB))->m_Layer  & PlayerProjectile
+					|| (((*iterA)->m_Layer & EnemyProjectile) && ((*iterB))->m_Layer  & EnemyProjectile))
 				{
 					continue;
 				}

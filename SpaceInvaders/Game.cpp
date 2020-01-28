@@ -49,6 +49,9 @@ void Game::BetweenRoundCleanUp()
 	m_Floaters->clear();
 	m_FinishedCleaning = true;
 	m_Player->ResetPlayer();
+	SAFE_DELETE(m_ShipBlocks[0]);
+	SAFE_DELETE(m_ShipBlocks[1]);
+	SAFE_DELETE(m_ShipBlocks[2]);
 }
 
 void Game::Update()
@@ -69,6 +72,10 @@ void Game::CreateRoundIntermission()
 	ss << "Round " << m_levelIndex;
 	SVector2D vec = SVector2D(Graphics::sWindowWidth / 2, Graphics::sWindowHeight / 2);
 	Floater *RoundMsg = new Floater(ss.str().c_str() , vec, 2.f);
+
+	m_ShipBlocks[0] = new ShipBlock(SVector2D(150, 600));
+	m_ShipBlocks[1] = new ShipBlock(SVector2D(500, 600));
+	m_ShipBlocks[2] = new ShipBlock(SVector2D(850, 600));
 }
 
 void Game::BuildArena()
@@ -91,6 +98,9 @@ void Game::BuildArena()
 	m_SSLarian->SetPosition(pos);
 	AddPlayer();
 	m_EnemyGrid = new EnemyGrid();
+	pos.x = 500;
+	pos.y = 250;
+
 }
 
 void Game::AddPlayer()

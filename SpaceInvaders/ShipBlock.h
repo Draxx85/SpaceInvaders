@@ -1,15 +1,23 @@
 #pragma once
-#include "SpriteComponent.h"
+#include <SDL.h>
+#include "Entity.h"
 
-class CollisionComponent;
+class ShipBlockPiece : public Entity
+{
+	virtual void DoCollision(unsigned char collisionType) override;
+};
 
 class ShipBlock : public Entity
 {
 public:
-	ShipBlock();
-
+	ShipBlock(SVector2D pos);
+	~ShipBlock();
+	void SetPosition(SVector2D pos);
+	void SetScale(SVector2D pos);
 private:
-	CollisionComponent m_CollisionSpaces[12][12];
-	SpriteComponent m_SpriteSpaces[12][12];
+	static const int skBlockWidth = 8;
+	static const int skBlockHeight = 8;
+	SDL_Texture *m_pTexture;
+	ShipBlockPiece *m_Blocks[skBlockHeight][skBlockWidth];
 };
 

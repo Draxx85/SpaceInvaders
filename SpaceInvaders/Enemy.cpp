@@ -14,6 +14,12 @@ Enemy::Enemy(const EEnemyTypes *type)
 	AddComponent(m_ShootSound);
 	m_DieSound = new SoundComponent(AudioManager::LoadSFXResource("Resources/Explode.wav"));
 	AddComponent(m_DieSound);
+	LoadProjectiles(1, Red);
+	for (Projectile *proj : *m_ProjectilePool)
+	{
+		proj->SetType(EnemyProjectile | PlayerCollidables | NeutralCollidables);
+		proj->m_Sprite->m_Sprite->SpriteSrcRect.x -= 20;
+	}
 	UpdateManager::RegisterTimedUpdate(this);
 }
 
@@ -74,6 +80,24 @@ bool Enemy::IsDead()
 {
 	return m_IsDead;
 }
+
+void Enemy::Fire()
+{
+	for (std::vector<Projectile*>::iterator iter = m_ProjectilePool->begin();
+		iter != m_ProjectilePool->end(); ++iter)
+	{
+		if ((*iter) != nullptr)
+		{
+			if (!(*iter)->IsActive())
+			{
+				(*iter)->Spawn(36, 0);
+				m_ShootSound->Play();
+				return;
+			}
+		}
+	}
+}
+
 
 void Enemy::Reset(const EEnemyTypes type)
 {

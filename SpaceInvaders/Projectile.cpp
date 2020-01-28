@@ -30,6 +30,15 @@ Projectile::Projectile(int firingDirection, EProjectileColor &color, Actor *owne
 	m_Parent = owner;
 }
 
+void Projectile::SetType(unsigned char type)
+{
+	CollisionComponent *coll;
+	if (TryGetComponent<CollisionComponent>(*this, coll))
+	{
+		coll->m_Layer = type;
+	}
+}
+
 Projectile::~Projectile()
 {
 	m_Parent = nullptr;

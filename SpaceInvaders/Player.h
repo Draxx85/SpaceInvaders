@@ -37,6 +37,6 @@ private:
 	bool m_IsMovingRight = false;
 	bool m_IsShooting = false;
 	float m_ElapsedTimeSinceShot = 0.0f;
-	const int kProjectileYOffset = -85;
+	const int kProjectileYOffset = -25;
 	
 };

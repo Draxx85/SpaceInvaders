@@ -18,6 +18,8 @@ public:
 	Actor *m_Parent;
 	SpriteComponent *m_Sprite;
 
+	void SetType(unsigned char type);
+
 	void Spawn(int xOffset, int yOffset);
 	void DeSpawn();
 

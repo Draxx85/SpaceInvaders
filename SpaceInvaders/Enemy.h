@@ -14,6 +14,7 @@ public:
 	void Die() override;
 	virtual ~Enemy();
 	bool IsDead();
+	void Fire() override;
 	void Reset(const EEnemyTypes type);
 	int m_ScoreValue;
 private:

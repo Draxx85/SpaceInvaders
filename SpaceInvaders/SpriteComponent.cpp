@@ -66,7 +66,6 @@ void SpriteComponent::SetVisible(const bool visible)
 {
 	if (m_IsVisible != visible)
 	{
-		m_IsVisible = visible;
 		if (visible)
 		{
 			if (m_Sprite->m_MaxFrames > 1)
@@ -77,12 +76,13 @@ void SpriteComponent::SetVisible(const bool visible)
 		}
 		else
 		{
-			Graphics::RemoveSpriteFromDrawList(this);
 			if (m_Sprite->m_MaxFrames > 1)
 			{
-				UpdateManager::ClearTimedUpdate(this);
+				UpdateManager::SafeClearTimedUpdate(this);
 			}
+			Graphics::RemoveSpriteFromDrawList(this);
 		}
+		m_IsVisible = visible;
 	}
 }
 

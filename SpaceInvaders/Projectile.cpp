@@ -15,10 +15,13 @@ Projectile::Projectile(int firingDirection, EProjectileColor &color, Actor *owne
 		new SpriteComponent(*this, Graphics::LoadResource("Resources/SpaceInvaders-Sprite.png"));
 
 	AddComponent(sprite);
-	sprite->m_Sprite->SpriteSrcRect.h = sprite->m_Sprite->SpriteSrcRect.w = 128;
-	sprite->m_Sprite->SpriteSrcRect.x = (int)color * 128;
+	const int padding = 24;
+	sprite->m_Sprite->SpriteSrcRect.h = 128;
+	sprite->m_Sprite->SpriteSrcRect.w = 32;
+	sprite->m_Sprite->SpriteSrcRect.x = (int)color * (128 + 24);
 	sprite->m_Sprite->SpriteSrcRect.y = 0;
-	sprite->m_Sprite->SpriteDestRect.h = sprite->m_Sprite->SpriteDestRect.w = 128;
+	sprite->m_Sprite->SpriteDestRect.h = 128;
+	sprite->m_Sprite->SpriteDestRect.w = 32;
 	SetScale(0.75f, 0.75f);
 	m_Sprite = sprite;
 
@@ -37,7 +40,7 @@ void Projectile::Spawn(int xOffset, int yOffset)
 	if (m_Parent != nullptr)
 	{
 		m_SpawnLocation = m_Parent->GetPosition();
-		m_SpawnLocation.x += xOffset;
+		m_SpawnLocation.x += xOffset + 36; //Hack to deal with texture offset. More time and I would handle this properly
 		m_SpawnLocation.y += yOffset;
 	}
 	if (m_Sprite != nullptr)
@@ -59,11 +62,11 @@ void Projectile::DeSpawn()
 	if (m_Sprite != nullptr)
 	{
 		m_Sprite->SetVisible(false);
-		CollisionComponent *coll;
-		if (TryGetComponent<CollisionComponent>(*this, coll))
-		{
-			coll->Unregister();
-		}
+	}
+	CollisionComponent *coll;
+	if (TryGetComponent<CollisionComponent>(*this, coll))
+	{
+		coll->Unregister();
 	}
 }
 
@@ -79,7 +82,6 @@ void Projectile::TimedUpdate(float DeltaTime)
 
 void Projectile::DoCollision(unsigned char layer)
 {
-	
 	CollisionComponent *coll;
 	if (TryGetComponent<CollisionComponent>(*this, coll))
 	{
@@ -97,6 +99,7 @@ void Projectile::DoCollision(unsigned char layer)
 				DeSpawn();
 			}
 		}
+		
 	}
 }
 

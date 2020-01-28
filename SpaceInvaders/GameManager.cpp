@@ -31,12 +31,23 @@ void GameManager::QuitGame()
 	sInGame = false;
 }
 
+void GameManager::Pause()
+{
+	UpdateManager::Pause(!UpdateManager::GetPausedState());
+	/*
+	InitStartGame();
+	//	InitLeaderboard(); // Didnt have time to add this
+	InitExit();
+
+	m_Buttons->AddButtonToList(m_StartGame);
+	//	m_Buttons->AddButtonToList(m_Leaderboards);
+	m_Buttons->AddButtonToList(m_Exit);*/
+}
+
 void GameManager::CleanGame()
 {
-	if (sMainMenu != nullptr)
-	{
-		SAFE_DELETE(sMainMenu);
-	}
+	SAFE_DELETE(sMainMenu);
+	SAFE_DELETE(sGame);
 }
 
 //This is a horrible long State Machine builder. This should be done via data...
@@ -225,7 +236,7 @@ void InGame_Play(float Update)
 
 				break;
 			case OnStayPhase:
-				GameManager::sGame->Update();
+				GameManager::sGame->Update(Update);
 				break;
 			case OnExitPhase:
 				break;

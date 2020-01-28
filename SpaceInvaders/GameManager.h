@@ -35,7 +35,7 @@ public:
 	static void StartGame();
 	static void CleanGame();
 	static void QuitGame();
-
+	static void Pause();
 	static StateMachine *BuildMainStateMachine();
 	static StateMachine *BuildGameStateMachine();
 

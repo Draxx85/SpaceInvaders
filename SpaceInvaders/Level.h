@@ -2,7 +2,7 @@
 
 enum EEnemyTypes
 {
-	BlankEnemyType,
+	BlankEnemyType = 0,
 	GreenType = 4,
 	RedType = 6,
 	BlueType = 8,

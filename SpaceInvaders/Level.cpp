@@ -1,5 +1,6 @@
 #include "Level.h"
 #include "Engine.h"
+#include "LevelLoader.h"
 Level::Level()
 	: m_EnemyArray(new EEnemyTypes())
 {

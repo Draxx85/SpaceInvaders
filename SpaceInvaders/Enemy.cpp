@@ -1,5 +1,11 @@
 #include "Enemy.h"
 #include "GameManager.h"
+
+
+Enemy::Enemy()
+{
+}
+
 Enemy::Enemy(const EEnemyTypes *type)
 {
 	SpriteComponent *sprite =

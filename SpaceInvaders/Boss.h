@@ -1,9 +1,14 @@
 #pragma once
 #include "Enemy.h"
 
-class Boss : Enemy
+class Boss : public  Enemy
 {
+public:
 	Boss();
-	virtual ~Boss();
+	void Spawn();
+	void Activate();
+	void DoCollision(unsigned char collisionType)override;
+	void TimedUpdate(float deltaTime) override;
+	void Despawn();
 };
 

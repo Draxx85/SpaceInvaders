@@ -1,7 +1,8 @@
 #include "Game.h"
 #include <sstream>
 Game::Game()
-	:m_SSLarian(new Entity()), m_Background(new Entity()), m_Floaters(new std::vector<Floater*>())
+	:m_SSLarian(new Entity()), m_Background(new Entity()), m_Floaters(new std::vector<Floater*>()), 
+	m_Boss(new Boss())
 {
 	BuildArena();
 	AudioManager::LoadMusicResource("Resources/game.ogg");
@@ -26,6 +27,7 @@ void Game::StartGame(int level)
 	m_EnemyGrid->PopulateEnemyGrid(level);
 	m_Player->BindKeys();
 	m_Player->ResetPlayer();
+	m_SpawnedBossThisRound = false;
 }
 
 void Game::InitializeRoundLoop(float deltaTime)
@@ -40,6 +42,7 @@ void Game::InitializeRoundLoop(float deltaTime)
 		m_GameActive = true;
 		StartGame(m_levelIndex++);
 		m_RoundCountDown = 0;
+		m_BossCountDown = rand() % 10;
 	}
 }
 
@@ -54,8 +57,14 @@ void Game::BetweenRoundCleanUp()
 	m_ShipBlocks[2]->ResetBlocks();
 }
 
-void Game::Update()
+void Game::Update(float update)
 {
+	m_BossCountDown -= update;
+	if (m_BossCountDown <= 0 && !m_SpawnedBossThisRound)
+	{
+		m_Boss->Activate();
+		m_SpawnedBossThisRound = true;
+	}
 	
 	if (m_EnemyGrid->m_EnemyCount <= 0)
 	{
@@ -73,9 +82,9 @@ void Game::CreateRoundIntermission()
 	SVector2D vec = SVector2D(Graphics::sWindowWidth / 2, Graphics::sWindowHeight / 2);
 	Floater *RoundMsg = new Floater(ss.str().c_str() , vec, 2.f);
 
-	m_ShipBlocks[0] = new ShipBlock(SVector2D(150, 600));
-	m_ShipBlocks[1] = new ShipBlock(SVector2D(500, 600));
-	m_ShipBlocks[2] = new ShipBlock(SVector2D(850, 600));
+	m_ShipBlocks[0] = new ShipBlock(SVector2D(50, 650));
+	m_ShipBlocks[1] = new ShipBlock(SVector2D(500, 650));
+	m_ShipBlocks[2] = new ShipBlock(SVector2D(950, 650));
 }
 
 void Game::BuildArena()
@@ -135,6 +144,15 @@ void Game::AddFloater(SVector2D pos, int value)
 {
 	Floater *floater = new Floater(value, pos, 0.75f);
 	floater->SetScale(0.5f, 0.5f);
+}
+
+void Game::GameOver()
+{
+	SVector2D pos;
+	pos.x = ((float)Graphics::sWindowWidth / 2) - 64;
+	pos.y = ((float)Graphics::sWindowHeight /2)- 64;
+	Floater *floater = new Floater("Well Done!", pos, -1);
+	UpdateManager::Pause(true);
 }
 
 

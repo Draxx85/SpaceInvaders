@@ -126,6 +126,9 @@
     <ClCompile Include="CollisionComponent.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="LevelLoader.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\logo.png">
@@ -250,6 +253,9 @@
     <ClInclude Include="CollisionManager.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
+    <ClInclude Include="LevelLoader.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Resources\Pixeled.ttf">
@@ -261,6 +267,9 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="Resources\menu.ogg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\Level1.lvl">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

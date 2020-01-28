@@ -5,27 +5,25 @@
 #include <fstream>
 #include <string>
 
-int** LevelLoader::LoadLevel(int level)
+const EEnemyTypes *LevelLoader::LoadLevel(int level)
 {
-	using namespace std;
-    int** levelData = new int*[Level::skMaxEnemyGridHeight];
-
+	EEnemyTypes data[Level::skMaxEnemyGridHeight][Level::skMaxEnemyGridWidth];
     std::stringstream filename;
-    filename << "level" << level << ".txt";
+    filename << "Resources/level" << level << ".lvl";
 
-    ifstream file;
+    std::ifstream file;
     file.open(filename.str());
-
-    for (int h = 0; h < Level::skMaxEnemyGridHeight; ++h)
+	unsigned int item;
+    for (int i = 0; i < Level::skMaxEnemyGridHeight; ++i)
     {
-        levelData[h] = new int[Level::skMaxEnemyGridWidth];
-        for (int w = 0; w < Level::skMaxEnemyGridWidth; ++w)
+        for (int j = 0; j < Level::skMaxEnemyGridWidth; ++j)
         {
-            file >> levelData[h][w];
+            file >> item;
+			data[i][j] = static_cast<EEnemyTypes>(item);
         }
     }
 
     file.close();
 
-    return levelData;
+    return &data[0][0];
 }

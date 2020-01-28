@@ -4,8 +4,11 @@ std::list<Process*> *UpdateManager::spProcessList = nullptr;
 std::list<Process*> *UpdateManager::spTimedProcessList = nullptr;
 std::vector<Process*> *UpdateManager::spSafeList = nullptr;
 std::vector<Process*> *UpdateManager::spTimedSafeList = nullptr;
+std::list<Process*> *UpdateManager::spUIUpdateList = nullptr;
 bool UpdateManager::sSafeItemToClear = false;
 bool UpdateManager::sSafeTimedItemToClear = false;
+bool UpdateManager::sPause = false;
+
 
 void UpdateManager::Init()
 {
@@ -19,6 +22,11 @@ void UpdateManager::Init()
 
 void UpdateManager::Update(float deltaTime)
 {
+	if (sPause)
+	{
+		return;
+	}
+
 	for (Process *process : *spProcessList)
 	{
 		if (process != nullptr)
@@ -40,6 +48,11 @@ void UpdateManager::Update(float deltaTime)
 
 void UpdateManager::TimedUpdate(float deltaTime)
 {
+	if (sPause)
+	{
+		return;
+	}
+
  	for (Process *timedProcess : *spTimedProcessList)
 	{
 		if (timedProcess != nullptr)
@@ -112,6 +125,37 @@ bool UpdateManager::SafeClearUpdate(Process *const process)
 	return false;
 }
 
+void UpdateManager::UIUpdate(float deltaTime)
+{
+	for (Process *UIProcess : *spUIUpdateList)
+	{
+		if (UIProcess != nullptr)
+		{
+			UIProcess->TimedUpdate(deltaTime);
+		}
+	}
+}
+
+bool UpdateManager::RegisterUIUpdate(Process * process)
+{
+	if (spUIUpdateList != nullptr && !HasDuplicateProcess(process, spUIUpdateList))
+	{
+		spUIUpdateList->push_back(process);
+		return true;
+	}
+	return false;
+}
+
+bool UpdateManager::ClearUIUpdate(Process * const process)
+{
+	if (spTimedProcessList != nullptr)
+	{
+		spTimedProcessList->remove(process);
+		return true;
+	}
+	return false;
+}
+
 bool UpdateManager::SafeClearTimedUpdate(Process *const process)
 {
 	if (spTimedSafeList != nullptr)
@@ -141,6 +185,10 @@ void UpdateManager::ClearAllUpdates()
 	{
 		spTimedSafeList->clear();
 	}
+	if (spUIUpdateList != nullptr)
+	{
+		spUIUpdateList->clear();
+	}
 }
 
 void UpdateManager::Clean()
@@ -148,8 +196,9 @@ void UpdateManager::Clean()
 	ClearAllUpdates();
 	SAFE_DELETE(UpdateManager::spProcessList);
 	SAFE_DELETE(UpdateManager::spTimedProcessList);
+	SAFE_DELETE(UpdateManager::spSafeList);
 	SAFE_DELETE(UpdateManager::spTimedSafeList);
-	SAFE_DELETE(UpdateManager::spTimedSafeList);
+	SAFE_DELETE(UpdateManager::spUIUpdateList);
 }
 
 bool UpdateManager::HasDuplicateProcess(const Process *const process, std::list<Process*> *const processList)
@@ -162,4 +211,14 @@ bool UpdateManager::HasDuplicateProcess(const Process *const process, std::list<
 		}
 	}
 	return false;
+}
+
+void UpdateManager::Pause(bool state)
+{
+	sPause = state;
+}
+
+bool UpdateManager::GetPausedState()
+{
+	return sPause;
 }

@@ -1,6 +1,6 @@
 #pragma once
-
+#include "Level.h"
 class LevelLoader {
 public:
-	static int** LoadLevel(int level);
+	static const EEnemyTypes *LoadLevel(int level);
 };

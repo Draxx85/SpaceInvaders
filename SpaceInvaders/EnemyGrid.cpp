@@ -107,9 +107,17 @@ void EnemyGrid::TimedUpdate(float deltaTime)
 			{
 				continue;
 			}
-			m_pGrid[i][j]->IncrementPosition((m_LevelMoveMultiplier * m_Level) * (m_Movingleft ? -1 : 1), y);
+			if (m_EnemyCount == 1)
+			{
+				m_pGrid[i][j]->IncrementPosition((m_LevelMoveMultiplier * m_Level +5) * (m_Movingleft ? -1 : 1), y);
+			}
+			else
+			{
+				m_pGrid[i][j]->IncrementPosition((m_LevelMoveMultiplier * m_Level) * (m_Movingleft ? -1 : 1), y);
+			}
+			
 			CheckNextMoveDirection(m_pGrid[i][j]);
-
+			CheckIfPlayerHasLostTheMatch(m_pGrid[i][j]);
 			if (m_pGrid[i][j]->IsDead())
 			{
 				Enemy *e = m_pGrid[i][j];
@@ -134,6 +142,15 @@ void EnemyGrid::TimedUpdate(float deltaTime)
 	}	
 	m_DirectionChanged = didDirChange != m_Movingleft;
 
+}
+
+void EnemyGrid::CheckIfPlayerHasLostTheMatch(Enemy *e)
+{
+	SVector2D pos = e->GetPosition();
+	if (pos.y >= m_LoseHeight)
+	{
+		m_Game->GameOver();
+	}
 }
 
 bool EnemyGrid::CheckNextMoveDirection(Enemy *enemy)

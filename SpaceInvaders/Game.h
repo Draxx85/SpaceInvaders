@@ -24,11 +24,12 @@ public:
 	bool m_ShouldQuit = false;
 	void InitializeRoundLoop(float deltaTime);
 	void BetweenRoundCleanUp();
-	void Update();
+	void Update(float update);
 
 	void CreateRoundIntermission();
 	void UpdateScore(int value);
 	void AddFloater(SVector2D pos, int value);
+	void GameOver();
 private:
 	void BuildArena();
 	void AddPlayer();
@@ -43,13 +44,15 @@ private:
 	
 	int m_Multiplier;
 	int m_levelIndex = 1;
+	float m_BossCountDown;
+
 	SDL_Color m_Color;
 
 	Player *m_Player;
 	EnemyGrid *m_EnemyGrid;
 	ShipBlock *m_ShipBlocks[3];
 	Boss *m_Boss;
-
+	bool m_SpawnedBossThisRound = false;
 	//UI Entities
 	Floater *m_ScoreEntity;
 

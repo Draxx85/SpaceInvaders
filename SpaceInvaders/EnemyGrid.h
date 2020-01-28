@@ -18,14 +18,19 @@ public:
 	int m_RoundScore = 0;
 	Game *m_Game;
 private:
+	void CheckIfPlayerHasLostTheMatch(Enemy *e);
+	
+	int m_LoseHeight = 650;
 	const int kDownALevelValue = 32;
 	Enemy *m_pGrid[Level::skMaxEnemyGridHeight][Level::skMaxEnemyGridWidth];
 	std::vector<Enemy*> *m_EnemyPool;
 	Level *m_pLevel;
+	
 	int m_Level;
 	int m_ActiveMultiplier = 1;
-	int m_LevelMoveMultiplier = 1;
+	int m_LevelMoveMultiplier = 2;
 	bool m_Movingleft = false;
+	
 	bool CheckNextMoveDirection(Enemy *enemy);
 	bool m_DirectionChanged = false;
 	int m_ChanceToShoot = 2;

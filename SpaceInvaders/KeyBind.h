@@ -15,7 +15,7 @@ enum EInputAction
 	Right,
 	Shoot,
 	MegaShot,
-	//Menu
+	Menu,
 	Up,
 	Down,
 	Select,

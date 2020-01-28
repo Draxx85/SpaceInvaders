@@ -41,17 +41,23 @@ void Player::BindKeys()
 	KeyBind left;
 	KeyBind right;
 	KeyBind shoot;
+	KeyBind pause;
 
 	left.m_Command = this;
 	right.m_Command = this;
 	shoot.m_Command = this;
+	pause.m_Command = this;
 
 	left.m_InputAction = Left;
 	right.m_InputAction = Right;
 	shoot.m_InputAction = Shoot;
+	pause.m_InputAction = Menu;
 	InputManager::RegisterKeyToAction(SDLK_RIGHT, right);
 	InputManager::RegisterKeyToAction(SDLK_LEFT, left);
 	InputManager::RegisterKeyToAction(SDLK_SPACE, shoot);
+	InputManager::RegisterKeyToAction(SDLK_ESCAPE, pause);
+
+
 	
 	//alternate key binds
 	InputManager::RegisterKeyToAction(SDLK_a, left);
@@ -143,7 +149,6 @@ void Player::TimedUpdate(float deltaTime)
 
 void Player::Execute(void *params)
 {
-	//This is bad...
 	KeyBind *action = static_cast<KeyBind*>(params);
 	if (action != nullptr)
 	{
@@ -177,6 +182,8 @@ void Player::Execute(void *params)
 				case Shoot:
 					m_IsShooting = false;
 					break;
+				case Menu:
+					GameManager::Pause();
 				default:
 					break;
 			}
@@ -189,7 +196,12 @@ void Player::DoCollision(unsigned char collisionType)
 	if (collisionType & EnemyProjectile)
 	{
 	//	GameManager::sGame->
-			ResetPlayer();
+		--health;
+		if (health < 0)
+		{
+			GameManager::sGame->GameOver();
+		}
+		ResetPlayer();
 	}
 
 }

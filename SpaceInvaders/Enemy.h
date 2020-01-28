@@ -7,6 +7,7 @@
 class Enemy : public Actor
 {
 public:
+	Enemy();
 	Enemy(const EEnemyTypes *type);
 	virtual void DoCollision(unsigned char collisionType) override;
 	void TimedUpdate(float deltaTime) override;
@@ -19,6 +20,7 @@ public:
 	int m_ScoreValue;
 private:
 	SoundComponent *m_ShootSound;
+protected:
 	SoundComponent *m_DieSound;
 	const float kTimeRequiredToDie = 0.35f;
 	bool m_IsDying = false;

@@ -5,7 +5,7 @@ EnemyGrid::EnemyGrid()
 {
 	ClearGrid();
 	m_Transform->DestRect = new SDL_Rect();
-	SetPosition(0, 0);
+	SetPosition(0, kDownALevelValue);
 	StartLevelBehaviour();
 }
 
@@ -75,6 +75,11 @@ void EnemyGrid::StartLevelBehaviour()
 void EnemyGrid::TimedUpdate(float deltaTime)
 {	
 	SVector2D vec = GetPosition();
+
+	int y = m_DirectionChanged ? kDownALevelValue : 0;
+	m_DirectionChanged = false;
+	bool didDirChange = m_Movingleft;
+
 	for (int i = 0; i < Level::skMaxEnemyGridHeight; ++i)
 	{
 		for (int j = 0; j < Level::skMaxEnemyGridWidth; j++)
@@ -83,7 +88,7 @@ void EnemyGrid::TimedUpdate(float deltaTime)
 			{
 				continue;
 			}
-			m_pGrid[i][j]->IncrementPosition(1*(m_Movingleft ? -1 : 1), 0);
+			m_pGrid[i][j]->IncrementPosition(1 * (m_Movingleft ? -1 : 1), y);
 			CheckNextMoveDirection(m_pGrid[i][j]);
 			if (m_pGrid[i][j]->IsDead())
 			{
@@ -98,18 +103,22 @@ void EnemyGrid::TimedUpdate(float deltaTime)
 			}
 		}
 	}	
+	m_DirectionChanged = didDirChange != m_Movingleft;
 }
 
-void EnemyGrid::CheckNextMoveDirection(Enemy *enemy)
+bool EnemyGrid::CheckNextMoveDirection(Enemy *enemy)
 {
+	bool hasSwitched = m_Movingleft;
 	SVector2D pos = enemy->GetPosition();
 	int width = enemy->GetTransform()->DestRect->w; //gross, make this safer later! TODO:
 	if (pos.x < 0)
 	{
 		m_Movingleft = false;
+
 	}
 	else if (pos.x >(Graphics::sWindowWidth - width))
 	{
 		m_Movingleft = true;
 	}
+	return hasSwitched != m_Movingleft;
 }

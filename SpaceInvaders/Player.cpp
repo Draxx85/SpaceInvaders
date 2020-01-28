@@ -63,7 +63,6 @@ void Player::UnBindKeys()
 
 void Player::Update(float deltaTime)
 {
- 	m_ElapsedTimeSinceShot += deltaTime;
 	if (m_IsMovingLeft)
 	{
 		m_TargetSpeed = -kMaxSpeed;
@@ -75,13 +74,6 @@ void Player::Update(float deltaTime)
 	else
 	{
 		m_TargetSpeed = 0;
-	}
-
-	if (m_IsShooting && m_ElapsedTimeSinceShot > kFiringCooldown)
-	{
-		Fire();
-		
-		m_ElapsedTimeSinceShot = 0.0f;
 	}
 }
 
@@ -105,6 +97,7 @@ void Player::Fire()
 
 void Player::TimedUpdate(float deltaTime)
 {
+	m_ElapsedTimeSinceShot += deltaTime;
 	if (m_TargetSpeed - kSpeedTolerance <= m_Velocity 
 		&& m_Velocity <= m_TargetSpeed + kSpeedTolerance)
 	{
@@ -133,6 +126,11 @@ void Player::TimedUpdate(float deltaTime)
 		}
 	}
 	Move(m_Velocity, 0);
+	if (m_IsShooting && m_ElapsedTimeSinceShot > kFiringCooldown)
+	{
+		Fire();
+		m_ElapsedTimeSinceShot = 0.0f;
+	}
 }
 
 void Player::Execute(void *params)

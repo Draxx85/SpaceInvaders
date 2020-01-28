@@ -13,10 +13,13 @@ public:
 	void StartLevelBehaviour();
 	void TimedUpdate(float deltaTime) override;
 private:
+	const int kDownALevelValue = 32;
+
 	Enemy *m_pGrid[Level::skMaxEnemyGridHeight][Level::skMaxEnemyGridWidth];
 	std::vector<Enemy*> *m_EnemyPool;
 	Level *m_pLevel;
 	bool m_Movingleft = false;
-	void CheckNextMoveDirection(Enemy *enemy);
+	bool CheckNextMoveDirection(Enemy *enemy);
+	bool m_DirectionChanged = false;
 };
 

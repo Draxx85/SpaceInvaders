@@ -88,16 +88,14 @@ void Projectile::DoCollision(unsigned char layer)
 			{
 				DeSpawn();
 			}
-			else SDL_Log("Something is funky here");
 		}
 		else if (coll->m_Layer & EnemyProjectile)
 		{
 			if (layer & (NeutralCollidables | PlayerCollidables | PlayerProjectile))
 			{
 				DeSpawn();
-			}else SDL_Log("Something is funky here");
+			}
 		}
-		
 	}
 }
 

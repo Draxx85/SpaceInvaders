@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "GameManager.h"
 
 Player::Player()
 	:m_KeyPressStack()
@@ -14,6 +15,9 @@ Player::Player()
 	SetScale(0.75f, 0.75f);
 	playerSprite->SetVisible(true);
 	ResetPlayer();
+	CollisionComponent *collider = new CollisionComponent(PlayerCollidables, *this);
+	AddComponent(collider);
+	collider->Register();
 
 	UpdateManager::RegisterUpdate(this);
 	UpdateManager::RegisterTimedUpdate(this);
@@ -57,7 +61,7 @@ void Player::BindKeys()
 void Player::ResetPlayer()
 {
 	m_IsMovingRight = m_IsMovingRight = m_IsShooting = false;
-	SetPosition(SVector2D(Graphics::sWindowWidth / 2.f,
+	SetPosition(SVector2D(Graphics::sWindowWidth / 2.f - 64,
 		(Graphics::sWindowHeight - (Graphics::sWindowHeight / 5.5f))));
 }
 
@@ -178,4 +182,14 @@ void Player::Execute(void *params)
 			}
 		}
 	}
+}
+
+void Player::DoCollision(unsigned char collisionType)
+{
+	if (collisionType & EnemyProjectile)
+	{
+	//	GameManager::sGame->
+			ResetPlayer();
+	}
+
 }

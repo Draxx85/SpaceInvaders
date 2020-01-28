@@ -16,6 +16,8 @@ public:
 	void Update(float deltaTime) override;
 	void TimedUpdate(float deltaTime) override;
 	void Execute(void* params);
+	void DoCollision(unsigned char collisionType) override;
+	int health = 3;
 
 private:
 	const float kMaxSpeed = 18.f;

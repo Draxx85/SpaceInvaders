@@ -49,9 +49,9 @@ void Game::BetweenRoundCleanUp()
 	m_Floaters->clear();
 	m_FinishedCleaning = true;
 	m_Player->ResetPlayer();
-	SAFE_DELETE(m_ShipBlocks[0]);
-	SAFE_DELETE(m_ShipBlocks[1]);
-	SAFE_DELETE(m_ShipBlocks[2]);
+	m_ShipBlocks[0]->ResetBlocks();
+	m_ShipBlocks[1]->ResetBlocks();
+	m_ShipBlocks[2]->ResetBlocks();
 }
 
 void Game::Update()

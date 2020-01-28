@@ -95,7 +95,6 @@ void EnemyGrid::StartLevelBehaviour()
 void EnemyGrid::TimedUpdate(float deltaTime)
 {	
 	SVector2D vec = GetPosition();
-
 	int y = m_DirectionChanged ? kDownALevelValue : 0;
 	m_DirectionChanged = false;
 	bool didDirChange = m_Movingleft;
@@ -122,10 +121,15 @@ void EnemyGrid::TimedUpdate(float deltaTime)
 				m_EnemyPool->push_back(e);
 				m_pGrid[i][j] = nullptr;
 				--m_EnemyCount;
-				//m_RoundScore += e->m_ScoreValue;
-				//m_Game->UpdateScore(m_RoundScore);
 			}
-			else m_pGrid[i][j]->Fire();
+			else
+			{
+				int chance = static_cast<int>(rand() % 10000);
+				if (chance < (m_ChanceToShoot*m_Level))
+				{
+					m_pGrid[i][j]->Fire();
+				}
+			}
 		}
 	}	
 	m_DirectionChanged = didDirChange != m_Movingleft;

@@ -28,5 +28,6 @@ private:
 	bool m_Movingleft = false;
 	bool CheckNextMoveDirection(Enemy *enemy);
 	bool m_DirectionChanged = false;
+	int m_ChanceToShoot = 2;
 };
 

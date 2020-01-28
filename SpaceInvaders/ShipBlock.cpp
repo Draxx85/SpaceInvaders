@@ -39,6 +39,26 @@ ShipBlock::ShipBlock(SVector2D pos)
 	SetPosition(pos);
 }
 
+void ShipBlock::ResetBlocks()
+{
+	for (int i = 0; i < skBlockWidth; ++i)
+	{
+		for (int j = 0; j < skBlockHeight; ++j)
+		{
+			CollisionComponent *coll;
+			if (TryGetComponent<CollisionComponent>(*this, coll))
+			{
+				coll->Register();
+			}
+			SpriteComponent *sprite;
+			if (TryGetComponent<SpriteComponent>(*this, sprite))
+			{
+				sprite->SetVisible(true);
+			}
+		}
+	}
+}
+
 ShipBlock::~ShipBlock()
 {
 	SDL_DestroyTexture(m_pTexture);
@@ -49,7 +69,6 @@ ShipBlock::~ShipBlock()
 			SAFE_DELETE(m_Blocks[i][j])
 		}
 	}
-	
 }
 
 void ShipBlock::SetPosition(SVector2D pos)
@@ -87,5 +106,14 @@ void ShipBlockPiece::DoCollision(unsigned char collisionType)
 	if (TryGetComponent<SpriteComponent>(*this, sprite))
 	{
 		sprite->SetVisible(false);
+	}
+}
+
+ShipBlockPiece::~ShipBlockPiece()
+{
+	CollisionComponent *coll;
+	if (TryGetComponent<CollisionComponent>(*this, coll))
+	{
+		coll->Unregister();
 	}
 }

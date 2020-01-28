@@ -271,5 +271,11 @@
     <Media Include="Resources\Select.wav">
       <Filter>Resource Files</Filter>
     </Media>
+    <Media Include="Resources\shoot.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="Resources\Explode.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
   </ItemGroup>
 </Project>

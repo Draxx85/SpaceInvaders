@@ -24,6 +24,8 @@ Player::Player()
 
 	m_MaxProjectiles = 10;
 	LoadProjectiles(-1, Blue);
+	m_ShootSound = new SoundComponent(AudioManager::LoadSFXResource("Resources/shoot.wav"));
+	AddComponent(m_ShootSound);
 }
 
 Player::~Player()
@@ -92,6 +94,7 @@ void Player::Fire()
 			if (!(*iter)->IsActive())
 			{
 				(*iter)->Spawn(0, kProjectileYOffset);
+				m_ShootSound->Play();
 				break;
 			}
 		}

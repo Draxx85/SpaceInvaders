@@ -2,6 +2,7 @@
 #include "Actor.h"
 #include "MathHelper.h"
 #include <stack>
+#include "SoundComponent.h"
 class Player : public Actor, Command
 {
 public:
@@ -20,6 +21,8 @@ private:
 	const float kTimeToMaxSpeed = 0.25f;
 	const float kSpeedTolerance = 0.25f;
 	const float kFiringCooldown = 0.25f;
+
+	SoundComponent *m_ShootSound;
 
 	float m_AccelRatePerSec;
 	float m_Velocity;

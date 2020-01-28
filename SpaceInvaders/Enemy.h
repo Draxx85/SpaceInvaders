@@ -3,7 +3,7 @@
 #include "Actor.h"
 #include "Level.h"
 #include <math.h> 
-
+#include "SoundComponent.h"
 class Enemy : public Actor
 {
 public:
@@ -16,6 +16,8 @@ public:
 	bool IsDead();
 	void Reset(const EEnemyTypes type);
 private:
+	SoundComponent *m_ShootSound;
+	SoundComponent *m_DieSound;
 	const float kTimeRequiredToDie = 0.35f;
 	bool m_IsDying = false;
 	bool m_IsDead = false;

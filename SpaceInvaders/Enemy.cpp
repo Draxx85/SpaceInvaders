@@ -9,6 +9,10 @@ Enemy::Enemy(const EEnemyTypes *type)
 	CollisionComponent *collider = new CollisionComponent(EnemyCollidables, *this);
 	AddComponent(collider);
 	Reset(*type);
+	m_ShootSound = new SoundComponent(AudioManager::LoadSFXResource("Resources/shoot.wav"));
+	AddComponent(m_ShootSound);
+	m_DieSound = new SoundComponent(AudioManager::LoadSFXResource("Resources/Explode.wav"));
+	AddComponent(m_DieSound);
 	UpdateManager::RegisterTimedUpdate(this);
 }
 
@@ -43,6 +47,7 @@ void Enemy::PlayExplosion()
 	{
 		sprite->SetSpriteMaxFrame(12);
 		sprite->m_Sprite->m_SpriteSheetIndex = (int)Explosion;
+		m_DieSound->Play();
 	}
 }
 

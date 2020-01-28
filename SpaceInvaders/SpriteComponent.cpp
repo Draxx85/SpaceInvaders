@@ -20,6 +20,13 @@ SpriteComponent::SpriteComponent(Entity &parent, SDL_Texture *texture)
 	SetDestRect(&m_Sprite->SpriteSrcRect);
 }
 
+SpriteComponent::SpriteComponent(Entity &parent, SDL_Texture *texture, int spriteSheetIndex)
+	: m_Sprite(new Sprite())
+{
+	SpriteComponent::SpriteComponent(parent, texture);
+	m_Sprite->m_SpriteSheetIndex = spriteSheetIndex;
+}
+
 
 SpriteComponent::SpriteComponent(SDL_Texture * texture)
 	: m_Sprite(new Sprite())

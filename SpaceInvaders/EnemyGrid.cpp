@@ -1,7 +1,7 @@
 #include "EnemyGrid.h"
 
 EnemyGrid::EnemyGrid()
-	:m_pLevel(new Level())
+	:m_pLevel(new Level()), m_EnemyPool(new std::vector<Enemy*>())
 {
 	ClearGrid();
 	m_Transform->DestRect = new SDL_Rect();
@@ -25,6 +25,11 @@ void EnemyGrid::PopulateEnemyGrid(int level)
 				} 
 				else
 				{
+					if (m_EnemyPool->size() > 0)
+					{
+						m_pGrid[i][j] = (*m_EnemyPool)[0];
+						m_EnemyPool->pop_back();
+					}
 					m_pGrid[i][j] = new Enemy(layout);
 					++layout;
 				}
@@ -68,8 +73,7 @@ void EnemyGrid::StartLevelBehaviour()
 }
 
 void EnemyGrid::TimedUpdate(float deltaTime)
-{
-	
+{	
 	SVector2D vec = GetPosition();
 	for (int i = 0; i < Level::skMaxEnemyGridHeight; ++i)
 	{
@@ -81,6 +85,17 @@ void EnemyGrid::TimedUpdate(float deltaTime)
 			}
 			m_pGrid[i][j]->IncrementPosition(1*(m_Movingleft ? -1 : 1), 0);
 			CheckNextMoveDirection(m_pGrid[i][j]);
+			if (m_pGrid[i][j]->IsDead())
+			{
+				Enemy *e = m_pGrid[i][j];
+				SpriteComponent *sprite;
+				if (TryGetComponent(*e, sprite))
+				{
+					sprite->SetVisible(false);
+				}
+				m_EnemyPool->push_back(e);
+				m_pGrid[i][j] = nullptr;
+			}
 		}
 	}	
 }

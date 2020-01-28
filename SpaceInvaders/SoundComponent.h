@@ -3,8 +3,7 @@
 #include "SDL_mixer.h"
 #include "AudioManager.h"
 
-class SoundComponent :
-	public Component
+class SoundComponent :	public Component
 {
 public:
 	SoundComponent(Mix_Chunk *sound);

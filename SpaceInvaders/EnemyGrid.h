@@ -14,6 +14,7 @@ public:
 	void TimedUpdate(float deltaTime) override;
 private:
 	Enemy *m_pGrid[Level::skMaxEnemyGridHeight][Level::skMaxEnemyGridWidth];
+	std::vector<Enemy*> *m_EnemyPool;
 	Level *m_pLevel;
 	bool m_Movingleft = false;
 	void CheckNextMoveDirection(Enemy *enemy);

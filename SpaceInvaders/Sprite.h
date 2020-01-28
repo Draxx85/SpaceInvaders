@@ -26,6 +26,7 @@ public:
 	int zOrder = 0;
 	int m_MaxFrames = 1;
 	int m_CurrentFrame = 0;
+	int m_SpriteSheetIndex;
 
 private:
 	void NextFrame();

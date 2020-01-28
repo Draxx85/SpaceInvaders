@@ -69,5 +69,6 @@ void CollisionManager::CheckForCollisions()
 		}
 
 	}
+	ClearInactives();
 
 }

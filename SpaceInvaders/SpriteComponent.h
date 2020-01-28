@@ -16,6 +16,7 @@ public:
 	SpriteComponent();
 	SpriteComponent(Entity &parent);
 	SpriteComponent(Entity &parent, SDL_Texture *texture);
+	SpriteComponent(Entity &parent, SDL_Texture *texture, int spriteSheetIndex);
 	SpriteComponent(SDL_Texture *texture);
 
 	virtual ~SpriteComponent() override;

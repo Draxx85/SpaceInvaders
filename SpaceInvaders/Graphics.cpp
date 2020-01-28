@@ -69,7 +69,7 @@ void Graphics::Render()
 		{
 			SDL_RenderCopy(spRenderer, component->m_Sprite->pBitmapTexture, 
 				&component->m_Sprite->SpriteSrcRect, &component->m_Sprite->SpriteDestRect);
-			SDL_RenderDrawRect(Graphics::spRenderer, &component->m_Sprite->SpriteDestRect);
+		//	SDL_RenderDrawRect(Graphics::spRenderer, &component->m_Sprite->SpriteDestRect);
 		}
 	}
 
@@ -106,9 +106,7 @@ SDL_Texture *Graphics::LoadResource(const char* resource)
 
 SDL_Texture *Graphics::LoadTextSolid(const char * text, SDL_Color color)
 {
-	
-	return LoadText(TTF_RenderText_Solid(m_Font, text, color));
-	
+	return LoadText(TTF_RenderText_Solid(m_Font, text, color));	
 }
 
 SDL_Texture *Graphics::LoadTextShaded(const char *text, SDL_Color color, SDL_Color shadedColor)

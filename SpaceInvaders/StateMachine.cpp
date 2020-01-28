@@ -47,6 +47,10 @@ void StateMachine::TimedUpdate(float deltaTime)
 {
 }
 
+void StateMachine::OnSafeClear()
+{
+}
+
 void StateMachine::StartMachine()
 {
 	m_ActiveState = m_Root;

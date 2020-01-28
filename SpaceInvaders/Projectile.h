@@ -5,6 +5,7 @@
 class Actor;
 
 enum EProjectileColor;
+
 class SpriteComponent;
 
 class Projectile : public Entity
@@ -22,9 +23,11 @@ public:
 
 	void TimedUpdate(float DeltaTime) override;
 	void DoCollision(unsigned char layer) override;
+	void OnSafeClear() override;
 
 	bool IsActive();
 private:
+	bool m_IsActive = false;
 	int m_FiringDirection;
 	SVector2D m_SpawnLocation;
 	const float kProjectileSpeed = 30;

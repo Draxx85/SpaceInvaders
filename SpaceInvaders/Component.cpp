@@ -25,6 +25,10 @@ void Component::TimedUpdate(float deltaTime)
 
 }
 
+void Component::OnSafeClear()
+{
+}
+
 void Component::SetParent(Entity &parent)
 {
 	m_Parent = &parent;

@@ -138,10 +138,18 @@ void GameState_Game(float Update)
 			case OnEnterPhase:
 				GameManager::BuildGameStateMachine();
 				GameManager::sGame = new Game();
+				GameManager::sGame->CreateRoundIntermission();
 				break;
 			case OnStayPhase:
+				if (!GameManager::sGame->m_GameStarted)
+				{
+					GameManager::sGame->InitializeRoundLoop(Update); 
+					
+				}
+				GameManager::sGame->Update();
 				break;
 			case OnExitPhase:
+
 				break;
 		}
 	}
@@ -156,6 +164,7 @@ void GameState_Exit(float Update)
 		switch (state->m_CurrentPhase)
 		{
 			case OnEnterPhase:
+				SAFE_DELETE(GameManager::sGame);
 				SDL_Event sdlevent;
 				sdlevent.type = SDL_QUIT;
 				SDL_PushEvent(&sdlevent);

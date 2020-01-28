@@ -1,4 +1,5 @@
 #include "EnemyGrid.h"
+#include "Game.h"
 
 EnemyGrid::EnemyGrid()
 	:m_pLevel(new Level()), m_EnemyPool(new std::vector<Enemy*>())
@@ -9,8 +10,20 @@ EnemyGrid::EnemyGrid()
 	StartLevelBehaviour();
 }
 
+EnemyGrid::~EnemyGrid()
+{
+	m_pGame = nullptr;
+	for (size_t i = 0; i < m_EnemyPool->size(); ++i)
+	{
+		SAFE_DELETE((*m_EnemyPool)[i]);
+	}
+	m_EnemyPool->clear();
+	SAFE_DELETE(m_EnemyPool);
+}
+
 void EnemyGrid::PopulateEnemyGrid(int level)
 {
+	m_EnemyCount = 0;
 	if (m_pLevel != nullptr)
 	{
 		const EEnemyTypes *layout = m_pLevel->BuildLevel(level);
@@ -32,6 +45,7 @@ void EnemyGrid::PopulateEnemyGrid(int level)
 					}
 					m_pGrid[i][j] = new Enemy(layout);
 					++layout;
+					++m_EnemyCount;
 				}
 			}
 		}
@@ -45,6 +59,10 @@ void EnemyGrid::ClearGrid()
 	{
 		for (int j = 0; j < Level::skMaxEnemyGridWidth; j++)
 		{
+			if (m_pGrid[i][j] != nullptr)
+			{
+				m_EnemyPool->push_back(m_pGrid[i][j]);
+			}
 			m_pGrid[i][j] = nullptr;
 		}
 	}
@@ -100,10 +118,12 @@ void EnemyGrid::TimedUpdate(float deltaTime)
 				}
 				m_EnemyPool->push_back(e);
 				m_pGrid[i][j] = nullptr;
+				--m_EnemyCount;
 			}
 		}
 	}	
 	m_DirectionChanged = didDirChange != m_Movingleft;
+
 }
 
 bool EnemyGrid::CheckNextMoveDirection(Enemy *enemy)

@@ -37,10 +37,11 @@ Projectile::~Projectile()
 
 void Projectile::Spawn(int xOffset, int yOffset)
 {
+	m_IsActive = true;
 	if (m_Parent != nullptr)
 	{
 		m_SpawnLocation = m_Parent->GetPosition();
-		m_SpawnLocation.x += xOffset + 36; //Hack to deal with texture offset. More time and I would handle this properly
+		m_SpawnLocation.x += xOffset;
 		m_SpawnLocation.y += yOffset;
 	}
 	if (m_Sprite != nullptr)
@@ -58,8 +59,8 @@ void Projectile::Spawn(int xOffset, int yOffset)
 
 void Projectile::DeSpawn()
 {
-	UpdateManager::SafeClearTimedUpdate(this);
- 		m_Sprite->SetVisible(false);
+   	UpdateManager::SafeClearTimedUpdate(this);
+ 	m_Sprite->SetVisible(false);
 	CollisionComponent *coll;
 	if (TryGetComponent<CollisionComponent>(*this, coll))
 	{
@@ -96,14 +97,19 @@ void Projectile::DoCollision(unsigned char layer)
 				DeSpawn();
 			}
 		}
+		else
+		{
+			SDL_Log("Unhandled Collision");
+		}
 	}
+}
+
+void Projectile::OnSafeClear()
+{
+	m_IsActive = false;
 }
 
 bool Projectile::IsActive()
 {
-	if (m_Sprite != nullptr)
-	{
-		return m_Sprite->IsVisible();
-	}
-	return false;
+	return m_IsActive;
 }

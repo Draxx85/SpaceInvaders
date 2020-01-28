@@ -72,11 +72,11 @@ void MainMenu::InitLogo()
 void MainMenu::AddButtons()
 {
 	InitStartGame();
-	InitLeaderboard();
+//	InitLeaderboard(); // Didnt have time to add this
 	InitExit();
 
 	m_Buttons->AddButtonToList(m_StartGame);
-	m_Buttons->AddButtonToList(m_Leaderboards);
+//	m_Buttons->AddButtonToList(m_Leaderboards);
 	m_Buttons->AddButtonToList(m_Exit);
 
 	int x = (Graphics::sWindowWidth / 2) - (m_Buttons->GetContainerWidth() / 2);

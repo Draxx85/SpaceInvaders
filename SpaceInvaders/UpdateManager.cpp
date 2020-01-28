@@ -31,6 +31,7 @@ void UpdateManager::Update(float deltaTime)
 		for (Process *process : *spSafeList)
 		{
 			spProcessList->remove(process);
+			process->OnSafeClear();
 		}
 		spSafeList->clear();
 		sSafeItemToClear = false;
@@ -51,6 +52,7 @@ void UpdateManager::TimedUpdate(float deltaTime)
 		for (Process *process : *spTimedSafeList)
 		{
 			spTimedProcessList->remove(process);
+			process->OnSafeClear();
 		}
 		spTimedSafeList->clear();
 		sSafeTimedItemToClear = false;
@@ -72,6 +74,7 @@ bool UpdateManager::ClearUpdate(Process *const process)
 	if (spProcessList != nullptr)
 	{
 		spProcessList->remove(process);
+		process->OnSafeClear();
 		return true;
 	}
 	return false;
@@ -92,6 +95,7 @@ bool UpdateManager::ClearTimedUpdate(Process *const process)
 	if (spTimedProcessList != nullptr)
 	{
 		spTimedProcessList->remove(process);
+		process->OnSafeClear();
 		return true;
 	}
 	return false;

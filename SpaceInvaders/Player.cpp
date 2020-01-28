@@ -13,9 +13,7 @@ Player::Player()
 
 	SetScale(0.75f, 0.75f);
 	playerSprite->SetVisible(true);
-	BindKeys();
-	SetPosition(SVector2D(Graphics::sWindowWidth / 2.f,
-		(Graphics::sWindowHeight - (Graphics::sWindowHeight / 5.5f))));
+	ResetPlayer();
 
 	UpdateManager::RegisterUpdate(this);
 	UpdateManager::RegisterTimedUpdate(this);
@@ -56,6 +54,12 @@ void Player::BindKeys()
 	InputManager::RegisterKeyToAction(SDLK_d, right);
 }
 
+void Player::ResetPlayer()
+{
+	SetPosition(SVector2D(Graphics::sWindowWidth / 2.f,
+		(Graphics::sWindowHeight - (Graphics::sWindowHeight / 5.5f))));
+}
+
 void Player::UnBindKeys()
 {
 	InputManager::ClearKeyBinds();
@@ -86,9 +90,8 @@ void Player::Fire()
 		{
 			if (!(*iter)->IsActive())
 			{
-				(*iter)->Spawn(0, kProjectileYOffset);
+				(*iter)->Spawn(36, kProjectileYOffset);
 				m_ShootSound->Play();
-				SDL_Log("Shooting");
 				return;
 			}
 		}

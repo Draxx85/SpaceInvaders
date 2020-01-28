@@ -10,6 +10,7 @@ public:
 	~Player();
 
 	void BindKeys();
+	void ResetPlayer();
 	void UnBindKeys();
 	void Fire() override;
 	void Update(float deltaTime) override;

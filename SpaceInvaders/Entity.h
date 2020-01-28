@@ -117,6 +117,7 @@ public:
 
 	virtual void Update(float deltaTime) override;
 	virtual void TimedUpdate(float deltaTime) override;
+	virtual void OnSafeClear() override;
 	
 	std::vector<Component*> *m_Components;
 

@@ -5,6 +5,8 @@
 #include "ShipBlock.h"
 #include "Boss.h"
 #include "Graphics.h"
+#include "Floater.h"
+#include <vector>
 
 class Game
 {
@@ -12,11 +14,29 @@ public:
 	Game();
 	~Game();
 
+	void StartGame(int level);
+
+	float m_RoundCountDown = 0.0f;
+	bool m_GameStarted = false;
+	void InitializeRoundLoop(float deltaTime);
+	void ActiveCleanUp();
+	void Update();
+
+	void CreateRoundIntermission();
+
+private:
 	void BuildArena();
 	void AddPlayer();
 	void CreateLevel();
-private:
+	void BuildUI();
+
+	const float kRoundTime = 2.f;
+
+	std::vector<Floater*> *m_Floaters;
+
 	int m_Score;
+	int m_Multiplier;
+	int m_levelIndex = 1;
 
 	Player *m_Player;
 	EnemyGrid *m_EnemyGrid;

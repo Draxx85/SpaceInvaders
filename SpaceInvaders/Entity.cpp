@@ -37,6 +37,10 @@ void Entity::TimedUpdate(float deltaTime)
 
 }
 
+void Entity::OnSafeClear()
+{
+}
+
 void Entity::AddComponent(Component *Component)
 {
 	if (m_Components != nullptr)

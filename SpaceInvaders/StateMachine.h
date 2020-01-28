@@ -15,6 +15,7 @@ public:
 
 	virtual void Update(float deltaTime);
 	virtual void TimedUpdate(float deltaTime);
+	virtual void OnSafeClear();
 
 	void StartMachine();
 	

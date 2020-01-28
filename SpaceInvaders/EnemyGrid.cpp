@@ -7,12 +7,10 @@ EnemyGrid::EnemyGrid()
 	ClearGrid();
 	m_Transform->DestRect = new SDL_Rect();
 	SetPosition(0, kDownALevelValue);
-	StartLevelBehaviour();
 }
 
 EnemyGrid::~EnemyGrid()
 {
-	m_pGame = nullptr;
 	for (size_t i = 0; i < m_EnemyPool->size(); ++i)
 	{
 		SAFE_DELETE((*m_EnemyPool)[i]);
@@ -23,6 +21,7 @@ EnemyGrid::~EnemyGrid()
 
 void EnemyGrid::PopulateEnemyGrid(int level)
 {
+	m_Level = level;
 	m_EnemyCount = 0;
 	if (m_pLevel != nullptr)
 	{
@@ -51,10 +50,13 @@ void EnemyGrid::PopulateEnemyGrid(int level)
 		}
 	}
 	UpdatePosition();
+	StartLevelBehaviour();
 }
 
 void EnemyGrid::ClearGrid()
 {	
+	m_RoundScore = 0;
+	UpdateManager::ClearTimedUpdate(this);
 	for (int i = 0; i < Level::skMaxEnemyGridHeight; ++i)
 	{
 		for (int j = 0; j < Level::skMaxEnemyGridWidth; j++)
@@ -106,7 +108,7 @@ void EnemyGrid::TimedUpdate(float deltaTime)
 			{
 				continue;
 			}
-			m_pGrid[i][j]->IncrementPosition(1 * (m_Movingleft ? -1 : 1), y);
+			m_pGrid[i][j]->IncrementPosition((m_LevelMoveMultiplier * m_Level) * (m_Movingleft ? -1 : 1), y);
 			CheckNextMoveDirection(m_pGrid[i][j]);
 			if (m_pGrid[i][j]->IsDead())
 			{
@@ -119,6 +121,8 @@ void EnemyGrid::TimedUpdate(float deltaTime)
 				m_EnemyPool->push_back(e);
 				m_pGrid[i][j] = nullptr;
 				--m_EnemyCount;
+				//m_RoundScore += e->m_ScoreValue;
+				//m_Game->UpdateScore(m_RoundScore);
 			}
 		}
 	}	

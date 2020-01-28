@@ -1,10 +1,11 @@
 #include "Enemy.h"
-
+#include "GameManager.h"
 Enemy::Enemy(const EEnemyTypes *type)
 {
 	SpriteComponent *sprite =
 		new SpriteComponent(*this, Graphics::LoadActorResource());
 	sprite->m_Sprite->m_SpriteSheetIndex = *type;
+	m_ScoreValue = (int)*type / 2;
 	AddComponent(sprite);
 	CollisionComponent *collider = new CollisionComponent(EnemyCollidables, *this);
 	AddComponent(collider);
@@ -20,6 +21,8 @@ void Enemy::DoCollision(unsigned char collisionType)
 {
 	if (collisionType & PlayerProjectile)
 	{
+		GameManager::sGame->UpdateScore(m_ScoreValue);
+		GameManager::sGame->AddFloater(GetPosition(), m_ScoreValue);
 		PlayExplosion();
 		Die();
 	}

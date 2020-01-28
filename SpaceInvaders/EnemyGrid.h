@@ -14,13 +14,17 @@ public:
 	void UpdatePosition();
 	void StartLevelBehaviour();
 	void TimedUpdate(float deltaTime) override;
-	Game *m_pGame;
 	int m_EnemyCount = 0;
+	int m_RoundScore = 0;
+	Game *m_Game;
 private:
 	const int kDownALevelValue = 32;
 	Enemy *m_pGrid[Level::skMaxEnemyGridHeight][Level::skMaxEnemyGridWidth];
 	std::vector<Enemy*> *m_EnemyPool;
 	Level *m_pLevel;
+	int m_Level;
+	int m_ActiveMultiplier = 1;
+	int m_LevelMoveMultiplier = 1;
 	bool m_Movingleft = false;
 	bool CheckNextMoveDirection(Enemy *enemy);
 	bool m_DirectionChanged = false;

@@ -17,6 +17,14 @@ enum EGameState
 	GState_Exit = 4,
 };
 
+enum EInGameState
+{
+	Game_RoundStart,
+	Game_Play,
+	Game_RoundEnd,
+	Game_Exit,
+};
+
 class MainMenu;
 
 class GameManager
@@ -50,3 +58,8 @@ void GameState_Intro(float Update);
 void GameState_Menu(float Update);
 void GameState_Game(float Update);
 void GameState_Exit(float Update);
+
+void InGame_RoundStart(float Update);
+void InGame_Play(float Update);
+void InGame_RoundEnd(float Update);
+void InGame_Exit(float Update);

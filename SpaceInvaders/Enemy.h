@@ -15,6 +15,7 @@ public:
 	virtual ~Enemy();
 	bool IsDead();
 	void Reset(const EEnemyTypes type);
+	int m_ScoreValue;
 private:
 	SoundComponent *m_ShootSound;
 	SoundComponent *m_DieSound;

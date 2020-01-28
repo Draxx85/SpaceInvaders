@@ -1,10 +1,11 @@
 #include "Floater.h"
-#include <string>
+#include "TextComponent.h"
+#include <sstream>
 Floater::Floater(int value, SVector2D pos, float lifetime)
 {
-	std::string s;
-	s = value;
-	SetupFloater(s.c_str(), pos, lifetime);
+	std::stringstream ss;
+	ss << value;
+	SetupFloater(ss.str().c_str(), pos, lifetime);
 }
 
 
@@ -15,16 +16,11 @@ Floater::Floater(const char* value, SVector2D pos, float lifetime)
 
 void Floater::Update(float deltaTime)
 {
+
 	m_CountDown -= deltaTime;
-	if (m_CountDown <= 0)
+	if (m_CountDown <= 0 && !m_InfiniteLifetime)
 	{
-		UpdateManager::SafeClearUpdate(this);
-		SpriteComponent *sprite;
-		if (TryGetComponent<SpriteComponent>(*this, sprite))
-		{
-			sprite->SetVisible(false);
-		}
-		m_Active = false;
+		CleanFloater();
 	}
 }
 
@@ -35,8 +31,8 @@ void Floater::SetupFloater(const char* value, SVector2D pos, float lifetime)
 	color.b = 0;
 	color.g = 0;
 	color.a = 255;
-	SpriteComponent *sprite =
-		new SpriteComponent(*this, Graphics::LoadTextSolid((char*)value, color));
+	TextComponent *sprite =
+		new TextComponent(*this,value);
 	AddComponent(sprite);
 	sprite->SetVisible(true);
 	pos.x = pos.x - (sprite->m_Sprite->SpriteSrcRect.w / 2);
@@ -46,7 +42,38 @@ void Floater::SetupFloater(const char* value, SVector2D pos, float lifetime)
 	m_CountDown = lifetime;
 	UpdateManager::RegisterUpdate(this);
 	m_Active = true;
+	if (lifetime < 0)
+	{
+		m_InfiniteLifetime = true;
+	}
 }
+
+void Floater::UpdateFloater(const char * value, SDL_Color color)
+{
+	TextComponent *tc;
+	if (TryGetComponent<TextComponent>(*this, tc))
+	{
+		tc->SetTextAndFontColor(value, color);
+	}
+}
+
+void Floater::CleanFloater()
+{
+	UpdateManager::SafeClearUpdate(this);
+	SpriteComponent *sprite;
+	if (TryGetComponent<SpriteComponent>(*this, sprite))
+	{
+		sprite->SetVisible(false);
+	}
+	m_Active = false;
+}
+
+void Floater::OnSafeClear()
+{
+	delete this;
+}
+
+
 
 Floater::~Floater()
 {

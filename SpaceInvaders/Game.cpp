@@ -4,30 +4,28 @@ Game::Game()
 	:m_SSLarian(new Entity()), m_Background(new Entity()), m_Floaters(new std::vector<Floater*>())
 {
 	BuildArena();
-	CreateLevel();
-	BuildUI();
 	AudioManager::LoadMusicResource("Resources/game.ogg");
 	AudioManager::PlayMusic();
 
-
+	m_Color.a = 255;
+	m_Color.b = 255;
+	m_Color.g = 255;
+	m_Color.r = 255;
+	BuildUI();
+	m_EnemyGrid->m_Game = this;
 }
 
 Game::~Game()
 {
 	SAFE_DELETE(m_Background);
 	SAFE_DELETE(m_SSLarian);
-	for (size_t i = 0; i < m_Floaters->size(); ++i)
-	{
-		SAFE_DELETE((*m_Floaters)[i]);
-	}
-	m_Floaters->clear();
-	SAFE_DELETE(m_Floaters);
 }
 
 void Game::StartGame(int level)
 {
 	m_EnemyGrid->PopulateEnemyGrid(level);
-	m_GameStarted = true;
+	m_Player->BindKeys();
+	m_Player->ResetPlayer();
 }
 
 void Game::InitializeRoundLoop(float deltaTime)
@@ -38,35 +36,39 @@ void Game::InitializeRoundLoop(float deltaTime)
 	}
 	else
 	{
-		m_GameStarted = true;
-		StartGame(m_levelIndex);
-		m_Player->BindKeys();
-		m_Player->ResetPlayer();
+		m_GameReadyToStart = true;
+		m_GameActive = true;
+		StartGame(m_levelIndex++);
+		m_RoundCountDown = 0;
 	}
 }
 
-void Game::ActiveCleanUp()
+void Game::BetweenRoundCleanUp()
 {
-	
+	m_Player->UnBindKeys();
+	m_Floaters->clear();
+	m_FinishedCleaning = true;
+	m_Player->ResetPlayer();
 }
 
 void Game::Update()
 {
-	if (m_GameStarted && m_EnemyGrid->m_EnemyCount <= 0)
+	
+	if (m_EnemyGrid->m_EnemyCount <= 0)
 	{
-		m_GameStarted = false;
+		m_GameActive = false;
 		m_EnemyGrid->ClearGrid();
-		m_EnemyGrid->PopulateEnemyGrid(++m_levelIndex);
 	}
 }
 
 void Game::CreateRoundIntermission()
 {
+	m_FinishedCleaning = false;
+	m_GameReadyToStart = false;
 	std::stringstream ss;
 	ss << "Round " << m_levelIndex;
 	SVector2D vec = SVector2D(Graphics::sWindowWidth / 2, Graphics::sWindowHeight / 2);
 	Floater *RoundMsg = new Floater(ss.str().c_str() , vec, 2.f);
-	m_Floaters->push_back(RoundMsg);
 }
 
 void Game::BuildArena()
@@ -88,6 +90,7 @@ void Game::BuildArena()
 	
 	m_SSLarian->SetPosition(pos);
 	AddPlayer();
+	m_EnemyGrid = new EnemyGrid();
 }
 
 void Game::AddPlayer()
@@ -97,13 +100,31 @@ void Game::AddPlayer()
 
 void Game::CreateLevel()
 {
-	m_EnemyGrid = new EnemyGrid();
-	
-	m_EnemyGrid->m_pGame = this;
+	m_EnemyGrid->PopulateEnemyGrid(m_levelIndex);
+	++m_levelIndex;
 }
 
 void Game::BuildUI()
 {
+	std::stringstream ss;
+	ss << "Score : " << m_Score;
+	m_ScoreEntity = new Floater(ss.str().c_str(), SVector2D(150, 30), -1);
+	m_ScoreEntity->SetScale(0.5f, 0.5f);
+}
+
+void Game::UpdateScore(int value)
+{
+	m_Score += value;
+	std::stringstream ss;
+	ss << "Score : " << m_Score;
+	m_ScoreEntity->UpdateFloater(ss.str().c_str(), m_Color);
+	m_ScoreEntity->SetScale(0.5f, 0.5f);
+}
+
+void Game::AddFloater(SVector2D pos, int value)
+{
+	Floater *floater = new Floater(value, pos, 0.75f);
+	floater->SetScale(0.5f, 0.5f);
 }
 
 

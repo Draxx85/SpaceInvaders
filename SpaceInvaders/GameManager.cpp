@@ -48,19 +48,43 @@ StateMachine *GameManager::BuildMainStateMachine()
 	//Build the state machine nodes
 	State* state = stateMachine->CreateState((int)GState_Init, GameState_Init);
 	state = state->AddChildState(stateMachine->CreateState((int)GState_Intro, GameState_Intro));
-	state = state->AddChildState(stateMachine->CreateState((int)GState_Intro, GameState_Menu));
+	state = state->AddChildState(stateMachine->CreateState((int)GState_Menu, GameState_Menu));
 	state->IsNextStateReady = []() { return ShallWePlayAGame(); };
-	state = state->AddChildState(stateMachine->CreateState((int)GState_Intro, GameState_Game));
+	state = state->AddChildState(stateMachine->CreateState((int)GState_Game, GameState_Game));
 	state->IsNextStateReady = []() { return false; };
-	state = state->AddChildState(stateMachine->CreateState((int)GState_Intro, GameState_Exit));
+	state = state->AddChildState(stateMachine->CreateState((int)GState_Exit, GameState_Exit));
 	state->IsNextStateReady = []() { return true; };
 
 	return stateMachine;
 }
 
+//RoundStart, Gameplay, RoundEnd, Exit
 StateMachine *GameManager::BuildGameStateMachine()
 {
-	return nullptr;
+	StateMachine *stateMachine = new StateMachine();
+	
+	//Build the state machine nodes
+	State* roundStart = stateMachine->CreateState((int)Game_RoundStart, InGame_RoundStart);
+	roundStart->IsNextStateReady = []()
+	{
+		return GameManager::sGame->m_GameReadyToStart;
+	};
+	State *state = roundStart->AddChildState(stateMachine->CreateState((int)Game_Play, InGame_Play));
+	state->IsNextStateReady = []() 
+	{
+		return !GameManager::sGame->m_GameActive;
+	};
+	state = state->AddChildState(stateMachine->CreateState((int)Game_RoundEnd, InGame_RoundEnd));
+	state->IsNextStateReady = []()
+	{
+		return GameManager::sGame->m_FinishedCleaning;
+	};
+	state->AddChildState(roundStart);
+//	state = state->AddChildState(stateMachine->CreateState((int)Game_Exit, InGame_Exit));
+//	state->IsNextStateReady = []() { return GameManager::sGame->m_ShouldQuit; };
+
+
+	return stateMachine;
 }
 
 bool GameManager::ShallWePlayAGame()
@@ -136,17 +160,11 @@ void GameState_Game(float Update)
 		switch (state->m_CurrentPhase)
 		{
 			case OnEnterPhase:
-				GameManager::BuildGameStateMachine();
+				GameManager::sGameStateMachine = GameManager::BuildGameStateMachine();
 				GameManager::sGame = new Game();
-				GameManager::sGame->CreateRoundIntermission();
+				GameManager::sGameStateMachine->StartMachine();
 				break;
 			case OnStayPhase:
-				if (!GameManager::sGame->m_GameStarted)
-				{
-					GameManager::sGame->InitializeRoundLoop(Update); 
-					
-				}
-				GameManager::sGame->Update();
 				break;
 			case OnExitPhase:
 
@@ -168,6 +186,79 @@ void GameState_Exit(float Update)
 				SDL_Event sdlevent;
 				sdlevent.type = SDL_QUIT;
 				SDL_PushEvent(&sdlevent);
+				break;
+			case OnStayPhase:
+				break;
+			case OnExitPhase:
+				break;
+		}
+	}
+}
+
+void InGame_RoundStart(float Update)
+{
+	State *state = GameManager::sGameStateMachine->m_ActiveState;
+	if (state != nullptr)
+	{
+		switch (state->m_CurrentPhase)
+		{
+			case OnEnterPhase:
+				GameManager::sGame->CreateRoundIntermission();
+				break;
+			case OnStayPhase:
+				GameManager::sGame->InitializeRoundLoop(Update);
+				break;
+			case OnExitPhase:
+				break;
+		}
+	}
+}
+
+void InGame_Play(float Update)
+{
+	State *state = GameManager::sGameStateMachine->m_ActiveState;
+	if (state != nullptr)
+	{
+		switch (state->m_CurrentPhase)
+		{
+			case OnEnterPhase:
+
+				break;
+			case OnStayPhase:
+				GameManager::sGame->Update();
+				break;
+			case OnExitPhase:
+				break;
+		}
+	}
+}
+
+void InGame_RoundEnd(float Update)
+{
+	State *state = GameManager::sGameStateMachine->m_ActiveState;
+	if (state != nullptr)
+	{
+		switch (state->m_CurrentPhase)
+		{
+			case OnEnterPhase:
+				GameManager::sGame->BetweenRoundCleanUp();
+				break;
+			case OnStayPhase:
+				break;
+			case OnExitPhase:
+				break;
+		}
+	}
+}
+
+void InGame_Exit(float Update)
+{
+	State *state = GameManager::sGameStateMachine->m_ActiveState;
+	if (state != nullptr)
+	{
+		switch (state->m_CurrentPhase)
+		{
+			case OnEnterPhase:
 				break;
 			case OnStayPhase:
 				break;

@@ -56,6 +56,7 @@ void Player::BindKeys()
 
 void Player::ResetPlayer()
 {
+	m_IsMovingRight = m_IsMovingRight = m_IsShooting = false;
 	SetPosition(SVector2D(Graphics::sWindowWidth / 2.f,
 		(Graphics::sWindowHeight - (Graphics::sWindowHeight / 5.5f))));
 }

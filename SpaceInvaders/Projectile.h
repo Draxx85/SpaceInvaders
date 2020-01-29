@@ -2,10 +2,9 @@
 #include "CollisionComponent.h"
 #include "Actor.h"
 
+//Forward declarations
 class Actor;
-
 enum EProjectileColor;
-
 class SpriteComponent;
 
 class Projectile : public Entity

@@ -1,5 +1,7 @@
 #include "Game.h"
 #include <sstream>
+#include "GameManager.h"
+
 Game::Game()
 	:m_SSLarian(new Entity()), m_Background(new Entity()), m_Floaters(new std::vector<Floater*>()), 
 	m_Boss(new Boss())
@@ -22,11 +24,11 @@ Game::~Game()
 	SAFE_DELETE(m_SSLarian);
 }
 
-void Game::StartGame(int level)
+void Game::StartGame()
 {
-	m_EnemyGrid->PopulateEnemyGrid(level);
-	m_Player->BindKeys();
+	m_EnemyGrid->EnableGrid();
 	m_Player->ResetPlayer();
+	m_Player->BindKeys();
 	m_SpawnedBossThisRound = false;
 }
 
@@ -40,7 +42,7 @@ void Game::InitializeRoundLoop(float deltaTime)
 	{
 		m_GameReadyToStart = true;
 		m_GameActive = true;
-		StartGame(m_levelIndex++);
+		StartGame();
 		m_RoundCountDown = 0;
 		m_BossCountDown = rand() % 10;
 	}
@@ -75,16 +77,13 @@ void Game::Update(float update)
 
 void Game::CreateRoundIntermission()
 {
+	CreateLevel();
 	m_FinishedCleaning = false;
 	m_GameReadyToStart = false;
 	std::stringstream ss;
 	ss << "Round " << m_levelIndex;
 	SVector2D vec = SVector2D(Graphics::sWindowWidth / 2, Graphics::sWindowHeight / 2);
 	Floater *RoundMsg = new Floater(ss.str().c_str() , vec, 2.f);
-
-	m_ShipBlocks[0] = new ShipBlock(SVector2D(50, 650));
-	m_ShipBlocks[1] = new ShipBlock(SVector2D(500, 650));
-	m_ShipBlocks[2] = new ShipBlock(SVector2D(950, 650));
 }
 
 void Game::BuildArena()
@@ -101,15 +100,18 @@ void Game::BuildArena()
 	m_SSLarian->AddComponent(spriteComp);
 	spriteComp->SetVisible(true);
 	m_SSLarian->SetScale(0.75f, 0.75f);
+
 	pos.x = (float)Graphics::sWindowWidth / 2 - (spriteComp->m_Sprite->SpriteDestRect.w / 2);
 	pos.y = (float)Graphics::sWindowHeight - (spriteComp->m_Sprite->SpriteDestRect.h / 4);
-	
 	m_SSLarian->SetPosition(pos);
-	AddPlayer();
-	m_EnemyGrid = new EnemyGrid();
-	pos.x = 500;
-	pos.y = 250;
 
+	m_EnemyGrid = new EnemyGrid();
+
+	m_ShipBlocks[0] = new ShipBlock(SVector2D(50, 650));
+	m_ShipBlocks[1] = new ShipBlock(SVector2D(500, 650));
+	m_ShipBlocks[2] = new ShipBlock(SVector2D(950, 650));
+
+	AddPlayer();
 }
 
 void Game::AddPlayer()
@@ -129,6 +131,11 @@ void Game::BuildUI()
 	ss << "Score : " << m_Score;
 	m_ScoreEntity = new Floater(ss.str().c_str(), SVector2D(150, 30), -1);
 	m_ScoreEntity->SetScale(0.5f, 0.5f);
+
+	ss.clear();
+	ss << "Lives: " << m_Player->health;
+	m_PlayerStatusEntity = new Floater(ss.str().c_str(), SVector2D(Graphics::sWindowWidth - 200, 30), -1);
+	m_PlayerStatusEntity->SetScale(0.5f, 0.5f);
 }
 
 void Game::UpdateScore(int value)
@@ -138,6 +145,14 @@ void Game::UpdateScore(int value)
 	ss << "Score : " << m_Score;
 	m_ScoreEntity->UpdateFloater(ss.str().c_str(), m_Color);
 	m_ScoreEntity->SetScale(0.5f, 0.5f);
+}
+
+void Game::UpdateHealth()
+{
+	std::stringstream ss;
+	ss << "Lives : " << m_Player->health;
+	m_PlayerStatusEntity->UpdateFloater(ss.str().c_str(), m_Color);
+	m_PlayerStatusEntity->SetScale(0.5f, 0.5f);
 }
 
 void Game::AddFloater(SVector2D pos, int value)
@@ -151,8 +166,8 @@ void Game::GameOver()
 	SVector2D pos;
 	pos.x = ((float)Graphics::sWindowWidth / 2) - 64;
 	pos.y = ((float)Graphics::sWindowHeight /2)- 64;
-	Floater *floater = new Floater("Well Done!", pos, -1);
-	UpdateManager::Pause(true);
+	Floater *floater = new Floater("Hard Luck!", pos, -1);
+	GameManager::Pause();
 }
 
 

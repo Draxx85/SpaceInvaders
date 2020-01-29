@@ -1,7 +1,6 @@
 #include "Enemy.h"
 #include "GameManager.h"
 
-
 Enemy::Enemy()
 {
 }
@@ -11,22 +10,29 @@ Enemy::Enemy(const EEnemyTypes *type)
 	SpriteComponent *sprite =
 		new SpriteComponent(*this, Graphics::LoadActorResource());
 	sprite->m_Sprite->m_SpriteSheetIndex = *type;
-	m_ScoreValue = (int)*type / 2;
+	
 	AddComponent(sprite);
 	CollisionComponent *collider = new CollisionComponent(EnemyCollidables, *this);
 	AddComponent(collider);
-	Reset(*type);
+
+	Reset(*type); //this is a little reset
+	
+	//Setup Audio
 	m_ShootSound = new SoundComponent(AudioManager::LoadSFXResource("Resources/shoot.wav"));
 	AddComponent(m_ShootSound);
 	m_DieSound = new SoundComponent(AudioManager::LoadSFXResource("Resources/Explode.wav"));
 	AddComponent(m_DieSound);
+	
+	//Load and pool the projectiles
 	LoadProjectiles(1, Red);
 	for (Projectile *proj : *m_ProjectilePool)
 	{
 		proj->SetType(EnemyProjectile | PlayerCollidables | NeutralCollidables);
-		proj->m_Sprite->m_Sprite->SpriteSrcRect.x -= 20;
+		proj->m_Sprite->m_Sprite->SpriteSrcRect.x -= 20; //HACK: sprite sheet adjustment. This should be more dynamic
 	}
 	UpdateManager::RegisterTimedUpdate(this);
+
+	m_ScoreValue = (int)*type / 2;
 }
 
 void Enemy::DoCollision(unsigned char collisionType)
@@ -37,6 +43,15 @@ void Enemy::DoCollision(unsigned char collisionType)
 		GameManager::sGame->AddFloater(GetPosition(), m_ScoreValue);
 		PlayExplosion();
 		Die();
+	}
+}
+
+void Enemy::Enable()
+{
+	SpriteComponent *sprite;
+	if (TryGetComponent<SpriteComponent>(*this, sprite))
+	{
+		sprite->SetVisible(true);
 	}
 }
 
@@ -104,7 +119,6 @@ void Enemy::Fire()
 	}
 }
 
-
 void Enemy::Reset(const EEnemyTypes type)
 {
 	SpriteComponent *sprite;
@@ -117,8 +131,8 @@ void Enemy::Reset(const EEnemyTypes type)
 		sprite->m_Sprite->SpriteSrcRect.x = Graphics::skSpriteSheetWidth * (sprite->m_Sprite->m_SpriteSheetIndex % Graphics::skSpritesPerRow);
 		sprite->m_Sprite->SpriteSrcRect.y = (floor((float)sprite->m_Sprite->m_SpriteSheetIndex / (float)Graphics::skSpritesPerRow))*Graphics::skSpriteSheetHeight;
 		sprite->SetSpriteMaxFrame(2);
+		
 		SetScale(0.65f, 0.65f);
-		sprite->SetVisible(true);
 		UpdateManager::RegisterTimedUpdate(this);
 	}
 	CollisionComponent *coll;

@@ -16,8 +16,8 @@ public:
 	Actor();
 	virtual ~Actor();
 	void Move(const float x, const float y);
-	virtual void Fire();
 	void LoadProjectiles(int direction, EProjectileColor color);
+	virtual void Fire();
 	virtual void Die();
 protected:
 	int m_MaxProjectiles = 1;

@@ -3,6 +3,7 @@
 #include "MathHelper.h"
 #include <stack>
 #include "SoundComponent.h"
+
 class Player : public Actor, Command
 {
 public:
@@ -20,6 +21,9 @@ public:
 	int health = 3;
 
 private:
+	void DetermineVelocity(float deltaTime);
+	void RestrictToScreenBounds();
+
 	const float kMaxSpeed = 18.f;
 	const float kTimeToMaxSpeed = 0.25f;
 	const float kSpeedTolerance = 0.35f;
@@ -40,5 +44,6 @@ private:
 	bool m_IsShooting = false;
 	float m_ElapsedTimeSinceShot = 0.0f;
 	const int kProjectileYOffset = -25;
+	const int kProjectileXOffset = 36;
 	
 };

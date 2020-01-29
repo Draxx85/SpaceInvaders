@@ -7,27 +7,31 @@ Player::Player()
 	SpriteComponent *playerSprite = 
 		new SpriteComponent(*this, Graphics::LoadActorResource());
 	
+	//Setup the sprite
 	AddComponent(playerSprite);
 	playerSprite->m_Sprite->SpriteSrcRect.h = playerSprite->m_Sprite->SpriteSrcRect.w = Graphics::skSpriteSheetWidth;
 	playerSprite->m_Sprite->SpriteSrcRect.x = playerSprite->m_Sprite->SpriteSrcRect.y = 0;
 	playerSprite->m_Sprite->SpriteDestRect.h = playerSprite->m_Sprite->SpriteDestRect.w = Graphics::skSpriteSheetWidth;
-
 	SetScale(0.75f, 0.75f);
 	playerSprite->SetVisible(true);
-	ResetPlayer();
+
+	ResetPlayer(); //Reset his Position to the default starting position
+	
+	//Register Collision
 	CollisionComponent *collider = new CollisionComponent(PlayerCollidables, *this);
 	AddComponent(collider);
 	collider->Register();
+	
+	m_ShootSound = new SoundComponent(AudioManager::LoadSFXResource("Resources/shoot.wav"));
+	AddComponent(m_ShootSound);
 
 	UpdateManager::RegisterUpdate(this);
 	UpdateManager::RegisterTimedUpdate(this);
+
 	m_AccelRatePerSec = kMaxSpeed / kTimeToMaxSpeed;
 	m_TargetSpeed = 0.f;
-
 	m_MaxProjectiles = 10;
 	LoadProjectiles(-1, Blue);
-	m_ShootSound = new SoundComponent(AudioManager::LoadSFXResource("Resources/shoot.wav"));
-	AddComponent(m_ShootSound);
 }
 
 Player::~Player()
@@ -52,13 +56,12 @@ void Player::BindKeys()
 	right.m_InputAction = Right;
 	shoot.m_InputAction = Shoot;
 	pause.m_InputAction = Menu;
+
 	InputManager::RegisterKeyToAction(SDLK_RIGHT, right);
 	InputManager::RegisterKeyToAction(SDLK_LEFT, left);
 	InputManager::RegisterKeyToAction(SDLK_SPACE, shoot);
 	InputManager::RegisterKeyToAction(SDLK_ESCAPE, pause);
 
-
-	
 	//alternate key binds
 	InputManager::RegisterKeyToAction(SDLK_a, left);
 	InputManager::RegisterKeyToAction(SDLK_d, right);
@@ -67,6 +70,9 @@ void Player::BindKeys()
 void Player::ResetPlayer()
 {
 	m_IsMovingRight = m_IsMovingRight = m_IsShooting = false;
+	m_Velocity = 0;
+	m_TargetSpeed = 0;
+	m_ElapsedTimeSinceShot = 0;
 	SetPosition(SVector2D(Graphics::sWindowWidth / 2.f - 64,
 		(Graphics::sWindowHeight - (Graphics::sWindowHeight / 5.5f))));
 }
@@ -101,7 +107,7 @@ void Player::Fire()
 		{
 			if (!(*iter)->IsActive())
 			{
-				(*iter)->Spawn(36, kProjectileYOffset);
+				(*iter)->Spawn(kProjectileXOffset, kProjectileYOffset);
 				m_ShootSound->Play();
 				return;
 			}
@@ -112,23 +118,25 @@ void Player::Fire()
 void Player::TimedUpdate(float deltaTime)
 {
 	m_ElapsedTimeSinceShot += deltaTime;
-	if (m_TargetSpeed - kSpeedTolerance <= m_Velocity 
-		&& m_Velocity <= m_TargetSpeed + kSpeedTolerance)
+	
+	DetermineVelocity(deltaTime);
+
+	RestrictToScreenBounds();
+
+	if (m_IsShooting && m_ElapsedTimeSinceShot > kFiringCooldown)
 	{
-		m_Velocity = m_TargetSpeed;
+		Fire();
+		m_ElapsedTimeSinceShot = 0.0f;
 	}
-	else if (m_Velocity < m_TargetSpeed)
-	{
-		m_Velocity += m_AccelRatePerSec * deltaTime;
-	}
-	else 
-	{
-		m_Velocity -= m_AccelRatePerSec * deltaTime;
-	}
+	Move(m_Velocity, 0);
+}
+
+void Player::RestrictToScreenBounds()
+{
 	SVector2D *pos = &GetPosition();
 	if (pos != nullptr)
 	{
-		if (pos->x < 0.f )
+		if (pos->x < 0.f)
 		{
 			m_Velocity = 0;
 			SetPosition(0, pos->y);
@@ -139,11 +147,22 @@ void Player::TimedUpdate(float deltaTime)
 			SetPosition((float)Graphics::sWindowWidth - (float)Graphics::skSpriteSheetWidth, pos->y);
 		}
 	}
-	Move(m_Velocity, 0);
-	if (m_IsShooting && m_ElapsedTimeSinceShot > kFiringCooldown)
+}
+
+void Player::DetermineVelocity(float deltaTime)
+{
+	if (m_TargetSpeed - kSpeedTolerance <= m_Velocity
+		&& m_Velocity <= m_TargetSpeed + kSpeedTolerance)
 	{
-		Fire();
-		m_ElapsedTimeSinceShot = 0.0f;
+		m_Velocity = m_TargetSpeed;
+	}
+	else if (m_Velocity < m_TargetSpeed)
+	{
+		m_Velocity += m_AccelRatePerSec * deltaTime;
+	}
+	else
+	{
+		m_Velocity -= m_AccelRatePerSec * deltaTime;
 	}
 }
 
@@ -152,7 +171,7 @@ void Player::Execute(void *params)
 	KeyBind *action = static_cast<KeyBind*>(params);
 	if (action != nullptr)
 	{
-		if (action->m_KeyState == KeyDown)
+		if (action->m_KeyState == KeyDown) //KEY DOWN
 		{
 			switch (action->m_InputAction)
 			{
@@ -169,7 +188,7 @@ void Player::Execute(void *params)
 					break;
 			}
 		}
-		if (action->m_KeyState == KeyUp)
+		if (action->m_KeyState == KeyUp) //KEY RELEASED
 		{
 			switch (action->m_InputAction)
 			{
@@ -195,7 +214,6 @@ void Player::DoCollision(unsigned char collisionType)
 {
 	if (collisionType & EnemyProjectile)
 	{
-	//	GameManager::sGame->
 		--health;
 		if (health < 0)
 		{
@@ -203,5 +221,4 @@ void Player::DoCollision(unsigned char collisionType)
 		}
 		ResetPlayer();
 	}
-
 }

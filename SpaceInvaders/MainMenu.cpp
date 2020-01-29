@@ -16,20 +16,13 @@ MainMenu::~MainMenu()
 	InputManager::ClearKeyBinds();
 	AudioManager::ClearMusic();
 
-	delete m_GameTitle;
+	SAFE_DELETE(m_GameTitle);
 
 	//Main menu owns the buttons so should delete them
-	delete m_StartGame;
-	delete m_Leaderboards;
-	delete m_Exit;
-
-	delete m_Buttons;
-
-	m_GameTitle		= nullptr;
-	m_StartGame		= nullptr;
-	m_Leaderboards	= nullptr;
-	m_Exit			= nullptr;
-	m_Buttons		= nullptr;
+	SAFE_DELETE(m_StartGame);
+	SAFE_DELETE(m_Leaderboards);
+	SAFE_DELETE(m_Exit);
+	SAFE_DELETE(m_Buttons);
 }
 
 void MainMenu::Execute(void *params)
@@ -72,11 +65,10 @@ void MainMenu::InitLogo()
 void MainMenu::AddButtons()
 {
 	InitStartGame();
-//	InitLeaderboard(); // Didnt have time to add this
+//	InitLeaderboard(); // Didnt have time to add this feature :(
 	InitExit();
 
 	m_Buttons->AddButtonToList(m_StartGame);
-//	m_Buttons->AddButtonToList(m_Leaderboards);
 	m_Buttons->AddButtonToList(m_Exit);
 
 	int x = (Graphics::sWindowWidth / 2) - (m_Buttons->GetContainerWidth() / 2);
@@ -94,6 +86,7 @@ void MainMenu::InitStartGame()
 	m_StartGame->AddComponent(new SoundComponent(AudioManager::LoadSFXResource("Resources/Select.wav")));
 }
 
+//Unused since I did not implement Leaderboards
 void MainMenu::InitLeaderboard()
 {
 	TextComponent *textComp = new TextComponent(*m_Leaderboards, "Leaderboards");

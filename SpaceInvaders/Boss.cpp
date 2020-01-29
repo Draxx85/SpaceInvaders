@@ -1,11 +1,16 @@
 #include "Boss.h"
 #include "GameManager.h"
+
+const float Boss::skYStartingOffset = -20.f;
+const float Boss::skXStartingOffset = -50.f;
+const int Boss::skScoreValue = 300;
+const int Boss::skBossSpriteSheetIndex = 10;
+
 Boss::Boss()
 {
 	SpriteComponent *sprite =
 		new SpriteComponent(*this, Graphics::LoadActorResource());
 	
-	m_ScoreValue = 300;
 	AddComponent(sprite);
 	CollisionComponent *collider = new CollisionComponent(EnemyCollidables, *this);
 	AddComponent(collider);
@@ -14,6 +19,8 @@ Boss::Boss()
 
 	m_DieSound = new SoundComponent(AudioManager::LoadSFXResource("Resources/Explode.wav"));
 	AddComponent(m_DieSound);
+
+	m_ScoreValue = skScoreValue;
 }
 
 void Boss::Spawn()
@@ -21,7 +28,7 @@ void Boss::Spawn()
 	SpriteComponent *sprite;
 	if (TryGetComponent<SpriteComponent>(*this, sprite))
 	{
-		sprite->m_Sprite->m_SpriteSheetIndex = 10;
+		sprite->m_Sprite->m_SpriteSheetIndex = skBossSpriteSheetIndex;
 		sprite->SetSpriteMaxFrame(1);
 		sprite->SetVisible(true);
 		sprite->m_Sprite->SpriteSrcRect.h = sprite->m_Sprite->SpriteSrcRect.w = Graphics::skSpriteSheetWidth;
@@ -50,7 +57,7 @@ void Boss::DoCollision(unsigned char collisionType)
 void Boss::Activate()
 {
 	Spawn();
-	SetPosition(-50.f, 20);
+	SetPosition(skXStartingOffset, skYStartingOffset);
 	UpdateManager::RegisterTimedUpdate(this);
 }
 

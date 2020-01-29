@@ -7,32 +7,13 @@ ShipBlock::ShipBlock(SVector2D pos)
 	m_pTexture = Graphics::LoadResource("Resources/ShipBlock.png");
 	int w, h;
 	SDL_QueryTexture(m_pTexture, NULL, NULL, &w, &h);
-	int bWidth = w / skBlockWidth;
+	int bwidth = w / skBlockWidth;
 	int bheight = h / skBlockHeight;
 	for (int i = 0; i < skBlockWidth; ++i)
 	{
 		for (int j = 0; j < skBlockHeight; ++j)
 		{
-			m_Blocks[i][j] = new ShipBlockPiece();
-			SpriteComponent *sprite = new SpriteComponent(*m_Blocks[i][j], m_pTexture);
-			m_Blocks[i][j]->AddComponent(sprite);
-			SDL_Rect rect;
-			rect.x = i * bWidth;
-			rect.y = j * bheight;
-			rect.w = bWidth;
-			rect.h = bheight;
-
-			sprite->SetSrcRect(&rect);
-			SDL_Rect dest;
-			dest.w = bWidth;
-			dest.h = bheight;
-			sprite->m_Sprite->SpriteDestRect.w = bWidth;
-			sprite->m_Sprite->SpriteDestRect.h = bheight;
-			//sprite->SetDestRect(&rect);
-			sprite->SetVisible(true);
-			CollisionComponent *coll = new CollisionComponent(NeutralCollidables, *m_Blocks[i][j]);
-			m_Blocks[i][j]->AddComponent(coll);
-			coll->Register();
+			m_Blocks[i][j] = MakeBlockPiece(i, j, bwidth, bheight);
 		}
 	}
 	SetScale(SVector2D(0.5, 0.5f));
@@ -45,16 +26,7 @@ void ShipBlock::ResetBlocks()
 	{
 		for (int j = 0; j < skBlockHeight; ++j)
 		{
-			CollisionComponent *coll;
-			if (TryGetComponent<CollisionComponent>(*this, coll))
-			{
-				coll->Register();
-			}
-			SpriteComponent *sprite;
-			if (TryGetComponent<SpriteComponent>(*this, sprite))
-			{
-				sprite->SetVisible(true);
-			}
+			m_Blocks[i][j]->Reset();
 		}
 	}
 }
@@ -69,6 +41,29 @@ ShipBlock::~ShipBlock()
 			SAFE_DELETE(m_Blocks[i][j])
 		}
 	}
+}
+
+ShipBlockPiece *ShipBlock::MakeBlockPiece(const int x, const int y, const int width, const int height)
+{
+	ShipBlockPiece *piece = new ShipBlockPiece();
+	SpriteComponent *sprite = new SpriteComponent(*piece, m_pTexture);
+	piece->AddComponent(sprite);
+	
+	SDL_Rect rect;
+	rect.x = x * width;
+	rect.y = y * height;
+	rect.w = width;
+	rect.h = height;
+	sprite->SetSrcRect(&rect);
+
+	sprite->m_Sprite->SpriteDestRect.w = width;
+	sprite->m_Sprite->SpriteDestRect.h = height;
+	sprite->SetVisible(true);
+	CollisionComponent *coll = new CollisionComponent(NeutralCollidables, *piece);
+	piece->AddComponent(coll);
+	coll->Register();
+
+	return piece;
 }
 
 void ShipBlock::SetPosition(SVector2D pos)
@@ -106,6 +101,20 @@ void ShipBlockPiece::DoCollision(unsigned char collisionType)
 	if (TryGetComponent<SpriteComponent>(*this, sprite))
 	{
 		sprite->SetVisible(false);
+	}
+}
+
+void ShipBlockPiece::Reset()
+{
+	CollisionComponent *coll;
+	if (TryGetComponent<CollisionComponent>(*this, coll))
+	{
+		coll->Register();
+	}
+	SpriteComponent *sprite;
+	if (TryGetComponent<SpriteComponent>(*this, sprite))
+	{
+		sprite->SetVisible(true);
 	}
 }
 

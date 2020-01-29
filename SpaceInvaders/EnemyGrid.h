@@ -13,6 +13,7 @@ public:
 	void ClearGrid();
 	void UpdatePosition();
 	void StartLevelBehaviour();
+	void EnableGrid();
 	void TimedUpdate(float deltaTime) override;
 	int m_EnemyCount = 0;
 	int m_RoundScore = 0;

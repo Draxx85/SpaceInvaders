@@ -150,7 +150,6 @@
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MathHelper.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Powerup.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="ShipBlock.cpp" />
     <ClCompile Include="SoundComponent.cpp" />
@@ -193,7 +192,6 @@
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="MathHelper.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="Powerup.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="ShipBlock.h" />
     <ClInclude Include="SoundComponent.h" />

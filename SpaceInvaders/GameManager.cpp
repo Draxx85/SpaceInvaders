@@ -53,7 +53,6 @@ StateMachine *GameManager::BuildMainStateMachine()
 	
 	//Build the state machine nodes
 	State* state = stateMachine->CreateState((int)GState_Init, GameState_Init);
-	state = state->AddChildState(stateMachine->CreateState((int)GState_Intro, GameState_Intro));
 	state = state->AddChildState(stateMachine->CreateState((int)GState_Menu, GameState_Menu));
 	state->IsNextStateReady = []() { return ShallWePlayAGame(); };
 	state = state->AddChildState(stateMachine->CreateState((int)GState_Game, GameState_Game));
@@ -86,9 +85,6 @@ StateMachine *GameManager::BuildGameStateMachine()
 		return GameManager::sGame->m_FinishedCleaning;
 	};
 	state->AddChildState(roundStart);
-//	state = state->AddChildState(stateMachine->CreateState((int)Game_Exit, InGame_Exit));
-//	state->IsNextStateReady = []() { return GameManager::sGame->m_ShouldQuit; };
-
 
 	return stateMachine;
 }
@@ -101,40 +97,6 @@ bool GameManager::ShallWePlayAGame()
 //GameState:Init
 void GameState_Init(float Update)
 {
-	State *state = GameManager::sMainStateMachine->m_ActiveState;
-	if (state != nullptr)
-	{
-		switch (state->m_CurrentPhase)
-		{
-			case OnEnterPhase:
-				//SDL_Log("GameState_Init:I am in the state Entry Phase");
-				break;
-			case OnStayPhase:
-				//SDL_Log("GameState_Init: I am updateing myself");
-				break;
-			case OnExitPhase:
-			//	SDL_Log("GameState_Init: Im ending this state");
-				break;
-		}
-	}
-}
-
-//GameState:Intro
-void GameState_Intro(float Update)
-{
-	State *state = GameManager::sMainStateMachine->m_ActiveState;
-	if (state != nullptr)
-	{
-		switch (state->m_CurrentPhase)
-		{
-			case OnEnterPhase: 
-				break;
-			case OnStayPhase:
-				break;
-			case OnExitPhase:
-				break;
-		}
-	}
 }
 
 //GameState:Menu
@@ -173,7 +135,6 @@ void GameState_Game(float Update)
 			case OnStayPhase:
 				break;
 			case OnExitPhase:
-
 				break;
 		}
 	}
@@ -248,23 +209,6 @@ void InGame_RoundEnd(float Update)
 		{
 			case OnEnterPhase:
 				GameManager::sGame->BetweenRoundCleanUp();
-				break;
-			case OnStayPhase:
-				break;
-			case OnExitPhase:
-				break;
-		}
-	}
-}
-
-void InGame_Exit(float Update)
-{
-	State *state = GameManager::sGameStateMachine->m_ActiveState;
-	if (state != nullptr)
-	{
-		switch (state->m_CurrentPhase)
-		{
-			case OnEnterPhase:
 				break;
 			case OnStayPhase:
 				break;

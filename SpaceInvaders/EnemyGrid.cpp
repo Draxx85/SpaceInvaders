@@ -19,6 +19,7 @@ EnemyGrid::~EnemyGrid()
 	SAFE_DELETE(m_EnemyPool);
 }
 
+//Populate the grid by getting a level file from  the level builder
 void EnemyGrid::PopulateEnemyGrid(int level)
 {
 	m_Level = level;
@@ -50,7 +51,6 @@ void EnemyGrid::PopulateEnemyGrid(int level)
 		}
 	}
 	UpdatePosition();
-	StartLevelBehaviour();
 }
 
 void EnemyGrid::ClearGrid()
@@ -92,12 +92,28 @@ void EnemyGrid::StartLevelBehaviour()
 	UpdateManager::RegisterTimedUpdate(this);
 }
 
+void EnemyGrid::EnableGrid()
+{
+	for (int i = 0; i < Level::skMaxEnemyGridHeight; ++i)
+	{
+		for (int j = 0; j < Level::skMaxEnemyGridWidth; j++)
+		{
+			if (m_pGrid[i][j] != nullptr)
+			{
+				m_pGrid[i][j]->Enable();
+			}
+		}
+	}
+	EnemyGrid::StartLevelBehaviour();
+}
+
 void EnemyGrid::TimedUpdate(float deltaTime)
 {	
 	SVector2D vec = GetPosition();
 	int y = m_DirectionChanged ? kDownALevelValue : 0;
 	m_DirectionChanged = false;
 	bool didDirChange = m_Movingleft;
+	int speedMod = m_EnemyCount == 1 ? 5 : 0;
 
 	for (int i = 0; i < Level::skMaxEnemyGridHeight; ++i)
 	{
@@ -107,18 +123,13 @@ void EnemyGrid::TimedUpdate(float deltaTime)
 			{
 				continue;
 			}
-			if (m_EnemyCount == 1)
-			{
-				m_pGrid[i][j]->IncrementPosition((m_LevelMoveMultiplier * m_Level +5) * (m_Movingleft ? -1 : 1), y);
-			}
-			else
-			{
-				m_pGrid[i][j]->IncrementPosition((m_LevelMoveMultiplier * m_Level) * (m_Movingleft ? -1 : 1), y);
-			}
+			m_pGrid[i][j]->IncrementPosition(
+				(m_LevelMoveMultiplier * m_Level + speedMod) * (m_Movingleft ? -1 : 1), y);
 			
 			CheckNextMoveDirection(m_pGrid[i][j]);
 			CheckIfPlayerHasLostTheMatch(m_pGrid[i][j]);
-			if (m_pGrid[i][j]->IsDead())
+
+			if (m_pGrid[i][j]->IsDead()) //if the enemy is dead remove them from the list
 			{
 				Enemy *e = m_pGrid[i][j];
 				SpriteComponent *sprite;
@@ -130,7 +141,7 @@ void EnemyGrid::TimedUpdate(float deltaTime)
 				m_pGrid[i][j] = nullptr;
 				--m_EnemyCount;
 			}
-			else
+			else //If enemy is not did this frame, give them a chance to shoot
 			{
 				int chance = static_cast<int>(rand() % 10000);
 				if (chance < (m_ChanceToShoot*m_Level))

@@ -28,8 +28,9 @@ const EEnemyTypes *Level::BuildLevel(int layout)
 			m_EnemyArray = &Level4[0][0];
 			break;
 		case 5:
-		default:
 			m_EnemyArray = &Level5[0][0];
+		default:
+			m_EnemyArray = &Level6[0][0];
 			break;
 		}
 	return m_EnemyArray;

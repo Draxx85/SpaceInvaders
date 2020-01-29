@@ -14,7 +14,7 @@ public:
 	Game();
 	~Game();
 
-	void StartGame(int level);
+	void StartGame();
 
 	float m_RoundCountDown = 0.0f;
 	int m_Lives = 3;
@@ -35,6 +35,8 @@ private:
 	void AddPlayer();
 	void CreateLevel();
 	void BuildUI();
+	void UpdateHealth();
+
 	Game *m_Game;
 	const float kRoundTime = 2.f;
 
@@ -53,12 +55,14 @@ private:
 	ShipBlock *m_ShipBlocks[3];
 	Boss *m_Boss;
 	bool m_SpawnedBossThisRound = false;
+
 	//UI Entities
 	Floater *m_ScoreEntity;
-
 	Floater *m_PlayerStatusEntity;
 
-	Entity *m_SSLarian;
+	//The reason for this name was that there was originally a story and a cutscene specced out.
+	//Unfortunately I ran out of time and this feature was cut :(
+	Entity *m_SSLarian; 
 	Entity *m_Background;
 
 };

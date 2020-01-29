@@ -15,9 +15,7 @@ void Actor::Move(const float x, const float y)
 }
 
 void Actor::Fire()
-{
-
-}
+{}
 
 void Actor::LoadProjectiles(int direction, EProjectileColor color)
 {
@@ -32,5 +30,4 @@ void Actor::LoadProjectiles(int direction, EProjectileColor color)
 }
 
 void Actor::Die()
-{
-}
+{}

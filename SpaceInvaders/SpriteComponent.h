@@ -33,8 +33,6 @@ public:
 
 	void SetSrcRect(SDL_Rect *rect);
 	void SetDestRect(SDL_Rect *rect);
-
-	void UpdateSpritePos(SVector2D &pos);
 	void SetSpriteMaxFrame(int maxFrames);
 private:
 	float const m_kAnimFrameRate = 12.0f;

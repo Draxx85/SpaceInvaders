@@ -1,13 +1,13 @@
 #include "Floater.h"
 #include "TextComponent.h"
 #include <sstream>
+
 Floater::Floater(int value, SVector2D pos, float lifetime)
 {
 	std::stringstream ss;
 	ss << value;
 	SetupFloater(ss.str().c_str(), pos, lifetime);
 }
-
 
 Floater::Floater(const char* value, SVector2D pos, float lifetime)
 {
@@ -16,7 +16,6 @@ Floater::Floater(const char* value, SVector2D pos, float lifetime)
 
 void Floater::Update(float deltaTime)
 {
-
 	m_CountDown -= deltaTime;
 	if (m_CountDown <= 0 && !m_InfiniteLifetime)
 	{
@@ -26,13 +25,7 @@ void Floater::Update(float deltaTime)
 
 void Floater::SetupFloater(const char* value, SVector2D pos, float lifetime)
 {
-	SDL_Color color;
-	color.r = 255;
-	color.b = 0;
-	color.g = 0;
-	color.a = 255;
-	TextComponent *sprite =
-		new TextComponent(*this,value);
+	TextComponent *sprite =	new TextComponent(*this,value);
 	AddComponent(sprite);
 	sprite->SetVisible(true);
 	pos.x = pos.x - (sprite->m_Sprite->SpriteSrcRect.w / 2);
@@ -41,6 +34,7 @@ void Floater::SetupFloater(const char* value, SVector2D pos, float lifetime)
 
 	m_CountDown = lifetime;
 	UpdateManager::RegisterUpdate(this);
+	
 	m_Active = true;
 	if (lifetime < 0)
 	{
@@ -72,8 +66,6 @@ void Floater::OnSafeClear()
 {
 	delete this;
 }
-
-
 
 Floater::~Floater()
 {

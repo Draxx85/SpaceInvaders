@@ -117,14 +117,6 @@ void SpriteComponent::SetDestRect(SDL_Rect *rect)
 	}
 }
 
-void SpriteComponent::UpdateSpritePos(SVector2D &pos)
-{
-	if (m_Sprite != nullptr)
-	{
-		
-	}
-}
-
 void SpriteComponent::UpdateSprite(float deltaTime)
 {
 	m_TimeSinceAnimUpdate += deltaTime;
@@ -139,5 +131,20 @@ void SpriteComponent::UpdateSprite(float deltaTime)
 
 void SpriteComponent::SetSpriteMaxFrame(int maxFrames)
 {
-	m_Sprite->m_MaxFrames = maxFrames;
+	
+	if (m_Sprite->m_MaxFrames != maxFrames)
+	{
+		//if it was a single frame
+		if (maxFrames > 1 && IsVisible())
+		{
+			//We should register for updates so we can begin animations if they are available
+			UpdateManager::RegisterTimedUpdate(this);
+		}
+		else if (maxFrames <= 1 && IsVisible())
+		{
+			//Safe Clear update if we are no longer animated;
+			UpdateManager::SafeClearTimedUpdate(this);
+		}
+		m_Sprite->m_MaxFrames = maxFrames;
+	}
 }

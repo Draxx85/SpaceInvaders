@@ -6,6 +6,7 @@ class Sprite
 public:
 	static const int skSpriteWidth = 128;
 	static const int skSpriteHeight = 128;
+	static const int skSpritesPerRow = 8;
 
 	Sprite();
 	Sprite(int maxFrames);
@@ -29,6 +30,5 @@ public:
 	int m_SpriteSheetIndex;
 
 private:
-	void NextFrame();
-	void PreviousFrame();
+	void UpdateFrame();
 };

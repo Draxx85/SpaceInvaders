@@ -11,6 +11,7 @@ EnemyGrid::EnemyGrid()
 
 EnemyGrid::~EnemyGrid()
 {
+	ClearGrid();
 	for (size_t i = 0; i < m_EnemyPool->size(); ++i)
 	{
 		SAFE_DELETE((*m_EnemyPool)[i]);

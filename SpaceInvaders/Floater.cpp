@@ -44,10 +44,12 @@ void Floater::SetupFloater(const char* value, SVector2D pos, float lifetime)
 
 void Floater::UpdateFloater(const char * value, SDL_Color color)
 {
+	SVector2D pos = GetPosition();
 	TextComponent *tc;
 	if (TryGetComponent<TextComponent>(*this, tc))
 	{
 		tc->SetTextAndFontColor(value, color);
+		SetPosition(pos);
 	}
 }
 
@@ -64,9 +66,9 @@ void Floater::CleanFloater()
 
 void Floater::OnSafeClear()
 {
-	delete this;
 }
 
 Floater::~Floater()
 {
+	UpdateManager::ClearUpdate(this);
 }

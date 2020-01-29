@@ -96,3 +96,8 @@ void Boss::Despawn()
 	}
 	UpdateManager::SafeClearTimedUpdate(this);
 }
+
+Boss::~Boss()
+{
+	UpdateManager::ClearTimedUpdate(this);
+}

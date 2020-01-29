@@ -58,7 +58,7 @@ StateMachine *GameManager::BuildMainStateMachine()
 	state = state->AddChildState(stateMachine->CreateState((int)GState_Game, GameState_Game));
 	state->IsNextStateReady = []() { return false; };
 	state = state->AddChildState(stateMachine->CreateState((int)GState_Exit, GameState_Exit));
-	state->IsNextStateReady = []() { return true; };
+	state->IsNextStateReady = []() { return false; };
 
 	return stateMachine;
 }
@@ -94,14 +94,22 @@ bool GameManager::ShallWePlayAGame()
 	return sInGame;
 }
 
+void GameManager::RestartGame()
+{
+	SAFE_DELETE(sGame);
+	GameManager::sGame = new Game();
+	UpdateManager::Pause(false);
+	GameManager::sGameStateMachine->StartMachine();
+}
+
 //GameState:Init
 void GameState_Init(float Update)
-{
+{ 
 }
 
 //GameState:Menu
 void GameState_Menu(float Update)
-{
+ {
 	State *state = GameManager::sMainStateMachine->m_ActiveState;
 	if (state != nullptr)
 	{

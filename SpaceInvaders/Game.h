@@ -8,7 +8,7 @@
 #include "Floater.h"
 #include <vector>
 
-class Game
+class Game : Command
 {
 public:
 	Game();
@@ -30,13 +30,18 @@ public:
 	void UpdateScore(int value);
 	void AddFloater(SVector2D pos, int value);
 	void GameOver();
+	void BindPauseKeys();
+	void UnBindKeys();
+	void UpdateHealth();
+	void Execute(void *params);
 private:
 	void BuildArena();
 	void AddPlayer();
 	void CreateLevel();
 	void BuildUI();
-	void UpdateHealth();
-
+	
+	Floater *m_GameOverFloater;
+	Floater *m_InstructFloater;
 	Game *m_Game;
 	const float kRoundTime = 2.f;
 

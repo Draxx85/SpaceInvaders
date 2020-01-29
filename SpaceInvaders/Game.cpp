@@ -20,8 +20,22 @@ Game::Game()
 
 Game::~Game()
 {
+	UnBindKeys();
+	SAFE_DELETE(m_Floaters);
 	SAFE_DELETE(m_Background);
 	SAFE_DELETE(m_SSLarian);
+	SAFE_DELETE(m_GameOverFloater);
+
+	SAFE_DELETE(m_Player);
+	SAFE_DELETE(m_EnemyGrid);
+
+	SAFE_DELETE(m_ShipBlocks[0]);
+	SAFE_DELETE(m_ShipBlocks[1]);
+	SAFE_DELETE(m_ShipBlocks[2]);
+	SAFE_DELETE(m_Boss);
+
+	SAFE_DELETE(m_ScoreEntity);
+	SAFE_DELETE(m_InstructFloater);
 }
 
 void Game::StartGame()
@@ -77,13 +91,13 @@ void Game::Update(float update)
 
 void Game::CreateRoundIntermission()
 {
-	CreateLevel();
 	m_FinishedCleaning = false;
 	m_GameReadyToStart = false;
 	std::stringstream ss;
 	ss << "Round " << m_levelIndex;
 	SVector2D vec = SVector2D(Graphics::sWindowWidth / 2, Graphics::sWindowHeight / 2);
 	Floater *RoundMsg = new Floater(ss.str().c_str() , vec, 2.f);
+	CreateLevel();
 }
 
 void Game::BuildArena()
@@ -127,14 +141,14 @@ void Game::CreateLevel()
 
 void Game::BuildUI()
 {
-	std::stringstream ss;
-	ss << "Score : " << m_Score;
-	m_ScoreEntity = new Floater(ss.str().c_str(), SVector2D(150, 30), -1);
+	std::stringstream sscore;
+	sscore << "Score : " << m_Score;
+	m_ScoreEntity = new Floater(sscore.str().c_str(), SVector2D(150, 30), -1);
 	m_ScoreEntity->SetScale(0.5f, 0.5f);
 
-	ss.clear();
-	ss << "Lives: " << m_Player->health;
-	m_PlayerStatusEntity = new Floater(ss.str().c_str(), SVector2D(Graphics::sWindowWidth - 200, 30), -1);
+	std::stringstream shealth;
+	shealth << "Lives: " << m_Player->health;
+	m_PlayerStatusEntity = new Floater(shealth.str().c_str(), SVector2D(Graphics::sWindowWidth - 200, 30), -1);
 	m_PlayerStatusEntity->SetScale(0.5f, 0.5f);
 }
 
@@ -166,8 +180,45 @@ void Game::GameOver()
 	SVector2D pos;
 	pos.x = ((float)Graphics::sWindowWidth / 2) - 64;
 	pos.y = ((float)Graphics::sWindowHeight /2)- 64;
-	Floater *floater = new Floater("Hard Luck!", pos, -1);
-	GameManager::Pause();
+	m_GameOverFloater = new Floater("Hard Luck!", pos, -1);
+	pos.y += 128;
+	m_InstructFloater = new Floater("Press Space ESC to exit", pos, -1);
+	BindPauseKeys();
+	UpdateManager::Pause(true);
 }
 
+void Game::BindPauseKeys()
+{
+	KeyBind bind;
+	bind.m_Command = this;
+	bind.m_InputAction = Exit;
+	InputManager::RegisterKeyToAction(SDLK_ESCAPE, bind);
+}
+
+void Game::UnBindKeys()
+{
+	InputManager::ClearKeyBinds();
+}
+
+void Game::Execute(void *params)
+{
+	KeyBind *action = static_cast<KeyBind*>(params);
+	if (action->m_KeyState == KeyUp) //KEY RELEASED
+	{
+		switch (action->m_InputAction)
+		{
+			case Exit:
+				SDL_Event sdlevent;
+				sdlevent.type = SDL_QUIT;
+				SDL_PushEvent(&sdlevent);
+				break;
+			case Restart:
+				UnBindKeys();
+				GameManager::RestartGame();
+				break;
+			default:
+				break;
+		}
+	}
+}
 

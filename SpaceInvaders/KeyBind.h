@@ -19,6 +19,8 @@ enum EInputAction
 	Up,
 	Down,
 	Select,
+	Exit,
+	Restart,
 };
 
 struct KeyBind

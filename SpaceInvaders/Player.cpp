@@ -215,8 +215,10 @@ void Player::DoCollision(unsigned char collisionType)
 	if (collisionType & EnemyProjectile)
 	{
 		--health;
-		if (health < 0)
+		GameManager::sGame->UpdateHealth();
+		if (health <= 0)
 		{
+			UnBindKeys();
 			GameManager::sGame->GameOver();
 		}
 		ResetPlayer();

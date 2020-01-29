@@ -10,6 +10,7 @@ public:
 	void DoCollision(unsigned char collisionType)override;
 	void TimedUpdate(float deltaTime) override;
 	void Despawn();
+	~Boss();
 
 private:
 	static const float skXStartingOffset;

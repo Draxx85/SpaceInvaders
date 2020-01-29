@@ -22,16 +22,14 @@ void UpdateManager::Init()
 
 void UpdateManager::Update(float deltaTime)
 {
-	if (sPause)
+	if (!sPause)
 	{
-		return;
-	}
-
-	for (Process *process : *spProcessList)
-	{
-		if (process != nullptr)
+		for (Process *process : *spProcessList)
 		{
-			process->Update(deltaTime);
+			if (process != nullptr)
+			{
+				process->Update(deltaTime);
+			}
 		}
 	}
 	if (sSafeItemToClear)
@@ -48,16 +46,14 @@ void UpdateManager::Update(float deltaTime)
 
 void UpdateManager::TimedUpdate(float deltaTime)
 {
-	if (sPause)
+	if (!sPause)
 	{
-		return;
-	}
-
- 	for (Process *timedProcess : *spTimedProcessList)
-	{
-		if (timedProcess != nullptr)
+		for (Process *timedProcess : *spTimedProcessList)
 		{
-			timedProcess->TimedUpdate(deltaTime);
+			if (timedProcess != nullptr)
+			{
+				timedProcess->TimedUpdate(deltaTime);
+			}
 		}
 	}
 	if (sSafeTimedItemToClear)

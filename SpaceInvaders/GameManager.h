@@ -41,6 +41,8 @@ public:
 
 	static bool ShallWePlayAGame();
 
+	static void RestartGame();
+
 	static StateMachine *sMainStateMachine;
 	static StateMachine *sGameStateMachine;
 
@@ -58,7 +60,6 @@ private:
 };
 
 void GameState_Init(float Update);
-void GameState_Intro(float Update);
 void GameState_Menu(float Update);
 void GameState_Game(float Update);
 void GameState_Exit(float Update);
@@ -66,4 +67,3 @@ void GameState_Exit(float Update);
 void InGame_RoundStart(float Update);
 void InGame_Play(float Update);
 void InGame_RoundEnd(float Update);
-void InGame_Exit(float Update);
